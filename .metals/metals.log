@@ -1763,3 +1763,65 @@ abr. 17, 2026 11:20:21 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCan
 WARNING: Unmatched cancel notification for request id 16
 abr. 17, 2026 11:20:21 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
 WARNING: Unmatched cancel notification for request id 18
+abr. 18, 2026 12:03:21 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 30
+abr. 18, 2026 12:03:21 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 32
+abr. 18, 2026 12:03:21 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 35
+abr. 18, 2026 12:04:07 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 43
+abr. 18, 2026 12:09:08 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 57
+abr. 18, 2026 12:12:39 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 62
+abr. 18, 2026 12:18:58 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 126
+abr. 18, 2026 12:19:07 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 131
+abr. 18, 2026 12:19:07 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 134
+abr. 18, 2026 12:19:07 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 136
+abr. 18, 2026 12:19:31 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 152
+abr. 18, 2026 12:19:42 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 163
+abr. 18, 2026 12:19:45 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 165
+2026.04.18 00:28:15 INFO  Shutting down server
+2026.04.18 00:28:15 INFO  Memory monitor stopped
+2026.04.18 00:28:15 INFO  shutting down Metals
+2026.04.18 00:28:15 INFO  Shut down connection with build server.
+2026.04.18 10:58:56 INFO  Started: Metals version 1.6.7 in folders 'C:\Users\USUARIO\Downloads\api\api' for client Visual Studio Code 1.116.0.
+2026.04.18 10:58:56 INFO  Memory monitor started
+2026.04.18 10:58:59 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.04.18 10:58:59 INFO  no build target found for C:\Users\USUARIO\Downloads\api\api\src\main\java\com\cine\api\controller\BoletoController.java. Using fallback presentation compiler.
+2026.04.18 10:59:02 INFO  no build target found for C:\Users\USUARIO\Downloads\api\api\src\main\java\com\cine\api\controller\BoletoController.java. Using fallback presentation compiler.
+2026.04.18 10:59:03 INFO  no build target found for C:\Users\USUARIO\Downloads\api\api\src\main\java\com\cine\api\controller\BoletoController.java. Using fallback presentation compiler.
+2026.04.18 10:59:03 INFO  Attempting to connect to the build server...
+2026.04.18 10:59:03 INFO  No running Bloop server found, starting one.
+2026.04.18 10:59:10 INFO  Starting compilation server
+2026.04.18 10:59:10 INFO  restarted 1 presentation compiler
+2026.04.18 10:59:15 INFO  no build target found for C:\Users\USUARIO\Downloads\api\api\src\main\java\com\cine\api\controller\BoletoController.java. Using fallback presentation compiler.
+2026.04.18 10:59:17 INFO  no build target found for C:\Users\USUARIO\Downloads\api\api\src\main\java\com\cine\api\controller\BoletoController.java. Using fallback presentation compiler.
+2026.04.18 10:59:18 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\USUARIO\Downloads\api\api\.metals\bsp.trace.json or C:\Users\USUARIO\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2026.04.18 10:59:21 INFO  time: Connected to build server in 18s
+2026.04.18 10:59:21 INFO  Connected to Build server: Bloop v2.0.19
+2026.04.18 10:59:21 INFO  time: Imported build in 0.63s
+abr. 18, 2026 10:59:35 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 21
+abr. 18, 2026 10:59:35 A. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 22
+2026.04.18 10:59:45 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.04.18 10:59:56 INFO  time: indexed workspace in 33s
+2026.04.18 11:00:02 INFO  time: code lens generation in 1.13s
+2026.04.18 11:00:02 INFO  time: code lens generation in 1.13s
+2026.04.18 11:00:02 INFO  time: code lens generation in 1.13s
+2026.04.18 11:00:02 INFO  time: code lens generation in 1.13s
+2026.04.18 11:00:02 INFO  time: code lens generation in 1.13s
+2026.04.18 11:12:27 INFO  Shutting down server
+2026.04.18 11:12:27 INFO  Memory monitor stopped
+2026.04.18 11:12:27 INFO  shutting down Metals
+2026.04.18 11:12:27 INFO  Shut down connection with build server.
+2026.04.18 11:12:27 INFO  Exiting server
