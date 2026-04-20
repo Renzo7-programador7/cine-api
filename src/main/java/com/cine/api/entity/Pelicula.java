@@ -14,7 +14,7 @@ public class Pelicula {
     private Long id;
 
     private String titulo;
-    private int duracion;
+    private Integer duracion;
     private String clasificacion;
     private String genero;
 }
