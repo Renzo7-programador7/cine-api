@@ -1,9 +1,5 @@
 package com.cine.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,8 +15,12 @@ import com.cine.api.service.BoletoService;
 import com.cine.api.service.FuncionService;
 import com.cine.api.service.PeliculaService;
 import com.cine.api.service.UsuarioService;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ApiApplicationTests {
 
@@ -40,6 +40,10 @@ public class ApiApplicationTests {
 
     @Test @Order(2)
     void listarPeliculas() {
+        Pelicula p = new Pelicula();
+        p.setTitulo("Avatar"); p.setDuracion(162);
+        p.setClasificacion("PG-13"); p.setGenero("Acción");
+        peliculaService.guardar(p);
         assertFalse(peliculaService.listarTodas().isEmpty());
     }
 
@@ -55,11 +59,25 @@ public class ApiApplicationTests {
     @Test @Order(4)
     void actualizarPelicula() {
         Pelicula p = new Pelicula();
-        p.setTitulo("Original"); p.setDuracion(100);
-        p.setClasificacion("G"); p.setGenero("Drama");
+        p.setTitulo("Original_");
+        p.setDuracion(100);
+        p.setClasificacion("G");
+        p.setGenero("Drama");
+
         Pelicula guardada = peliculaService.guardar(p);
+
+        assertNotNull(guardada.getId());
+        assertEquals("Original_", guardada.getTitulo());
+
         guardada.setTitulo("Actualizada");
-        assertEquals("Actualizada", peliculaService.actualizar(guardada.getId(), guardada).getTitulo());
+
+        Pelicula actualizada = peliculaService.actualizar(guardada.getId(), guardada);
+
+        assertEquals("Actualizada", actualizada.getTitulo());
+        assertEquals(100, actualizada.getDuracion());
+        assertEquals("G", actualizada.getClasificacion());
+        assertEquals("Drama", actualizada.getGenero());
+
     }
 
     @Test @Order(5)
@@ -75,9 +93,14 @@ public class ApiApplicationTests {
     @Test @Order(6)
     void tituloNulo() {
         Pelicula p = new Pelicula();
-        p.setTitulo("Test"); p.setDuracion(120);
-        p.setClasificacion("G"); p.setGenero("Comedia");
-        assertNotNull(peliculaService.guardar(p).getTitulo());
+        p.setTitulo(null);
+        p.setDuracion(120);
+        p.setClasificacion("G");
+        p.setGenero("Comedia");
+
+        assertThrows(Exception.class, () -> {
+            peliculaService.guardar(p);
+        });
     }
 
     // ===== USUARIO =====
@@ -91,6 +114,10 @@ public class ApiApplicationTests {
 
     @Test @Order(8)
     void listarUsuarios() {
+        Usuario u = new Usuario();
+        u.setNombre("Juan"); u.setEmail("juan@mail.com");
+        u.setPassword("1234"); u.setRol("USER");
+        usuarioService.guardar(u);
         assertFalse(usuarioService.listarTodos().isEmpty());
     }
 
@@ -139,6 +166,9 @@ public class ApiApplicationTests {
 
     @Test @Order(14)
     void listarBoletos() {
+        Boleto b = new Boleto();
+        b.setPrecio(15.50); b.setEstado("ACTIVO"); b.setAsiento(5);
+        boletoService.guardar(b);
         assertFalse(boletoService.listarTodos().isEmpty());
     }
 
@@ -185,6 +215,9 @@ public class ApiApplicationTests {
 
     @Test @Order(20)
     void listarFunciones() {
+        Funcion f = new Funcion();
+        f.setPrecio(12.0); f.setCapacidad(100);
+        funcionService.guardar(f);
         assertFalse(funcionService.listarTodas().isEmpty());
     }
 

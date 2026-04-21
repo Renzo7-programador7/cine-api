@@ -6,10 +6,12 @@ import com.cine.api.service.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CineApiTests {
 
@@ -30,6 +32,10 @@ public class CineApiTests {
 
     @Test @Order(2)
     void listarPeliculas() {
+        Pelicula p = new Pelicula();
+        p.setTitulo("Avatar"); p.setDuracion(162);
+        p.setClasificacion("PG-13"); p.setGenero("Ciencia Ficción");
+        peliculaService.guardar(p);
         List<Pelicula> lista = peliculaService.listarTodas();
         assertFalse(lista.isEmpty());
     }
@@ -84,6 +90,10 @@ public class CineApiTests {
 
     @Test @Order(8)
     void listarUsuarios() {
+        Usuario u = new Usuario();
+        u.setNombre("Juan"); u.setEmail("juan@mail.com");
+        u.setPassword("1234"); u.setRol("USER");
+        usuarioService.guardar(u);
         assertFalse(usuarioService.listarTodos().isEmpty());
     }
 
@@ -132,6 +142,9 @@ public class CineApiTests {
 
     @Test @Order(14)
     void listarBoletos() {
+        Boleto b = new Boleto();
+        b.setPrecio(15.50); b.setEstado("ACTIVO"); b.setAsiento(5);
+        boletoService.guardar(b);
         assertFalse(boletoService.listarTodos().isEmpty());
     }
 
@@ -178,6 +191,9 @@ public class CineApiTests {
 
     @Test @Order(20)
     void listarFunciones() {
+        Funcion f = new Funcion();
+        f.setPrecio(12.0); f.setCapacidad(100);
+        funcionService.guardar(f);
         assertFalse(funcionService.listarTodas().isEmpty());
     }
 
