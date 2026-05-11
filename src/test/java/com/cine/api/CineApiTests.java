@@ -1,14 +1,28 @@
 package com.cine.api;
 
-import com.cine.api.entity.*;
-import com.cine.api.repository.*;
-import com.cine.api.service.*;
-import org.junit.jupiter.api.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import com.cine.api.entity.Boleto;
+import com.cine.api.entity.Funcion;
+import com.cine.api.entity.Pelicula;
+import com.cine.api.entity.Usuario;
+import com.cine.api.service.BoletoService;
+import com.cine.api.service.FuncionService;
+import com.cine.api.service.PeliculaService;
+import com.cine.api.service.UsuarioService;
 
 @SpringBootTest
 @Transactional
@@ -153,7 +167,7 @@ public class CineApiTests {
         Boleto b = new Boleto();
         b.setPrecio(20.0); b.setEstado("ACTIVO"); b.setAsiento(10);
         Boleto guardado = boletoService.guardar(b);
-        assertTrue(boletoService.obtenerPorId(guardado.getId()).isPresent());
+        assertNotNull(boletoService.obtenerPorId(guardado.getId()));
     }
 
     @Test @Order(16)
@@ -171,7 +185,8 @@ public class CineApiTests {
         b.setPrecio(5.0); b.setEstado("CANCELADO"); b.setAsiento(99);
         Boleto guardado = boletoService.guardar(b);
         boletoService.eliminar(guardado.getId());
-        assertFalse(boletoService.obtenerPorId(guardado.getId()).isPresent());
+        assertThrows(com.cine.api.service.exception.ResourceNotFoundException.class,
+                () -> boletoService.obtenerPorId(guardado.getId()));
     }
 
     @Test @Order(18)
@@ -202,7 +217,7 @@ public class CineApiTests {
         Funcion f = new Funcion();
         f.setPrecio(18.0); f.setCapacidad(80);
         Funcion guardada = funcionService.guardar(f);
-        assertTrue(funcionService.obtenerPorId(guardada.getId()).isPresent());
+        assertNotNull(funcionService.obtenerPorId(guardada.getId()));
     }
 
     @Test @Order(22)
@@ -218,7 +233,8 @@ public class CineApiTests {
         f.setPrecio(8.0); f.setCapacidad(30);
         Funcion guardada = funcionService.guardar(f);
         funcionService.eliminar(guardada.getId());
-        assertFalse(funcionService.obtenerPorId(guardada.getId()).isPresent());
+        assertThrows(com.cine.api.service.exception.ResourceNotFoundException.class,
+                () -> funcionService.obtenerPorId(guardada.getId()));
     }
 
     @Test @Order(24)
