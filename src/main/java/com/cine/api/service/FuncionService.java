@@ -1,11 +1,13 @@
 package com.cine.api.service;
 
-import com.cine.api.entity.Funcion;
-import com.cine.api.repository.FuncionRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
+import com.cine.api.entity.Funcion;
+import com.cine.api.repository.FuncionRepository;
+import com.cine.api.service.exception.ResourceNotFoundException;
 
 @Service
 public class FuncionService {
@@ -17,8 +19,9 @@ public class FuncionService {
         return funcionRepository.findAll();
     }
 
-    public Optional<Funcion> obtenerPorId(Long id) {
-        return funcionRepository.findById(id);
+    public Funcion obtenerPorId(Long id) {
+        return funcionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcion no encontrada con id: " + id));
     }
 
     public Funcion guardar(Funcion funcion) {
@@ -26,6 +29,9 @@ public class FuncionService {
     }
 
     public void eliminar(Long id) {
+        if (!funcionRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Funcion no encontrada con id: " + id);
+        }
         funcionRepository.deleteById(id);
     }
 }
