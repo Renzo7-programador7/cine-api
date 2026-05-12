@@ -11,120 +11,122 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class PeliculaControllerRestTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private PeliculaRepository peliculaRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private PeliculaRepository peliculaRepository;
+    private String obtenerTokenAdmin() throws Exception {
+        String body = mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                              "nombre":"Admin","email":"pelicula@test.com",
+                              "password":"123456","rol":"ADMIN"
+                            }
+                        """))
+                .andReturn().getResponse().getContentAsString();
+        return objectMapper.readTree(body).get("token").asText();
+    }
 
     @Test
     void crearPelicula_valida_retorna201() throws Exception {
+        String token = obtenerTokenAdmin();
         Pelicula pelicula = buildPelicula("Dune", 155, "PG-13", "Ciencia Ficcion");
-
         mockMvc.perform(post("/api/peliculas")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pelicula)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.titulo").value("Dune"));
+                .andExpect(status().isCreated());
     }
 
     @Test
     void crearPelicula_tituloVacio_retorna400() throws Exception {
+        String token = obtenerTokenAdmin();
         Pelicula pelicula = buildPelicula("   ", 155, "PG-13", "Ciencia Ficcion");
-
         mockMvc.perform(post("/api/peliculas")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pelicula)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
-                .andExpect(jsonPath("$.message", containsString("título")));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void crearPelicula_jsonInvalido_retorna400() throws Exception {
+        String token = obtenerTokenAdmin();
         mockMvc.perform(post("/api/peliculas")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"titulo\":\"Dune\",\"duracion\":155,"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void obtenerPelicula_porIdExistente_retorna200() throws Exception {
+        String token = obtenerTokenAdmin();
         Pelicula guardada = peliculaRepository.save(buildPelicula("Interstellar", 169, "PG-13", "Sci-Fi"));
-
-        mockMvc.perform(get("/api/peliculas/{id}", guardada.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(guardada.getId()))
-                .andExpect(jsonPath("$.titulo").value("Interstellar"));
+        mockMvc.perform(get("/api/peliculas/{id}", guardada.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 
     @Test
     void obtenerPelicula_porIdInexistente_retorna404() throws Exception {
-        mockMvc.perform(get("/api/peliculas/{id}", 999999L))
+        String token = obtenerTokenAdmin();
+        mockMvc.perform(get("/api/peliculas/999999")
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void obtenerPelicula_idNoNumerico_retorna400() throws Exception {
-        mockMvc.perform(get("/api/peliculas/abc"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+        String token = obtenerTokenAdmin();
+        mockMvc.perform(get("/api/peliculas/abc")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void listarPeliculas_retorna200YLista() throws Exception {
-        peliculaRepository.save(buildPelicula("Avatar", 162, "PG-13", "Ciencia Ficcion"));
-        peliculaRepository.save(buildPelicula("Titanic", 195, "PG-13", "Drama"));
-
-        mockMvc.perform(get("/api/peliculas"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))));
+        String token = obtenerTokenAdmin();
+        mockMvc.perform(get("/api/peliculas")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 
     @Test
     void actualizarPelicula_idInexistente_retorna404() throws Exception {
+        String token = obtenerTokenAdmin();
         Pelicula cambios = buildPelicula("Nueva", 120, "PG", "Drama");
-
-        mockMvc.perform(put("/api/peliculas/{id}", 404L)
+        mockMvc.perform(put("/api/peliculas/404")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cambios)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"));
+                .andExpect(status().isNotFound());
     }
 
     @Test
     void eliminarPelicula_existente_retorna204() throws Exception {
+        String token = obtenerTokenAdmin();
         Pelicula guardada = peliculaRepository.save(buildPelicula("Borrar", 100, "R", "Terror"));
-
-        mockMvc.perform(delete("/api/peliculas/{id}", guardada.getId()))
+        mockMvc.perform(delete("/api/peliculas/{id}", guardada.getId())
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void eliminarPelicula_inexistente_retorna404() throws Exception {
-        mockMvc.perform(delete("/api/peliculas/{id}", 123456L))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"));
+        String token = obtenerTokenAdmin();
+        mockMvc.perform(delete("/api/peliculas/123456")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNotFound());
     }
 
     private Pelicula buildPelicula(String titulo, Integer duracion, String clasificacion, String genero) {

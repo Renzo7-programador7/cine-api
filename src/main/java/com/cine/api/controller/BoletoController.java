@@ -21,7 +21,9 @@ public class BoletoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Boleto> obtener(@PathVariable Long id) {
-        return ResponseEntity.ok(boletoService.obtenerPorId(id));
+        return boletoService.obtenerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
