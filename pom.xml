@@ -23,6 +23,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Persistencia y Base de Datos (PostgreSQL para Prod, H2 para Test) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
