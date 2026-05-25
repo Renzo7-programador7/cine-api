@@ -2,11 +2,7 @@ package com.cine.api;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,6 +19,7 @@ import com.cine.api.service.BoletoService;
 import com.cine.api.service.FuncionService;
 import com.cine.api.service.PeliculaService;
 import com.cine.api.service.UsuarioService;
+import com.cine.api.service.exception.ResourceNotFoundException;
 
 @SpringBootTest
 @Transactional
@@ -40,8 +37,7 @@ public class CineApiTests {
         Pelicula p = new Pelicula();
         p.setTitulo("Avatar"); p.setDuracion(162);
         p.setClasificacion("PG-13"); p.setGenero("Ciencia Ficción");
-        Pelicula guardada = peliculaService.guardar(p);
-        assertNotNull(guardada.getId());
+        assertNotNull(peliculaService.guardar(p).getId());
     }
 
     @Test @Order(2)
@@ -50,8 +46,7 @@ public class CineApiTests {
         p.setTitulo("Avatar"); p.setDuracion(162);
         p.setClasificacion("PG-13"); p.setGenero("Ciencia Ficción");
         peliculaService.guardar(p);
-        List<Pelicula> lista = peliculaService.listarTodas();
-        assertFalse(lista.isEmpty());
+        assertFalse(peliculaService.listarTodas().isEmpty());
     }
 
     @Test @Order(3)
@@ -70,8 +65,7 @@ public class CineApiTests {
         p.setClasificacion("G"); p.setGenero("Drama");
         Pelicula guardada = peliculaService.guardar(p);
         guardada.setTitulo("Actualizada");
-        Pelicula actualizada = peliculaService.actualizar(guardada.getId(), guardada);
-        assertEquals("Actualizada", actualizada.getTitulo());
+        assertEquals("Actualizada", peliculaService.actualizar(guardada.getId(), guardada).getTitulo());
     }
 
     @Test @Order(5)
@@ -89,8 +83,7 @@ public class CineApiTests {
         Pelicula p = new Pelicula();
         p.setTitulo("Test"); p.setDuracion(120);
         p.setClasificacion("G"); p.setGenero("Comedia");
-        Pelicula guardada = peliculaService.guardar(p);
-        assertNotNull(guardada.getTitulo());
+        assertNotNull(peliculaService.guardar(p).getTitulo());
     }
 
     // ===== USUARIO TESTS =====
@@ -167,7 +160,7 @@ public class CineApiTests {
         Boleto b = new Boleto();
         b.setPrecio(20.0); b.setEstado("ACTIVO"); b.setAsiento(10);
         Boleto guardado = boletoService.guardar(b);
-        assertNotNull(boletoService.obtenerPorId(guardado.getId()));
+        assertTrue(boletoService.obtenerPorId(guardado.getId()).isPresent());
     }
 
     @Test @Order(16)
@@ -184,9 +177,9 @@ public class CineApiTests {
         Boleto b = new Boleto();
         b.setPrecio(5.0); b.setEstado("CANCELADO"); b.setAsiento(99);
         Boleto guardado = boletoService.guardar(b);
-        boletoService.eliminar(guardado.getId());
-        assertThrows(com.cine.api.service.exception.ResourceNotFoundException.class,
-                () -> boletoService.obtenerPorId(guardado.getId()));
+        Long id = guardado.getId();
+        boletoService.eliminar(id);
+        assertThrows(ResourceNotFoundException.class, () -> boletoService.eliminar(id));
     }
 
     @Test @Order(18)
@@ -217,7 +210,7 @@ public class CineApiTests {
         Funcion f = new Funcion();
         f.setPrecio(18.0); f.setCapacidad(80);
         Funcion guardada = funcionService.guardar(f);
-        assertNotNull(funcionService.obtenerPorId(guardada.getId()));
+        assertTrue(funcionService.obtenerPorId(guardada.getId()).isPresent());
     }
 
     @Test @Order(22)
@@ -232,9 +225,9 @@ public class CineApiTests {
         Funcion f = new Funcion();
         f.setPrecio(8.0); f.setCapacidad(30);
         Funcion guardada = funcionService.guardar(f);
-        funcionService.eliminar(guardada.getId());
-        assertThrows(com.cine.api.service.exception.ResourceNotFoundException.class,
-                () -> funcionService.obtenerPorId(guardada.getId()));
+        Long id = guardada.getId();
+        funcionService.eliminar(id);
+        assertThrows(ResourceNotFoundException.class, () -> funcionService.eliminar(id));
     }
 
     @Test @Order(24)

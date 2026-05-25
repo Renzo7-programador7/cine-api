@@ -16,19 +16,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired private AuthenticationManager authenticationManager;
-    @Autowired private JwtUtil jwtUtil;
-    @Autowired private UsuarioService usuarioService;
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        Usuario usuario = usuarioService.findByEmail(request.getEmail());
-        String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getRol());
-        return ResponseEntity.ok(new LoginResponse(token, usuario.getEmail(), usuario.getRol()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            Usuario usuario = usuarioService.findByEmail(request.getEmail());
+            String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getRol());
+            return ResponseEntity.ok(new LoginResponse(token, usuario.getEmail(), usuario.getRol()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @PostMapping("/register")

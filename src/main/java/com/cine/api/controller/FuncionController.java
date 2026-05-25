@@ -21,7 +21,9 @@ public class FuncionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Funcion> obtener(@PathVariable Long id) {
-        return ResponseEntity.ok(funcionService.obtenerPorId(id));
+        return funcionService.obtenerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

@@ -1,13 +1,12 @@
 package com.cine.api.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cine.api.entity.Boleto;
 import com.cine.api.repository.BoletoRepository;
 import com.cine.api.service.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoletoService {
@@ -19,9 +18,8 @@ public class BoletoService {
         return boletoRepository.findAll();
     }
 
-    public Boleto obtenerPorId(Long id) {
-        return boletoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Boleto no encontrado con id: " + id));
+    public Optional<Boleto> obtenerPorId(Long id) {
+        return boletoRepository.findById(id);
     }
 
     public Boleto guardar(Boleto boleto) {

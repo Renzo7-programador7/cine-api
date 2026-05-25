@@ -3563,3 +3563,329 @@ INFO: Unsupported notification method: $/setTrace
 2026.05.11 12:38:27 INFO  No running Bloop server found, starting one.[0m
 2026.05.11 12:38:33 INFO  restarted 0 presentation compilers[0m
 2026.05.11 12:38:34 INFO  Starting compilation server[0m
+2026.05.11 12:38:40 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\USUARIO\OneDrive\Documentos\cine-api\.metals\bsp.trace.json or C:\Users\USUARIO\AppData\Local\scalameta\metals\cache\bsp.trace.json[0m
+2026.05.11 12:38:43 INFO  time: Connected to build server in 16s[0m
+2026.05.11 12:38:43 INFO  Connected to Build server: Bloop v2.0.19[0m
+2026.05.11 12:38:45 INFO  time: Imported build in 1.2s[0m
+2026.05.11 12:39:08 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.05.11 12:39:13 INFO  time: indexed workspace in 27s[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\FuncionControllerRestTest.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\CineApiTests.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\entity\Usuario.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\CineApiTests.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\entity\Usuario.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\FuncionControllerRestTest.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java[0m
+2026.05.11 12:39:13 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java[0m
+2026.05.11 12:41:27 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java[0m
+2026.05.11 12:41:27 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:41:27 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:41:28 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:41:28 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1
+may. 11, 2026 12:41:28 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3
+2026.05.11 12:41:28 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:41:28 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5
+2026.05.11 12:41:28 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:41:28 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7
+2026.05.11 12:41:36 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:42:44 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:42:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:42:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:23 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java[0m
+2026.05.11 12:44:23 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/test/UsuarioRepositoryTest.java. Output:
+[0m
+2026.05.11 12:44:23 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:44:25 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 28
+2026.05.11 12:44:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:25 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java[0m
+2026.05.11 12:44:25 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java[0m
+2026.05.11 12:44:25 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java[0m
+2026.05.11 12:44:25 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:27 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:27 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:44:30 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:01 INFO  no build target found for c:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:01 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java[0m
+2026.05.11 12:45:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:33 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java[0m
+2026.05.11 12:45:33 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/UsuarioRepositoryTest.java. Output:
+[0m
+2026.05.11 12:45:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:34 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:34 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:35 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:36 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:36 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:36 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:45:37 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 59
+2026.05.11 12:45:50 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:50 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:55 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:55 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:55 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:57 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java[0m
+2026.05.11 12:45:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:45:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:00 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:02 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:02 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:04 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:46:09 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:47:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java. Using fallback presentation compiler.[0m
+2026.05.11 12:47:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:47:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:47:52 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.11 12:47:53 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:48:52 INFO  no build target found for c:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:48:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:48:53 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java[0m
+2026.05.11 12:48:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:48:53 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:48:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\repository\UsuarioRepository.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:18 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java[0m
+2026.05.11 12:49:18 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/test/UsuarioRepositoryTest.java. Output:
+[0m
+2026.05.11 12:49:18 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:18 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:18 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:18 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:19 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java[0m
+2026.05.11 12:49:19 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:19 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java[0m
+2026.05.11 12:49:19 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java[0m
+2026.05.11 12:49:20 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:21 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:25 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:25 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:29 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:29 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:29 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:49:29 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 123
+2026.05.11 12:49:29 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:31 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:31 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:31 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:32 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:49:33 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 133
+2026.05.11 12:49:33 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java[0m
+2026.05.11 12:49:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:49:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:49:40 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.11 12:49:40 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\UsuarioRepositoryTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 12:51:35 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.11 12:52:19 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java. Using fallback presentation compiler.[0m
+2026.05.11 12:52:19 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:52:19 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:53:58 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java[0m
+2026.05.11 12:53:58 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java[0m
+2026.05.11 12:53:58 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java[0m
+may. 11, 2026 12:54:13 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.11 12:56:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java. Using fallback presentation compiler.[0m
+2026.05.11 12:56:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 12:56:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:16:57 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 151
+2026.05.11 13:16:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:57 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java[0m
+may. 11, 2026 1:16:57 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 153
+2026.05.11 13:16:57 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:16:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java[0m
+2026.05.11 13:17:03 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java[0m
+2026.05.11 13:17:03 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:17:03 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 170
+2026.05.11 13:17:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:04 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:17:04 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 172
+2026.05.11 13:17:05 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:07 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java. Output:
+[0m
+2026.05.11 13:17:09 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:09 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java[0m
+2026.05.11 13:17:09 INFO  Created report: Optional[file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java][0m
+2026.05.11 13:17:09 INFO  QDox parse error in file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java (full report at: "C:\Users\USUARIO\OneDrive\Documentos\cine-api\.metals\.reports\metals-full\2026-05-11\r_qdox-error_13-17-09-470.md")[0m
+2026.05.11 13:17:09 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:13 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:15 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:35 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:35 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:37 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:17:42 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:50 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:50 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:18:51 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 195
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:18:53 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 198
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:55 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:56 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:56 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:56 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:56 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:18:58 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 218
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:18:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:04 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:04 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:04 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:05 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:05 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:06 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:07 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:20 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java. Output:
+[0m
+2026.05.11 13:19:20 INFO  time: code lens generation in 3.21s[0m
+2026.05.11 13:19:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:26 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:28 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:28 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:29 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:19:33 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 250
+2026.05.11 13:19:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:19:33 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 252
+2026.05.11 13:19:33 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java. Output:
+[0m
+2026.05.11 13:19:33 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:34 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:34 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:34 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:42 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:42 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:19:42 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 265
+2026.05.11 13:19:42 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:42 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:44 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:44 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:49 WARN  Running javac-semanticdb failed for file:///C:/Users/USUARIO/OneDrive/Documentos/cine-api/src/main/java/com/cine/api/ApiApplication.java. Output:
+[0m
+2026.05.11 13:19:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:49 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:19:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java. Using fallback presentation compiler.[0m
+2026.05.11 13:20:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java. Using fallback presentation compiler.[0m
+2026.05.11 13:20:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 13:20:03 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 13:21:09 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java[0m
+2026.05.11 13:21:09 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:21:09 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:21:11 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:21:24 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:21:25 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:39 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:39 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:25:39 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 320
+2026.05.11 13:25:46 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:46 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:46 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:47 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java[0m
+2026.05.11 13:25:47 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java[0m
+2026.05.11 13:25:47 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java[0m
+2026.05.11 13:25:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:48 INFO  time: code lens generation in 1.22s[0m
+2026.05.11 13:25:51 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java[0m
+2026.05.11 13:25:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:25:52 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 336
+2026.05.11 13:25:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:52 WARN  no build target for: C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\ApiApplication.java[0m
+may. 11, 2026 1:25:52 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 337
+2026.05.11 13:25:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:25:52 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 339
+2026.05.11 13:25:52 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:51 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:54 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:58 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:25:59 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:26:05 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\ApiApplicationTests.java. Using fallback presentation compiler.[0m
+2026.05.11 13:28:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\dto\LoginResponse.java. Using fallback presentation compiler.[0m
+2026.05.11 13:28:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\AuthControllerRestTest.java. Using fallback presentation compiler.[0m
+2026.05.11 13:28:47 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\test\java\com\cine\api\controller\UsuarioControllerRestTest.java. Using fallback presentation compiler.[0m
+may. 11, 2026 1:30:40 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.11 13:42:56 INFO  Shutting down server[0m
+2026.05.11 13:42:56 INFO  Memory monitor stopped[0m
+2026.05.11 13:42:56 INFO  shutting down Metals[0m
+2026.05.11 13:42:56 INFO  Shut down connection with build server.[0m
+2026.05.11 13:42:56 INFO  Exiting server[0m
