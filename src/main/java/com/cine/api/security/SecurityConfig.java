@@ -26,8 +26,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.disable()) // Deshabilitado para APIs REST (configura CORS en el frontend o con un filtro específico)
-            .csrf(csrf -> csrf.disable()) // Deshabilitado para APIs REST (JWT se encarga)
+            .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable())
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // --- ACCESO PÚBLICO (Documentación y Auth) ---
