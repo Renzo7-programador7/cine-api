@@ -8,8 +8,6 @@ class ApiApplicationTests {
 
     @Test
     void contextLoads() {
-        // Si el test llega aquí, significa que la base de datos 
-        // y la seguridad están bien configuradas.
-        System.out.println("✅ Backend verificado correctamente.");
+        System.out.println("Backend verificado correctamente.");
     }
 }
