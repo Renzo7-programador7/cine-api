@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Funciones</h2>
+  <nav>
+    <a routerLink="/peliculas">Películas</a> |
+    <a routerLink="/funciones">Funciones</a> |
+    <a routerLink="/boletos">Boletos</a> |
+    <a routerLink="/usuarios">Usuarios</a>
+  </nav>
+
+  <h3>Nueva Función</h3>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <form (ngSubmit)="crear()">
+    <input type="date" [(ngModel)]="nueva.fecha" name="fecha" required />
+    <input type="time" [(ngModel)]="nueva.hora" name="hora" required />
+    <input type="number" [(ngModel)]="nueva.precio" name="precio" placeholder="Precio" required />
+    <input type="number" [(ngModel)]="nueva.capacidad" name="capacidad" placeholder="Capacidad" required />
+    <select [(ngModel)]="nueva.pelicula.id" name="peliculaId" required>
+      <option value="0">Seleccionar película</option>
+      <option *ngFor="let p of peliculas" [value]="p.id">{{ p.titulo }}</option>
+    </select>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <h3>Lista de Funciones</h3>
+  <table>
+    <tr>
+      <th>ID</th><th>Fecha</th><th>Hora</th><th>Precio</th><th>Capacidad</th><th>Película</th><th>Acciones</th>
+    </tr>
+    <tr *ngFor="let f of funciones">
+      <td>{{ f.id }}</td>
+      <td>{{ f.fecha }}</td>
+      <td>{{ f.hora }}</td>
+      <td>{{ f.precio }}</td>
+      <td>{{ f.capacidad }}</td>
+      <td>{{ f.pelicula?.titulo }}</td>
+      <td>
+        <button (click)="eliminar(f.id)">Eliminar</button>
+      </td>
+    </tr>
+  </table>
+</div>
