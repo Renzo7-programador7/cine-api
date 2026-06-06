@@ -1,24 +1,24 @@
-<div class="container">
-  <h2>Registro</h2>
+<div class="auth-container">
+  <h2>🎬 Registro</h2>
   <div *ngIf="error" class="error">{{ error }}</div>
   <form (ngSubmit)="register()">
     <div>
-      <label>Nombre:</label>
-      <input type="text" [(ngModel)]="usuario.nombre" name="nombre" required />
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="usuario.nombre" name="nombre" placeholder="Tu nombre" required />
     </div>
     <div>
-      <label>Email:</label>
-      <input type="email" [(ngModel)]="usuario.email" name="email" required />
+      <label>Email</label>
+      <input type="email" [(ngModel)]="usuario.email" name="email" placeholder="tu@email.com" required />
     </div>
     <div>
-      <label>Password:</label>
-      <input type="password" [(ngModel)]="usuario.password" name="password" required />
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="usuario.password" name="password" placeholder="••••••••" required />
     </div>
     <div>
-      <label>Rol:</label>
+      <label>Rol</label>
       <select [(ngModel)]="usuario.rol" name="rol">
-        <option value="USER">USER</option>
-        <option value="ADMIN">ADMIN</option>
+        <option value="USER">Usuario</option>
+        <option value="ADMIN">Administrador</option>
       </select>
     </div>
     <button type="submit">Registrarse</button>

@@ -4442,3 +4442,14 @@ WARNING: Unmatched cancel notification for request id 72
 jun. 01, 2026 9:30:37 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
 2026.06.01 21:30:38 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+2026.06.01 21:32:25 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+2026.06.01 21:34:07 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+jun. 01, 2026 9:34:08 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 83
+2026.06.01 21:34:07 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+2026.06.01 21:34:07 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+2026.06.01 21:34:07 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+2026.06.01 21:34:10 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
+jun. 01, 2026 9:45:00 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.01 21:45:01 INFO  no build target found for C:\Users\USUARIO\OneDrive\Documentos\cine-api\src\main\java\com\cine\api\security\SecurityConfig.java. Using fallback presentation compiler.[0m
