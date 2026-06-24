@@ -1,0 +1,34 @@
+.form-grid-funcion {
+    display: grid;
+    grid-template-columns:
+        180px
+        150px
+        150px
+        150px
+        1fr
+        auto;
+
+    gap: 12px;
+}
+
+.form-grid-funcion input,
+.form-grid-funcion select {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #222;
+    color: white;
+}
+
+.btn-delete {
+    background: #c4001d;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    opacity: .9;
+}
