@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
@@ -23,8 +23,9 @@ export class Home implements OnInit {
     private peliculaService: PeliculaService,
     private funcionService: FuncionService,
     public auth: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.cargarDatos();
@@ -32,19 +33,20 @@ export class Home implements OnInit {
 
   cargarDatos() {
     this.cargando = true;
+
     this.peliculaService.listarPublicas().subscribe({
       next: (data) => {
+        console.log('Películas recibidas:', data);
         this.peliculas = data;
         this.cargando = false;
+        this.cdr.detectChanges();
+        console.log('cargando:', this.cargando);
       },
-      error: () => {
-        this.error = 'No se pudieron cargar las películas. Verifica que el servidor esté activo.';
+      error: (err) => {
+        console.error(err);
+        this.error = 'No se pudieron cargar las películas.';
         this.cargando = false;
       }
-    });
-
-    this.funcionService.listarPublicas().subscribe({
-      next: (data) => this.funciones = data
     });
   }
 
