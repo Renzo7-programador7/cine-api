@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Home } from './components/home/home';
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { Peliculas } from './components/peliculas/peliculas';
@@ -7,7 +8,7 @@ import { Boletos } from './components/boletos/boletos';
 import { Usuarios } from './components/usuarios/usuarios';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: Home },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'peliculas', component: Peliculas },

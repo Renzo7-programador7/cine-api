@@ -1,5 +1,5 @@
 <div class="auth-container">
-  <h2>CineGest</h2>
+  <h2>Cine<span style="color:#ffd700">Planet</span></h2>
   <div *ngIf="error" class="error">{{ error }}</div>
   <form (ngSubmit)="login()">
     <div>
@@ -13,4 +13,5 @@
     <button type="submit">Ingresar</button>
   </form>
   <p>¿No tienes cuenta? <a (click)="irARegistro()">Regístrate aquí</a></p>
+  <p><a routerLink="/">← Volver a la cartelera</a></p>
 </div>

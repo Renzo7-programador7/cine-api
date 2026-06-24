@@ -13,6 +13,15 @@ export class FuncionService {
     return new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken()}` });
   }
 
+  private opciones() {
+    const token = this.auth.getToken();
+    return token ? { headers: this.headers() } : {};
+  }
+
+  listarPublicas(): Observable<any[]> {
+    return this.http.get<any[]>(this.url, this.opciones());
+  }
+
   listar(): Observable<any[]> {
     return this.http.get<any[]>(this.url, { headers: this.headers() });
   }
