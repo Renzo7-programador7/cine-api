@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -18,18 +18,27 @@ export class Boletos implements OnInit {
   nuevo = { precio: 0, estado: 'ACTIVO', asiento: 0, funcion: { id: 0 }, usuario: { id: 0 } };
   error = '';
 
-  constructor(private boletoService: BoletoService,
-              private funcionService: FuncionService,
-              private router: Router) {}
+  constructor(
+    private boletoService: BoletoService,
+    private funcionService: FuncionService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.listar();
-    this.funcionService.listar().subscribe(data => this.funciones = data);
+    this.funcionService.listar().subscribe(data => {
+      this.funciones = data;
+      this.cdr.detectChanges();
+    });
   }
 
   listar() {
     this.boletoService.listar().subscribe({
-      next: (data) => this.boletos = data,
+      next: (data) => {
+        this.boletos = data;
+        this.cdr.detectChanges();
+      },
       error: () => this.router.navigate(['/login'])
     });
   }

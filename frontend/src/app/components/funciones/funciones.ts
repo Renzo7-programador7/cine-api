@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -18,18 +18,27 @@ export class Funciones implements OnInit {
   nueva = { fecha: '', hora: '', precio: 0, capacidad: 0, pelicula: { id: 0 } };
   error = '';
 
-  constructor(private funcionService: FuncionService,
-              private peliculaService: PeliculaService,
-              private router: Router) {}
+  constructor(
+    private funcionService: FuncionService,
+    private peliculaService: PeliculaService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.listar();
-    this.peliculaService.listar().subscribe(data => this.peliculas = data);
+    this.peliculaService.listar().subscribe(data => {
+      this.peliculas = data;
+      this.cdr.detectChanges();
+    });
   }
 
   listar() {
     this.funcionService.listar().subscribe({
-      next: (data) => this.funciones = data,
+      next: (data) => {
+        this.funciones = data;
+        this.cdr.detectChanges();
+      },
       error: () => this.router.navigate(['/login'])
     });
   }
