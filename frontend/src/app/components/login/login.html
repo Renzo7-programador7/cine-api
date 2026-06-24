@@ -1,0 +1,16 @@
+<div class="auth-container">
+  <h2>🎬 Cine</h2>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <form (ngSubmit)="login()">
+    <div>
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" name="email" placeholder="tu@email.com" required />
+    </div>
+    <div>
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="password" name="password" placeholder="••••••••" required />
+    </div>
+    <button type="submit">Ingresar</button>
+  </form>
+  <p>¿No tienes cuenta? <a (click)="irARegistro()">Regístrate aquí</a></p>
+</div>

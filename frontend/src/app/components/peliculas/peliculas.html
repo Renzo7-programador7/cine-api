@@ -1,0 +1,50 @@
+<div class="container">
+  <h2>Películas</h2>
+  <button (click)="logout()">Cerrar sesión</button>
+  <nav>
+    <a routerLink="/peliculas">Películas</a> |
+    <a routerLink="/funciones">Funciones</a> |
+    <a routerLink="/boletos">Boletos</a> |
+    <a routerLink="/usuarios">Usuarios</a>
+  </nav>
+
+  <h3>Nueva Película</h3>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <form (ngSubmit)="crear()">
+    <input type="text" [(ngModel)]="nueva.titulo" name="titulo" placeholder="Título" required />
+    <input type="number" [(ngModel)]="nueva.duracion" name="duracion" placeholder="Duración (min)" required />
+    <input type="text" [(ngModel)]="nueva.clasificacion" name="clasificacion" placeholder="Clasificación" required />
+    <input type="text" [(ngModel)]="nueva.genero" name="genero" placeholder="Género" required />
+    <button type="submit">Agregar</button>
+  </form>
+
+  <h3>Lista de Películas</h3>
+  <table>
+    <tr>
+      <th>ID</th><th>Título</th><th>Duración</th><th>Clasificación</th><th>Género</th><th>Acciones</th>
+    </tr>
+    <tr *ngFor="let p of peliculas">
+      <td>{{ p.id }}</td>
+      <td>{{ p.titulo }}</td>
+      <td>{{ p.duracion }}</td>
+      <td>{{ p.clasificacion }}</td>
+      <td>{{ p.genero }}</td>
+      <td>
+        <button (click)="editar(p)">Editar</button>
+        <button (click)="eliminar(p.id)">Eliminar</button>
+      </td>
+    </tr>
+  </table>
+
+  <div *ngIf="editando">
+    <h3>Editar Película</h3>
+    <form (ngSubmit)="actualizar()">
+      <input type="text" [(ngModel)]="editando.titulo" name="etitulo" placeholder="Título" />
+      <input type="number" [(ngModel)]="editando.duracion" name="eduracion" placeholder="Duración" />
+      <input type="text" [(ngModel)]="editando.clasificacion" name="eclasificacion" placeholder="Clasificación" />
+      <input type="text" [(ngModel)]="editando.genero" name="egenero" placeholder="Género" />
+      <button type="submit">Actualizar</button>
+      <button type="button" (click)="editando = null">Cancelar</button>
+    </form>
+  </div>
+</div>
