@@ -1,0 +1,29 @@
+.auth-container {
+    width: 400px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #111;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-container form div {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.auth-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.auth-container button {
+    width: 100%;
+}
