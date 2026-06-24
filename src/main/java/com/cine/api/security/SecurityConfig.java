@@ -2,7 +2,6 @@ package com.cine.api.security;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,8 +22,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
+
+    SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,8 +44,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/funciones/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,    "/api/usuarios").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,    "/api/peliculas/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.GET,    "/api/funciones/**").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.GET,    "/api/peliculas/**").permitAll() // Permitir acceso publico a las peliculas :V
+                .requestMatchers(HttpMethod.GET,    "/api/funciones/**").permitAll() // Permitir acceso publico a las funciones :V
                 .requestMatchers(HttpMethod.POST,   "/api/boletos").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.GET,    "/api/boletos/**").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").hasRole("ADMIN")
