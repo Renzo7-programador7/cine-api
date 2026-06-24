@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -18,9 +18,12 @@ export class Peliculas implements OnInit {
   editando: any = null;
   error = '';
 
-  constructor(private peliculaService: PeliculaService,
-              private auth: AuthService,
-              private router: Router) {}
+  constructor(
+    private peliculaService: PeliculaService,
+    private auth: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.listar();
@@ -28,7 +31,11 @@ export class Peliculas implements OnInit {
 
   listar() {
     this.peliculaService.listar().subscribe({
-      next: (data) => this.peliculas = data,
+      next: (data) => {
+        console.log('Películas:', data);
+        this.peliculas = data;
+        this.cdr.detectChanges();
+      },
       error: () => this.router.navigate(['/login'])
     });
   }
