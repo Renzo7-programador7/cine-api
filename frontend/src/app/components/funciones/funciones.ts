@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FuncionService } from '../../services/funcion';
 import { PeliculaService } from '../../services/pelicula';
+import { AdminLayout } from "../admin-layout/admin-layout";
 
 @Component({
   selector: 'app-funciones',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
   templateUrl: './funciones.html',
   styleUrl: './funciones.css'
 })

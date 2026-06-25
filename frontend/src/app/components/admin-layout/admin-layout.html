@@ -1,0 +1,21 @@
+<div class="container">
+
+  <header class="header">
+    <h2>{{ titulo }}</h2>
+
+    <button class="btn-logout" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </header>
+
+  <nav class="menu">
+    <a routerLink="/">Inicio</a>
+    <a routerLink="/peliculas">Películas</a>
+    <a routerLink="/funciones">Funciones</a>
+    <a routerLink="/boletos">Boletos</a>
+    <a routerLink="/usuarios">Usuarios</a>
+  </nav>
+
+  <ng-content></ng-content>
+
+</div>

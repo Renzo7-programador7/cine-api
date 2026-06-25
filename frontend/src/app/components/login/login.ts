@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,11 @@ export class Login {
   password = '';
   error = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private location: Location
+  ) { }
 
   login() {
     this.auth.login(this.email, this.password).subscribe({
@@ -32,5 +36,13 @@ export class Login {
 
   irARegistro() {
     this.router.navigate(['/register']);
+  }
+
+  volver() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

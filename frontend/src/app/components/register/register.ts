@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router,RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -16,7 +16,11 @@ export class Register {
   error = '';
   exito = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private location: Location
+  ) { }
 
   register() {
     this.auth.register(this.usuario).subscribe({
@@ -28,5 +32,12 @@ export class Register {
         this.error = 'Error al registrar usuario';
       }
     });
+  }
+  volver() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

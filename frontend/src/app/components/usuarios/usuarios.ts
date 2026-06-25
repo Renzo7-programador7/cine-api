@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
+import { AdminLayout } from "../admin-layout/admin-layout";
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AdminLayout],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css'
 })

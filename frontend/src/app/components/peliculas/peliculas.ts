@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
-import { AuthService } from '../../services/auth';
+import { AdminLayout } from "../admin-layout/admin-layout";
 
 @Component({
   selector: 'app-peliculas',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
   templateUrl: './peliculas.html',
   styleUrl: './peliculas.css'
 })
@@ -20,7 +20,6 @@ export class Peliculas implements OnInit {
 
   constructor(
     private peliculaService: PeliculaService,
-    private auth: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
@@ -67,10 +66,5 @@ export class Peliculas implements OnInit {
         this.editando = null;
       }
     });
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
   }
 }

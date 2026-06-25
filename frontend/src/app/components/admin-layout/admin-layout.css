@@ -1,0 +1,35 @@
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu {
+    margin: 20px 0;
+    padding: 15px;
+    background: #161616;
+    border-radius: 8px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+
+.btn-logout {
+    background: #c4001d;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}

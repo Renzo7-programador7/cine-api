@@ -4,18 +4,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { BoletoService } from '../../services/boleto';
 import { FuncionService } from '../../services/funcion';
+import { AdminLayout } from "../admin-layout/admin-layout";
 
 @Component({
   selector: 'app-boletos',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
   templateUrl: './boletos.html',
   styleUrl: './boletos.css'
 })
 export class Boletos implements OnInit {
   boletos: any[] = [];
   funciones: any[] = [];
-  nuevo = { precio: 0, estado: 'ACTIVO', asiento: 0, funcion: { id: 0 }, usuario: { id: 0 } };
+  nuevo = { precio: "", estado: 'ACTIVO', asiento: "", funcion: { id: 0 }, usuario: { id: "" } };
   error = '';
 
   constructor(
@@ -47,7 +48,7 @@ export class Boletos implements OnInit {
     this.boletoService.crear(this.nuevo).subscribe({
       next: () => {
         this.listar();
-        this.nuevo = { precio: 0, estado: 'ACTIVO', asiento: 0, funcion: { id: 0 }, usuario: { id: 0 } };
+        this.nuevo = { precio: "", estado: 'ACTIVO', asiento: "", funcion: { id: 0 }, usuario: { id: "" } };
       },
       error: (e) => this.error = e.error?.message || 'Error al crear'
     });
