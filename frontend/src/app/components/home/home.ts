@@ -48,6 +48,11 @@ export class Home implements OnInit {
         this.cargando = false;
       }
     });
+
+    this.funcionService.listarPublicas().subscribe({
+      next: (data) => this.funciones = data
+    });
+
   }
 
   funcionesDePelicula(id: number) {
