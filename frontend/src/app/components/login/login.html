@@ -1,17 +1,40 @@
-<div class="auth-container">
-  <h2>Cine<span style="color:#ffd700">Planet</span></h2>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <form (ngSubmit)="login()">
-    <div>
-      <label>Email</label>
-      <input type="email" [(ngModel)]="email" name="email" placeholder="tu@email.com" required />
+<div class="login-page">
+  <section class="login-hero" aria-hidden="true">
+    <img src="/images/cinegest-login-hero.png" alt="CineGest" class="login-hero__image" />
+  </section>
+
+  <section class="login-panel">
+    <div class="login-card">
+      <div class="login-card__header">
+        <p class="login-card__eyebrow">Bienvenido</p>
+        <h2>Inicia sesión</h2>
+      </div>
+
+      <div *ngIf="error" class="login-error">{{ error }}</div>
+
+      <form class="login-form" (ngSubmit)="login()">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="tu@email.com"
+            autocomplete="email" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="••••••••"
+            autocomplete="current-password" required />
+        </div>
+
+        <button type="submit">Ingresar</button>
+      </form>
+
+      <p class="login-footer">
+        ¿No tienes cuenta?
+        <a (click)="irARegistro()">Regístrate aquí</a>
+      </p>
+      <p class="login-back">
+        <a routerLink="/">← Volver a la cartelera</a>
+      </p>
     </div>
-    <div>
-      <label>Contraseña</label>
-      <input type="current-password" [(ngModel)]="password" name="password" placeholder="••••••••" required />
-    </div>
-    <button type="submit">Ingresar</button>
-  </form>
-  <p>¿No tienes cuenta? <a (click)="irARegistro()">Regístrate aquí</a></p>
-  <p><a routerLink="/">← Volver a la cartelera</a></p>
+  </section>
 </div>
