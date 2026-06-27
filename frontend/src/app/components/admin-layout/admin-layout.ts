@@ -10,13 +10,20 @@ import { AuthService } from '../../services/auth';
   styleUrl: './admin-layout.css',
 })
 export class AdminLayout implements OnInit {
+  email = '';
+  rol = '';
+  usuario = '';
   constructor(
     private auth: AuthService,
     private router: Router
   ) { }
 
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.email = this.auth.getEmail();
+    this.rol = this.auth.getRol();
+    this.usuario = this.auth.getUsuario();
+  }
   @Input() titulo = '';
 
 

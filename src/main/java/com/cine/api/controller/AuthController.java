@@ -32,7 +32,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             Usuario usuario = usuarioService.findByEmail(request.getEmail());
             String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getRol());
-            return ResponseEntity.ok(new LoginResponse(token, usuario.getEmail(), usuario.getRol()));
+            return ResponseEntity.ok(new LoginResponse(token, usuario.getEmail(), usuario.getRol(), usuario.getNombre()));
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -47,6 +47,6 @@ public class AuthController {
         }
         Usuario saved = usuarioService.guardar(usuario);
         String token = jwtUtil.generateToken(saved.getEmail(), saved.getRol());
-        return ResponseEntity.ok(new LoginResponse(token, saved.getEmail(), saved.getRol()));
+        return ResponseEntity.ok(new LoginResponse(token, saved.getEmail(), saved.getRol(), saved.getNombre()));
     }
 }

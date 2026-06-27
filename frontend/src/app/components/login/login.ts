@@ -25,7 +25,8 @@ export class Login {
   login() {
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
-        this.auth.guardarToken(res.token);
+        this.auth.guardarSesion(res);
+
         this.router.navigate(['/peliculas']);
       },
       error: () => {

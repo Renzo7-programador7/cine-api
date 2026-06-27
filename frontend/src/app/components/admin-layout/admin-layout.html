@@ -3,9 +3,19 @@
   <header class="header">
     <h2>{{ titulo }}</h2>
 
-    <button class="btn-logout" (click)="logout()">
-      Cerrar sesión
-    </button>
+    <div class="user-panel">
+
+      <div class="user-data">
+        <span class="user-email">{{ email }}</span>
+        <span class="user-role">{{ rol }}</span>
+        <span class="user-name">{{ usuario }}</span>
+      </div>
+
+      <button class="btn-logout" (click)="logout()">
+        Cerrar sesión
+      </button>
+
+    </div>
   </header>
 
   <nav class="menu">
