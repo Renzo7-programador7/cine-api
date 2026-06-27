@@ -36,11 +36,11 @@ export class Home implements OnInit {
 
     this.peliculaService.listarPublicas().subscribe({
       next: (data) => {
-        console.log('Películas recibidas:', data);
+        // console.log('Películas recibidas:', data);
         this.peliculas = data;
         this.cargando = false;
         this.cdr.detectChanges();
-        console.log('cargando:', this.cargando);
+        // console.log('cargando:', this.cargando);
       },
       error: (err) => {
         console.error(err);

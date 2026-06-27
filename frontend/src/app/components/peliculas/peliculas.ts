@@ -49,12 +49,6 @@ export class Peliculas implements OnInit {
     });
   }
 
-  eliminar(id: number) {
-    this.peliculaService.eliminar(id).subscribe({
-      next: () => this.listar()
-    });
-  }
-
   editar(p: any) {
     this.editando = { ...p };
   }
@@ -65,6 +59,20 @@ export class Peliculas implements OnInit {
         this.listar();
         this.editando = null;
       }
+    });
+  }
+
+  confirmarEliminar(id: number): void {
+    const confirmar = confirm('¿Está seguro de eliminar esta película?');
+
+    if (confirmar) {
+      this.eliminar(id);
+    }
+  }
+
+  eliminar(id: number) {
+    this.peliculaService.eliminar(id).subscribe({
+      next: () => this.listar()
     });
   }
 }

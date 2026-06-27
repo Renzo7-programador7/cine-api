@@ -37,6 +37,14 @@ export class Usuarios implements OnInit {
     });
   }
 
+  confirmarEliminar(id: number): void {
+    const confirmar = confirm('¿Está seguro de eliminar este usuario?');
+
+    if (confirmar) {
+      this.eliminar(id);
+    }
+  }
+
   eliminar(id: number) {
     const headers = new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken()}` });
     this.http.delete(`http://localhost:8080/api/usuarios/${id}`, { headers }).subscribe({

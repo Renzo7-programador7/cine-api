@@ -54,6 +54,14 @@ export class Funciones implements OnInit {
     });
   }
 
+  confirmarEliminar(id: number): void {
+    const confirmar = confirm('¿Está seguro de eliminar esta función?');
+
+    if (confirmar) {
+      this.eliminar(id);
+    }
+  }
+
   eliminar(id: number) {
     this.funcionService.eliminar(id).subscribe({
       next: () => this.listar()

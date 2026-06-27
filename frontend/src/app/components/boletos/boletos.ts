@@ -54,6 +54,14 @@ export class Boletos implements OnInit {
     });
   }
 
+  confirmarEliminar(id: number): void {
+    const confirmar = confirm('¿Está seguro de eliminar este boleto?');
+
+    if (confirmar) {
+      this.eliminar(id);
+    }
+  }
+
   eliminar(id: number) {
     this.boletoService.eliminar(id).subscribe({
       next: () => this.listar()
