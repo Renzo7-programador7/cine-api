@@ -1,38 +1,16 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../services/auth';
-import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+
+import { UserHeader } from '../user-header/user-header';
+import { UserFooter } from "../user-footer/user-footer";
+import { Hero } from "../hero/hero";
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [UserHeader, UserFooter, Hero],
   templateUrl: './user-layout.html',
   styleUrl: './user-layout.css',
 })
-export class UserLayout implements OnInit {
-  email = '';
-  rol = '';
-  usuario = '';
-
-  constructor(
-    private auth: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) { }
-
-  ngOnInit(): void {
-    this.email = this.auth.getEmail();
-    this.rol = this.auth.getRol();
-    this.usuario = this.auth.getUsuario();
-    console.log(this.rol);
-    this.cdr.detectChanges();
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate([this.router.url]);
-    window.location.reload();
-  }
-
+export class UserLayout {
+  @Input() banner: boolean = false;
 }

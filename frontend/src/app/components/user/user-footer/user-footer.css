@@ -1,0 +1,21 @@
+
+.site-footer {
+  background: #111;
+  border-top: 3px solid #c8001e;
+  padding: 30px;
+  margin-top: 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-inner p {
+  color: #666;
+  font-size: 0.85rem;
+}
