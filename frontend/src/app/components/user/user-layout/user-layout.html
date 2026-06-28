@@ -1,0 +1,56 @@
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-icon">🎬</span>
+    <h1>Cine<span>Gest</span></h1>
+  </div>
+
+  <div class="navbar-actions">
+    <a routerLink="/" class="nav-link active"> Cartelera </a>
+    @if (!email) {
+    <a routerLink="/login" class="btn-ingresar"> Ingresar </a>
+    <a routerLink="/register" class="nav-link"> Registrarse </a>
+    }
+    @if (email) {
+    <button class="btn-logout" (click)="logout()"> Cerrar sesion </button>
+    }
+    @if (rol === 'ADMIN') {
+    <a routerLink="/usuarios" class="btn-ingresar"> Administrar </a>
+    }
+
+  </div>
+</header>
+
+<nav class="subnav">
+  <a class="subnav-item active"> En Cartelera </a>
+  <span class="subnav-sep">|</span>
+  <a class="subnav-item"> Próximamente </a>
+  <span class="subnav-sep">|</span>
+  <a class="subnav-item"> Promociones </a>
+</nav>
+
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag"> Bienvenido a </p>
+    <h2> Lo mejor del cine y entretenimiento </h2>
+    <p class="hero-sub"> Descubre las películas en cartelera y elige tu función favorita </p>
+  </div>
+</section>
+
+<main class="container home-main">
+
+  <ng-content></ng-content>
+
+</main>
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+    <div class="logo">
+      <span class="logo-icon">🎬</span>
+      <h1> Cine<span>Gest</span> </h1>
+    </div>
+    <p> © 2026 CineGest Perú — Lo mejor del cine y entretenimiento </p>
+  </div>
+
+</footer>

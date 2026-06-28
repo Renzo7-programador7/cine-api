@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { BoletoService } from '../../services/boleto';
 import { FuncionService } from '../../services/funcion';
-import { AdminLayout } from "../admin-layout/admin-layout";
+import { AdminLayout } from "../admin/admin-layout/admin-layout";
 
 @Component({
   selector: 'app-boletos',

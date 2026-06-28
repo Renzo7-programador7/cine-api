@@ -1,20 +1,17 @@
 <div class="container">
-
   <header class="header">
-    <h2>{{ titulo }}</h2>
+    <h2> <img src="/images/cinegest-logo.png" alt="CineGest" class="logo" /> {{ titulo }}</h2>
 
     <div class="user-panel">
-
+      @if (email) {
       <div class="user-data">
-        <span class="user-email">{{ email }}</span>
+        <span class="user-email">{{ usuario }} ( {{ email }} )</span>
         <span class="user-role">{{ rol }}</span>
-        <span class="user-name">{{ usuario }}</span>
       </div>
-
-      <button class="btn-logout" (click)="logout()">
-        Cerrar sesión
-      </button>
-
+      <button class="btn-logout" (click)="logout()"> Cerrar sesion </button>
+      } @else {
+      <button class="btn-secondary" routerLink="/login"> Iniciar sesion </button>
+      }
     </div>
   </header>
 

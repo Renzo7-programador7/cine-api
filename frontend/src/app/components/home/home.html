@@ -1,56 +1,34 @@
-<header class="navbar">
-  <div class="logo">
-    <span class="logo-icon">🎬</span>
-    <h1>Cine<span>Gest</span></h1>
-  </div>
-  <div class="navbar-actions">
-    <a routerLink="/" class="nav-link active">Cartelera</a>
-    <a *ngIf="!auth.isLoggedIn()" routerLink="/login" class="btn-ingresar">Ingresar</a>
-    <a *ngIf="!auth.isLoggedIn()" routerLink="/register" class="nav-link">Registrarse</a>
-    <a *ngIf="auth.isLoggedIn()" routerLink="/peliculas" class="btn-ingresar">Administrar</a>
-  </div>
-</header>
+<app-user-layout>
 
-<nav class="subnav">
-  <a class="subnav-item active">En Cartelera</a>
-  <span class="subnav-sep">|</span>
-  <a class="subnav-item">Próximamente</a>
-  <span class="subnav-sep">|</span>
-  <a class="subnav-item">Promociones</a>
-</nav>
-
-<section class="hero">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-tag">Bienvenido a</p>
-    <h2>Lo mejor del cine y entretenimiento</h2>
-    <p class="hero-sub">Descubre las películas en cartelera y elige tu función favorita</p>
-  </div>
-</section>
-
-<main class="container home-main">
   <div class="section-header">
     <h2>Películas en cartelera</h2>
-    <span class="count-badge" *ngIf="!cargando">{{ peliculas.length }} títulos</span>
+    @if (!cargando) { <span class="count-badge"> {{ peliculas.length }} títulos </span> }
   </div>
 
-  <div *ngIf="error" class="error">{{ error }}</div>
+  @if (error) { <div class="error"> {{ error }} </div> }
 
-  <div *ngIf="cargando" class="loading">
+  @if (cargando) {
+  <div class="loading">
     <div class="spinner"></div>
     <p>Cargando cartelera...</p>
   </div>
+  }
 
-  <div *ngIf="!cargando && !error && peliculas.length === 0" class="empty-state">
-    <span class="empty-icon">🎞️</span>
-    <p>No hay películas en cartelera por el momento</p>
+  @if (!cargando && !error && peliculas.length === 0) {
+  <div class="empty-state">
+    <span class="empty-icon"> 🎞️ </span>
+    <p> No hay películas en cartelera por el momento </p>
   </div>
+  }
 
-  <div class="movie-grid" *ngIf="!cargando && peliculas.length">
-    <article class="movie-card" *ngFor="let p of peliculas" [class.selected]="peliculaSeleccionada?.id === p.id">
+  @if (!cargando && peliculas.length) {
+  <div class="movie-grid">
+    @for (p of peliculas; track p.id) {
+    <article class="movie-card" [class.selected]="peliculaSeleccionada?.id === p.id">
+
       <div class="movie-poster" [ngClass]="posterClass(p.genero)" (click)="seleccionarPelicula(p)">
-        <span class="badge-clasificacion">{{ p.clasificacion }}</span>
-        <div class="poster-title">{{ p.titulo }}</div>
+        <span class="badge-clasificacion"> {{ p.clasificacion }} </span>
+        <div class="poster-title"> {{ p.titulo }} </div>
         <div class="poster-overlay">
           <span class="play-icon">▶</span>
         </div>
@@ -59,42 +37,45 @@
       <div class="movie-info">
         <h3>{{ p.titulo }}</h3>
         <div class="movie-meta">
-          <span class="badge-genero">{{ p.genero }}</span>
-          <span class="duracion">{{ p.duracion }} min</span>
+          <span class="badge-genero"> {{ p.genero }} </span>
+          <span class="duracion"> {{ p.duracion }} min </span>
         </div>
         <button class="btn-ver-horarios" (click)="seleccionarPelicula(p)">
-          {{ peliculaSeleccionada?.id === p.id ? 'Ocultar horarios' : 'Ver horarios' }}
+          @if (peliculaSeleccionada?.id === p.id) { Ocultar horarios }
+          @else { Ver horarios }
         </button>
       </div>
 
-      <div class="horarios-panel" *ngIf="peliculaSeleccionada?.id === p.id">
-        <h4>Horarios disponibles</h4>
-        <div class="horarios-grid" *ngIf="funcionesDePelicula(p.id).length">
-          <div class="horario-pill" *ngFor="let f of funcionesDePelicula(p.id)">
-            <span class="fecha">{{ f.fecha }}</span>
-            <span class="hora">{{ f.hora }}</span>
-            <span class="precio">S/ {{ f.precio }}</span>
-          </div>
-        </div>
-        <p class="sin-horarios" *ngIf="!funcionesDePelicula(p.id).length">
-          Sin funciones programadas para esta película
-        </p>
-        <p class="comprar-hint" *ngIf="!auth.isLoggedIn() && funcionesDePelicula(p.id).length">
-          <a routerLink="/login">Inicia sesión</a> para comprar boletos
-        </p>
-        <a *ngIf="auth.isLoggedIn() && funcionesDePelicula(p.id).length" routerLink="/boletos"
-          class="btn-primary btn-comprar">Comprar boleto</a>
-      </div>
-    </article>
-  </div>
-</main>
+      @if (peliculaSeleccionada?.id === p.id) {
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="logo">
-      <span class="logo-icon">🎬</span>
-      <h1>Cine<span>Gest</span></h1>
-    </div>
-    <p>© 2026 CineGest Perú — Lo mejor del cine y entretenimiento</p>
+      <div class="horarios-panel">
+        <h4>Horarios disponibles</h4>
+
+        @if (funcionesPorPelicula[p.id]; as funciones) {
+        @if (funciones.length) {
+        <div class="horarios-grid">
+          @for (f of funciones; track f.id) {
+          <div class="horario-pill">
+            <span class="fecha"> {{ f.fecha }} </span>
+            <span class="hora"> {{ f.hora }} </span>
+            <span class="precio"> S/ {{ f.precio }} </span>
+          </div>
+          }
+        </div>
+        } @else { <p class="sin-horarios"> Sin funciones programadas para esta película </p> }
+
+        @if (funciones.length) {
+        @if (!auth.isLoggedIn()) {
+        <p class="comprar-hint"> <a routerLink="/login"> Inicia sesión </a> para comprar boletos </p>
+        }
+        @else { <a routerLink="/boletos" class="btn-primary btn-comprar"> Comprar boleto </a> }
+        }
+
+        }
+      </div>
+      }
+    </article>
+    }
   </div>
-</footer>
+  }
+</app-user-layout>

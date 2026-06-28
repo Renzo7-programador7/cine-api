@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
-import { AdminLayout } from "../admin-layout/admin-layout";
+import { AdminLayout } from "../admin/admin-layout/admin-layout";
 
 @Component({
   selector: 'app-peliculas',

@@ -4,17 +4,19 @@ import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
 import { FuncionService } from '../../services/funcion';
 import { AuthService } from '../../services/auth';
+import { UserLayout } from '../user/user-layout/user-layout';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, UserLayout],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home implements OnInit {
   peliculas: any[] = [];
   funciones: any[] = [];
+  funcionesPorPelicula: Record<number, any[]> = {};
   cargando = true;
   error = '';
   peliculaSeleccionada: any = null;
@@ -36,11 +38,11 @@ export class Home implements OnInit {
 
     this.peliculaService.listarPublicas().subscribe({
       next: (data) => {
-        // console.log('Películas recibidas:', data);
+
         this.peliculas = data;
         this.cargando = false;
         this.cdr.detectChanges();
-        // console.log('cargando:', this.cargando);
+
       },
       error: (err) => {
         console.error(err);
@@ -50,13 +52,20 @@ export class Home implements OnInit {
     });
 
     this.funcionService.listarPublicas().subscribe({
-      next: (data) => this.funciones = data
+      next: (data) => {
+        this.funciones = data;
+        this.funcionesPorPelicula = {};
+        this.funciones.forEach(funcion => {
+          const peliculaId = funcion.pelicula?.id;
+          if (peliculaId) {
+            if (!this.funcionesPorPelicula[peliculaId]) {
+              this.funcionesPorPelicula[peliculaId] = [];
+            }
+            this.funcionesPorPelicula[peliculaId].push(funcion);
+          }
+        });
+      }
     });
-
-  }
-
-  funcionesDePelicula(id: number) {
-    return this.funciones.filter(f => f.pelicula?.id === id);
   }
 
   seleccionarPelicula(p: any) {
@@ -74,7 +83,4 @@ export class Home implements OnInit {
     return 'poster-default';
   }
 
-  irALogin() {
-    this.router.navigate(['/login']);
-  }
 }

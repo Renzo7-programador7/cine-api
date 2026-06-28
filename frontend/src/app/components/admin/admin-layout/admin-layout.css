@@ -10,6 +10,22 @@
     align-items: center;
 }
 
+.header h2 {
+    color: #ffd700;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+}
+
+
 .menu {
     margin: 20px 0;
     padding: 15px;
@@ -23,7 +39,6 @@
     margin-right: 20px;
     font-weight: bold;
 }
-
 
 .btn-logout {
     background: #c4001d;
@@ -57,3 +72,5 @@
     font-size: 0.75rem;
     font-weight: bold;
 }
+
+

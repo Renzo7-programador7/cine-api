@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-admin-layout',
@@ -18,7 +18,6 @@ export class AdminLayout implements OnInit {
     private router: Router
   ) { }
 
-
   ngOnInit(): void {
     this.email = this.auth.getEmail();
     this.rol = this.auth.getRol();
@@ -26,9 +25,8 @@ export class AdminLayout implements OnInit {
   }
   @Input() titulo = '';
 
-
   logout() {
     this.auth.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }

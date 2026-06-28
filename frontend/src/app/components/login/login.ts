@@ -27,7 +27,11 @@ export class Login {
       next: (res) => {
         this.auth.guardarSesion(res);
 
-        this.router.navigate(['/peliculas']);
+        if (this.auth.getRol() === 'ADMIN') {
+          this.router.navigate(['/usuarios']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: () => {
         this.error = 'Credenciales incorrectas';
