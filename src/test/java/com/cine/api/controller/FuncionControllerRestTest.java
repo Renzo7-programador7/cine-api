@@ -2,7 +2,6 @@ package com.cine.api.controller;
 
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
-import com.cine.api.repository.FuncionRepository;
 import com.cine.api.repository.PeliculaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ class FuncionControllerRestTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private FuncionRepository funcionRepository;
     @Autowired private PeliculaRepository peliculaRepository;
 
     private String obtenerToken() throws Exception {

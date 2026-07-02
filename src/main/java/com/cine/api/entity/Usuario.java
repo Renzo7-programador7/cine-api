@@ -21,11 +21,12 @@ public class Usuario {
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "Email inválido")
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
+    @NotBlank(message = "El rol es obligatorio")
     private String rol; // "ADMIN" o "USER"
 }

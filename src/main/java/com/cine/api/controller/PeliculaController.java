@@ -2,7 +2,9 @@ package com.cine.api.controller;
 
 import com.cine.api.entity.Pelicula;
 import com.cine.api.service.PeliculaService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +15,16 @@ import java.util.List;
 @RequestMapping("/api/peliculas")
 public class PeliculaController {
 
-    @Autowired
-    private PeliculaService peliculaService;
+    private final PeliculaService peliculaService;
 
+    PeliculaController(PeliculaService peliculaService) {
+        this.peliculaService = peliculaService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Pelicula>> listar() {
         return ResponseEntity.ok(peliculaService.listarTodas());
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Pelicula> obtener(@PathVariable Long id) {
@@ -30,18 +33,15 @@ public class PeliculaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @PostMapping
-    public ResponseEntity<Pelicula> crear(@RequestBody Pelicula pelicula) {
+    public ResponseEntity<Pelicula> crear(@Valid @RequestBody Pelicula pelicula) {
         return ResponseEntity.status(HttpStatus.CREATED).body(peliculaService.guardar(pelicula));
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<Pelicula> actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
+    public ResponseEntity<Pelicula> actualizar(@PathVariable Long id, @Valid @RequestBody Pelicula pelicula) {
         return ResponseEntity.ok(peliculaService.actualizar(id, pelicula));
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {

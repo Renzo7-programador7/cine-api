@@ -3,7 +3,6 @@ package com.cine.api.service;
 import com.cine.api.entity.Boleto;
 import com.cine.api.repository.BoletoRepository;
 import com.cine.api.service.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +10,11 @@ import java.util.Optional;
 @Service
 public class BoletoService {
 
-    @Autowired
-    private BoletoRepository boletoRepository;
+    private final BoletoRepository boletoRepository;
+
+    BoletoService(BoletoRepository boletoRepository) {
+        this.boletoRepository = boletoRepository;
+    }
 
     public List<Boleto> listarTodos() {
         return boletoRepository.findAll();

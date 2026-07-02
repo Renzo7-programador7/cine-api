@@ -3,7 +3,6 @@ package com.cine.api.service;
 import com.cine.api.entity.Funcion;
 import com.cine.api.repository.FuncionRepository;
 import com.cine.api.service.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +10,11 @@ import java.util.Optional;
 @Service
 public class FuncionService {
 
-    @Autowired
-    private FuncionRepository funcionRepository;
+    private final FuncionRepository funcionRepository;
+
+    FuncionService(FuncionRepository funcionRepository) {
+        this.funcionRepository = funcionRepository;
+    }
 
     public List<Funcion> listarTodas() {
         return funcionRepository.findAll();

@@ -4,23 +4,27 @@ import com.cine.api.entity.Pelicula;
 import com.cine.api.repository.PeliculaRepository;
 import com.cine.api.service.exception.BusinessValidationException;
 import com.cine.api.service.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PeliculaService {
 
-    @Autowired
-    private PeliculaRepository peliculaRepository;
+    private final PeliculaRepository peliculaRepository;
+
+    PeliculaService(PeliculaRepository peliculaRepository) {
+        this.peliculaRepository = peliculaRepository;
+    }
 
     public List<Pelicula> listarTodas() {
         return peliculaRepository.findAll();
     }
 
     public Optional<Pelicula> obtenerPorId(Long id) {
+        Objects.requireNonNull(id, "El id de la película no puede ser nulo");
         return peliculaRepository.findById(id);
     }
 
@@ -34,6 +38,7 @@ public class PeliculaService {
     }
 
     public void eliminar(Long id) {
+        Objects.requireNonNull(id, "El id de la película no puede ser nulo");
         if (!peliculaRepository.existsById(id)) {
             throw new ResourceNotFoundException("Película no encontrada con id: " + id);
         }
@@ -41,6 +46,8 @@ public class PeliculaService {
     }
 
     public Pelicula actualizar(Long id, Pelicula nueva) {
+        Objects.requireNonNull(id, "El id de la película no puede ser nulo");
+        Objects.requireNonNull(nueva, "La película nueva no puede ser nula");
         Pelicula existente = peliculaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Película no encontrada con id: " + id));
 

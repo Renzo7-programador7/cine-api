@@ -2,7 +2,6 @@ package com.cine.api.controller;
 
 import com.cine.api.entity.Boleto;
 import com.cine.api.service.BoletoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.List;
 @RequestMapping("/api/boletos")
 public class BoletoController {
 
-    @Autowired
-    private BoletoService boletoService;
+    private final BoletoService boletoService;
+
+    BoletoController(BoletoService boletoService) {
+        this.boletoService = boletoService;
+    }
 
     @GetMapping
     public List<Boleto> listar() {

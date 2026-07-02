@@ -2,7 +2,6 @@ package com.cine.api.controller;
 
 import com.cine.api.entity.Funcion;
 import com.cine.api.service.FuncionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.List;
 @RequestMapping("/api/funciones")
 public class FuncionController {
 
-    @Autowired
-    private FuncionService funcionService;
+    private final FuncionService funcionService;
+
+    FuncionController(FuncionService funcionService) {
+        this.funcionService = funcionService;
+    }
 
     @GetMapping
     public List<Funcion> listar() {

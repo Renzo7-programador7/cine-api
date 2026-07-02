@@ -2,7 +2,9 @@ package com.cine.api.controller;
 
 import com.cine.api.entity.Usuario;
 import com.cine.api.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,8 +13,11 @@ import java.util.List;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+
+    UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping
     public List<Usuario> listar() {
@@ -27,7 +32,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
+    public Usuario crear(@Valid @RequestBody Usuario usuario) {
         return usuarioService.guardar(usuario);
     }
 

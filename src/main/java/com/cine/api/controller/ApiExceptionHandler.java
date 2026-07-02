@@ -1,6 +1,7 @@
 package com.cine.api.controller;
 
 import com.cine.api.service.exception.BusinessValidationException;
+import com.cine.api.service.exception.DuplicateResourceException;
 import com.cine.api.service.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,13 @@ public class ApiExceptionHandler {
                 .body(new ApiErrorResponse("NOT_FOUND", ex.getMessage()));
     }
 
-    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ApiErrorResponse> handleDuplicateResource(DuplicateResourceException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiErrorResponse("DUPLICATE_RESOURCE", ex.getMessage()));
+    }
+
+    @ExceptionHandler({ HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class })
     public ResponseEntity<ApiErrorResponse> handleBadRequest(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiErrorResponse("BAD_REQUEST", "Solicitud inválida"));
@@ -52,7 +59,10 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneral(Exception ex) {
+
+        ex.printStackTrace();
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiErrorResponse("INTERNAL_ERROR", "Error interno del servidor"));
+                .body(new ApiErrorResponse("INTERNAL_ERROR", ex.getMessage()));
     }
 }

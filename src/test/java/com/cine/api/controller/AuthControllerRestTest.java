@@ -11,15 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class AuthControllerRestTest {
 
     @Autowired private MockMvc mockMvc;
-    @Autowired private ObjectMapper objectMapper;
 
     @Test
     void register_valido_retornaToken() throws Exception {
