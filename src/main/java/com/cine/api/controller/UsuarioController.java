@@ -36,6 +36,16 @@ public class UsuarioController {
         return usuarioService.guardar(usuario);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
+        return ResponseEntity.ok(usuarioService.actualizar(id, usuario));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Usuario> parcialmenteActualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
+        return ResponseEntity.ok(usuarioService.actualizarParcialmente(id, usuario));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         usuarioService.eliminar(id);

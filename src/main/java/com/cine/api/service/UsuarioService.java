@@ -35,6 +35,44 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario actualizar(Long id, Usuario usuario) {
+        Objects.requireNonNull(id, "El ID del usuario no puede ser nulo");
+        Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
+        if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new DuplicateResourceException("Ya existe un usuario con el email: " + usuario.getEmail());
+        }
+        usuarioExistente.setNombre(usuario.getNombre());
+        usuarioExistente.setEmail(usuario.getEmail());
+        usuarioExistente.setPassword(usuario.getPassword());
+        usuarioExistente.setRol(usuario.getRol());
+        return usuarioRepository.save(usuarioExistente);
+    }
+
+    public Usuario actualizarParcialmente(Long id, Usuario usuario) {
+        Objects.requireNonNull(id, "El ID del usuario no puede ser nulo");
+        Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
+        if (usuario.getNombre() != null) {
+            usuarioExistente.setNombre(usuario.getNombre());
+        }
+        if (usuario.getEmail() != null) {
+            if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
+                throw new DuplicateResourceException("Ya existe un usuario con el email: " + usuario.getEmail());
+            }
+            usuarioExistente.setEmail(usuario.getEmail());
+        }
+        if (usuario.getPassword() != null) {
+            usuarioExistente.setPassword(usuario.getPassword());
+        }
+        if (usuario.getRol() != null) {
+            usuarioExistente.setRol(usuario.getRol());
+        }
+        return usuarioRepository.save(usuarioExistente);
+    }
+
     public void eliminar(Long id) {
         Objects.requireNonNull(id, "El ID del usuario no puede ser nulo");
         if (!usuarioRepository.existsById(id)) {
