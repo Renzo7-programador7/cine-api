@@ -18,48 +18,49 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    SecurityConfig(JwtFilter jwtFilter) {
+    SecurityConfig(
+            JwtFilter jwtFilter,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.jwtFilter = jwtFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint((request, response, ex) ->
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autenticado"))
-                .accessDeniedHandler((request, response, ex) ->
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado"))
-            )
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.POST,   "/api/peliculas").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT,    "/api/peliculas/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/peliculas/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST,   "/api/funciones").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/funciones/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,    "/api/usuarios/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,    "/api/peliculas/**").permitAll() // Permitir acceso publico a las peliculas :V
-                .requestMatchers(HttpMethod.GET,    "/api/funciones/**").permitAll() // Permitir acceso publico a las funciones :V
-                .requestMatchers(HttpMethod.POST,   "/api/boletos").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.GET,    "/api/boletos/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler(jwtAccessDeniedHandler))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/peliculas").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/peliculas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/peliculas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/funciones").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/funciones/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/peliculas/**").permitAll() 
+                        .requestMatchers(HttpMethod.GET, "/api/funciones/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/boletos").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/boletos/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -68,7 +69,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:4200"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

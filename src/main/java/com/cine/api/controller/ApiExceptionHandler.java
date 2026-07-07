@@ -1,5 +1,6 @@
 package com.cine.api.controller;
 
+import com.cine.api.exception.ApiErrorResponse;
 import com.cine.api.service.exception.BusinessValidationException;
 import com.cine.api.service.exception.DuplicateResourceException;
 import com.cine.api.service.exception.ResourceNotFoundException;
