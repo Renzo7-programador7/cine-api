@@ -3,6 +3,8 @@ package com.cine.api.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,8 +27,10 @@ public class Usuario {
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 4, message = "La contraseña debe tener al menos 4 caracteres")
     private String password;
 
     @NotBlank(message = "El rol es obligatorio")
+    @Pattern(regexp = "(?i)^(ADMIN|USER)$", message = "El rol debe ser ADMIN o USER")
     private String rol; // "ADMIN" o "USER"
 }

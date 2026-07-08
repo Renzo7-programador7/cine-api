@@ -46,7 +46,7 @@ public class UsuarioService {
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setEmail(usuario.getEmail());
         usuarioExistente.setPassword(usuario.getPassword());
-        usuarioExistente.setRol(usuario.getRol());
+        usuarioExistente.setRol(usuario.getRol().toUpperCase());
         return usuarioRepository.save(usuarioExistente);
     }
 
@@ -68,7 +68,7 @@ public class UsuarioService {
             usuarioExistente.setPassword(usuario.getPassword());
         }
         if (usuario.getRol() != null) {
-            usuarioExistente.setRol(usuario.getRol());
+            usuarioExistente.setRol(usuario.getRol().toUpperCase());
         }
         return usuarioRepository.save(usuarioExistente);
     }

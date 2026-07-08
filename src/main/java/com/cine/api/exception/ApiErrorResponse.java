@@ -1,28 +1,30 @@
 package com.cine.api.exception;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+@Getter
 public class ApiErrorResponse {
 
     private final String code;
     private final String message;
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
+    private final Map<String, List<String>> errors;
 
     public ApiErrorResponse(String code, String message) {
         this.code = code;
         this.message = message;
         this.timestamp = LocalDateTime.now();
+        this.errors = Map.of();
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public ApiErrorResponse(String code, String message, Map<String, List<String>> errors) {
+        this.code = code;
+        this.message = message;
+        this.timestamp = LocalDateTime.now();
+        this.errors = errors;
     }
 }

@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -44,12 +47,19 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
-        String mensaje = ex.getBindingResult().getFieldErrors()
+        Map<String, List<String>> errores = ex.getBindingResult()
+                .getFieldErrors()
                 .stream()
-                .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiErrorResponse("VALIDATION_ERROR", mensaje));
+                .collect(Collectors.toMap(
+                        field -> field.getField(),
+                        field -> List.of(field.getDefaultMessage()),
+                        (a, b) -> Stream.concat(a.stream(), b.stream()).collect(Collectors.toList())));
+
+        return ResponseEntity.badRequest()
+                .body(new ApiErrorResponse(
+                        "VALIDATION_ERROR",
+                        "Existen errores de validación",
+                        errores));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
