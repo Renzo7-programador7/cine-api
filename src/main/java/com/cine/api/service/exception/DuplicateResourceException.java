@@ -2,7 +2,14 @@ package com.cine.api.service.exception;
 
 public class DuplicateResourceException extends RuntimeException {
 
-    public DuplicateResourceException(String message) {
+    private final String field;
+
+    public DuplicateResourceException(String field, String message) {
         super(message);
+        this.field = field;
+    }
+
+    public String getField() {
+        return field;
     }
 }

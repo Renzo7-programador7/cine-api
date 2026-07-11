@@ -13,25 +13,54 @@
         </p>
       </div>
 
-      <div *ngIf="error" class="register-error">{{ error }}</div>
+      @if (error) {
+      <div class="register-error">{{ error }}</div>
+      }
+      <!-- @if (error && fieldErrors) {
+      @for (error of fieldErrors['nombre']; track error) {
+      <div class="register-error">{{ error }}</div>
+      }
+      @for (error of fieldErrors['email']; track error) {
+      <div class="register-error">{{ error }}</div>
+      }
+      @for (error of fieldErrors['password']; track error) {
+      <div class="register-error">{{ error }}</div>
+      }
+      } -->
 
       <form class="register-form" (ngSubmit)="register()">
+
         <div class="field">
           <label for="nombre">Nombre</label>
           <input id="nombre" type="text" [(ngModel)]="usuario.nombre" name="nombre" placeholder="Tu nombre"
             autocomplete="name" required />
+          @if (error && fieldErrors) {
+          @for (err of fieldErrors['nombre']; track error) {
+          <div class="register-error">{{ err }}</div>
+          }
+          }
         </div>
 
         <div class="field">
           <label for="email">Email</label>
           <input id="email" type="email" [(ngModel)]="usuario.email" name="email" placeholder="tu@email.com"
             autocomplete="email" required />
+          @if (error && fieldErrors) {
+          @for (err of fieldErrors['email']; track error) {
+          <div class="register-error">{{ err }}</div>
+          }
+          }
         </div>
 
         <div class="field">
           <label for="password">Contraseña</label>
           <input id="password" type="password" [(ngModel)]="usuario.password" name="password" placeholder="••••••••"
             autocomplete="new-password" required />
+          @if (error && fieldErrors) {
+          @for (err of fieldErrors['password']; track error) {
+          <div class="register-error">{{ err }}</div>
+          }
+          }
         </div>
         <button type="submit">Registrarse</button>
       </form>

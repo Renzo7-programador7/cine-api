@@ -216,6 +216,13 @@
   box-shadow: none;
 }
 
+.field-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+
 @media (max-width: 1024px) {
   .register-page {
     grid-template-columns: 1fr;

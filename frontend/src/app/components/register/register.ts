@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router,RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { CommonModule, Location } from '@angular/common';
 
@@ -16,20 +16,36 @@ export class Register {
   error = '';
   exito = '';
 
+  fieldErrors: Record<string, string[]> = {};
+
   constructor(
     private auth: AuthService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef
   ) { }
 
+  ngOnInit() {
+    this.cdr.detectChanges();
+  }
+
   register() {
+
+    this.error = '';
+    this.fieldErrors = {};
+
     this.auth.register(this.usuario).subscribe({
       next: (res) => {
         this.auth.guardarToken(res.token);
         this.router.navigate(['/peliculas']);
       },
-      error: () => {
-        this.error = 'Error al registrar usuario';
+      error: (err) => {
+        const apiError = err.error;
+        this.error = apiError.message ?? 'Error al registrar usuario';
+        if (apiError.errors) {
+          this.fieldErrors = apiError.errors;
+        }
+        this.cdr.detectChanges();
       }
     });
   }

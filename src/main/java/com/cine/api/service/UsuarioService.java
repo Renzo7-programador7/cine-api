@@ -30,7 +30,7 @@ public class UsuarioService {
     public Usuario guardar(Usuario usuario) {
         Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new DuplicateResourceException("Ya existe un usuario con el email: " + usuario.getEmail());
+            throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
         }
         return usuarioRepository.save(usuario);
     }
@@ -41,7 +41,7 @@ public class UsuarioService {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
         if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new DuplicateResourceException("Ya existe un usuario con el email: " + usuario.getEmail());
+            throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
         }
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setEmail(usuario.getEmail());
@@ -60,7 +60,7 @@ public class UsuarioService {
         }
         if (usuario.getEmail() != null) {
             if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
-                throw new DuplicateResourceException("Ya existe un usuario con el email: " + usuario.getEmail());
+                throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
             }
             usuarioExistente.setEmail(usuario.getEmail());
         }
