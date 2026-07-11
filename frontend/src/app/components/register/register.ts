@@ -36,6 +36,7 @@ export class Register {
 
     this.auth.register(this.usuario).subscribe({
       next: (res) => {
+        this.cdr.detectChanges();
         this.auth.guardarToken(res.token);
         this.router.navigate(['/peliculas']);
       },

@@ -34,9 +34,16 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ApiErrorResponse> handleDuplicateResource(DuplicateResourceException ex) {
+    public ResponseEntity<ApiErrorResponse> handleDuplicateResource(
+            DuplicateResourceException ex) {
+        Map<String, List<String>> errors = Map.of(
+                ex.getField(),
+                List.of(ex.getMessage()));
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ApiErrorResponse("DUPLICATE_RESOURCE", ex.getMessage()));
+                .body(new ApiErrorResponse(
+                        "DUPLICATE_RESOURCE",
+                        "Existen errores de validación duplicada",
+                        errors));
     }
 
     @ExceptionHandler({ HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class })
