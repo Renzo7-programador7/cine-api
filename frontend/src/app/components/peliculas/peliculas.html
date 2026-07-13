@@ -1,32 +1,54 @@
 <app-admin-layout titulo="Películas">
-
   <section class="card">
     <h3>Nueva Película</h3>
     <div *ngIf="error" class="error">{{ error }}</div>
-    <form class="form-grid" (ngSubmit)="crear()">
-      <input type="text" [(ngModel)]="nueva.titulo" name="titulo" placeholder="Título">
-      <input type="number" [(ngModel)]="nueva.duracion" name="duracion" placeholder="Duración">
-      <input type="text" [(ngModel)]="nueva.clasificacion" name="clasificacion" placeholder="Clasificación">
-      <input type="text" [(ngModel)]="nueva.genero" name="genero" placeholder="Género">
-
-      <button type="submit">Agregar</button>
+    <form class="form-grid" (ngSubmit)="crear()" #formNueva="ngForm">
+      <div class="field">
+        <input type="text" [(ngModel)]="nueva.titulo" name="titulo" placeholder="Título" required minlength="2" #titulo="ngModel">
+        <span class="error-msg" *ngIf="titulo.invalid && titulo.touched">El título es obligatorio (mínimo 2 caracteres)</span>
+      </div>
+      <div class="field">
+        <input type="number" [(ngModel)]="nueva.duracion" name="duracion" placeholder="Duración (min)" required min="1" max="600" #duracion="ngModel">
+        <span class="error-msg" *ngIf="duracion.invalid && duracion.touched">La duración debe ser entre 1 y 600 minutos</span>
+      </div>
+      <div class="field">
+        <select [(ngModel)]="nueva.clasificacion" name="clasificacion" required #clasificacion="ngModel">
+          <option value="">Seleccionar clasificación</option>
+          <option value="G">G - Público general</option>
+          <option value="PG">PG - Guía parental</option>
+          <option value="PG-13">PG-13 - Mayores de 13</option>
+          <option value="R">R - Restringido</option>
+          <option value="NC-17">NC-17 - Solo adultos</option>
+        </select>
+        <span class="error-msg" *ngIf="clasificacion.invalid && clasificacion.touched">Selecciona una clasificación</span>
+      </div>
+      <div class="field">
+        <select [(ngModel)]="nueva.genero" name="genero" required #genero="ngModel">
+          <option value="">Seleccionar género</option>
+          <option value="Acción">Acción</option>
+          <option value="Comedia">Comedia</option>
+          <option value="Drama">Drama</option>
+          <option value="Terror">Terror</option>
+          <option value="Ciencia Ficción">Ciencia Ficción</option>
+          <option value="Animación">Animación</option>
+          <option value="Romance">Romance</option>
+          <option value="Thriller">Thriller</option>
+        </select>
+        <span class="error-msg" *ngIf="genero.invalid && genero.touched">Selecciona un género</span>
+      </div>
+      <button type="submit" [disabled]="formNueva.invalid">Agregar</button>
     </form>
   </section>
   <section class="card">
     <h3>Lista de Películas</h3>
     <table>
       <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Duración</th>
-        <th>Clasificación</th>
-        <th>Género</th>
-        <th>Acciones</th>
+        <th>ID</th><th>Título</th><th>Duración</th><th>Clasificación</th><th>Género</th><th>Acciones</th>
       </tr>
       <tr *ngFor="let p of peliculas">
         <td>{{ p.id }}</td>
         <td>{{ p.titulo }}</td>
-        <td>{{ p.duracion }}</td>
+        <td>{{ p.duracion }} min</td>
         <td>{{ p.clasificacion }}</td>
         <td>{{ p.genero }}</td>
         <td>
@@ -34,33 +56,56 @@
           <button class="btn-delete" (click)="confirmarEliminar(p.id)">Eliminar</button>
         </td>
       </tr>
+      <tr *ngIf="peliculas.length === 0">
+        <td colspan="6" style="text-align:center">No hay películas registradas</td>
+      </tr>
     </table>
   </section>
-
   <div class="modal-backdrop" *ngIf="editando">
     <div class="modal">
       <div class="modal-header">
         <h3>Editar Película</h3>
-        <button class="close" (click)="editando = null">
-          ✕
-        </button>
+        <button class="close" (click)="editando = null">✕</button>
       </div>
-
-      <form (ngSubmit)="actualizar()">
-        <input type="text" [(ngModel)]="editando.titulo" name="etitulo" placeholder="Título">
-        <input type="number" [(ngModel)]="editando.duracion" name="eduracion" placeholder="Duración">
-        <input type="text" [(ngModel)]="editando.clasificacion" name="eclasificacion" placeholder="Clasificación">
-        <input type="text" [(ngModel)]="editando.genero" name="egenero" placeholder="Género">
+      <form (ngSubmit)="actualizar()" #formEditar="ngForm">
+        <div class="field">
+          <input type="text" [(ngModel)]="editando.titulo" name="etitulo" placeholder="Título" required minlength="2" #etitulo="ngModel">
+          <span class="error-msg" *ngIf="etitulo.invalid && etitulo.touched">El título es obligatorio</span>
+        </div>
+        <div class="field">
+          <input type="number" [(ngModel)]="editando.duracion" name="eduracion" placeholder="Duración (min)" required min="1" max="600" #eduracion="ngModel">
+          <span class="error-msg" *ngIf="eduracion.invalid && eduracion.touched">La duración debe ser entre 1 y 600 minutos</span>
+        </div>
+        <div class="field">
+          <select [(ngModel)]="editando.clasificacion" name="eclasificacion" required #eclasificacion="ngModel">
+            <option value="">Seleccionar clasificación</option>
+            <option value="G">G - Público general</option>
+            <option value="PG">PG - Guía parental</option>
+            <option value="PG-13">PG-13 - Mayores de 13</option>
+            <option value="R">R - Restringido</option>
+            <option value="NC-17">NC-17 - Solo adultos</option>
+          </select>
+          <span class="error-msg" *ngIf="eclasificacion.invalid && eclasificacion.touched">Selecciona una clasificación</span>
+        </div>
+        <div class="field">
+          <select [(ngModel)]="editando.genero" name="egenero" required #egenero="ngModel">
+            <option value="">Seleccionar género</option>
+            <option value="Acción">Acción</option>
+            <option value="Comedia">Comedia</option>
+            <option value="Drama">Drama</option>
+            <option value="Terror">Terror</option>
+            <option value="Ciencia Ficción">Ciencia Ficción</option>
+            <option value="Animación">Animación</option>
+            <option value="Romance">Romance</option>
+            <option value="Thriller">Thriller</option>
+          </select>
+          <span class="error-msg" *ngIf="egenero.invalid && egenero.touched">Selecciona un género</span>
+        </div>
         <div class="modal-actions">
-          <button type="submit">
-            Actualizar
-          </button>
-          <button type="button" (click)="editando = null">
-            Cancelar
-          </button>
+          <button type="submit" [disabled]="formEditar.invalid">Actualizar</button>
+          <button type="button" (click)="editando = null">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
-
 </app-admin-layout>

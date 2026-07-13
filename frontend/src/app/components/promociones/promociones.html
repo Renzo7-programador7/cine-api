@@ -1,0 +1,56 @@
+<app-user-layout [banner]="false">
+  <div class="section-header">
+    <h2>Promociones</h2>
+    <span class="count-badge">Ofertas especiales</span>
+  </div>
+  <div class="promo-banner">
+    <div class="promo-banner-content">
+      <span class="promo-tag">🔥 OFERTA DEL MES</span>
+      <h2>2x1 en todas las funciones</h2>
+      <p>Todos los martes y miércoles disfruta del cine con un acompañante al mismo precio</p>
+      <a routerLink="/" class="btn-primary">Ver cartelera</a>
+    </div>
+    <div class="promo-banner-icon">🎬</div>
+  </div>
+  <div class="promos-grid">
+    <div class="promo-card promo-gold">
+      <div class="promo-icon">⭐</div>
+      <h3>Membresía Gold</h3>
+      <div class="promo-precio">S/ 29.90 <span>/mes</span></div>
+      <ul class="promo-beneficios">
+        <li>✅ 4 entradas al mes</li>
+        <li>✅ 20% descuento en snacks</li>
+        <li>✅ Acceso a previas exclusivas</li>
+        <li>✅ Asiento preferencial</li>
+      </ul>
+      <a routerLink="/register" class="btn-promo">Obtener membresía</a>
+    </div>
+    <div class="promo-card promo-student">
+      <div class="promo-icon">🎓</div>
+      <h3>Descuento Estudiante</h3>
+      <div class="promo-precio">30% <span>OFF</span></div>
+      <ul class="promo-beneficios">
+        <li>✅ Válido todos los días</li>
+        <li>✅ Con carnet universitario</li>
+        <li>✅ Aplica en todas las salas</li>
+        <li>✅ Incluye 3D y IMAX</li>
+      </ul>
+      <a routerLink="/register" class="btn-promo">Registrarse</a>
+    </div>
+    <div class="promo-card promo-family">
+      <div class="promo-icon">👨‍👩‍👧‍👦</div>
+      <h3>Pack Familiar</h3>
+      <div class="promo-precio">S/ 49.90 <span>/4 personas</span></div>
+      <ul class="promo-beneficios">
+        <li>✅ 4 entradas incluidas</li>
+        <li>✅ 1 combo de palomitas grande</li>
+        <li>✅ 4 bebidas medianas</li>
+        <li>✅ Válido fines de semana</li>
+      </ul>
+      <a routerLink="/register" class="btn-promo">Comprar pack</a>
+    </div>
+  </div>
+  <div class="promo-aviso">
+    <p>💡 Para acceder a las promociones debes estar registrado. <a routerLink="/register">Crear cuenta gratis</a></p>
+  </div>
+</app-user-layout>

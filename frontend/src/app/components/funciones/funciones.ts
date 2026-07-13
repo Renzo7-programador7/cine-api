@@ -18,6 +18,7 @@ export class Funciones implements OnInit {
   peliculas: any[] = [];
   nueva = { fecha: '', hora: '', precio: 0, capacidad: 0, pelicula: { id: 0 } };
   error = '';
+  hoy = new Date().toISOString().split('T')[0];
 
   constructor(
     private funcionService: FuncionService,
@@ -45,18 +46,22 @@ export class Funciones implements OnInit {
   }
 
   crear() {
+    this.error = '';
     this.funcionService.crear(this.nueva).subscribe({
       next: () => {
         this.listar();
         this.nueva = { fecha: '', hora: '', precio: 0, capacidad: 0, pelicula: { id: 0 } };
+        this.cdr.detectChanges();
       },
-      error: (e) => this.error = e.error?.message || 'Error al crear'
+      error: (e) => {
+        this.error = e.error?.message || 'Error al crear función';
+        this.cdr.detectChanges();
+      }
     });
   }
 
   confirmarEliminar(id: number): void {
     const confirmar = confirm('¿Está seguro de eliminar esta función?');
-
     if (confirmar) {
       this.eliminar(id);
     }

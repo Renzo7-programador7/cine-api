@@ -3,9 +3,8 @@
     <span class="logo-icon">🎬</span>
     <h1>Cine<span>Gest</span></h1>
   </div>
-
   <div class="navbar-actions">
-    <a routerLink="/" class="nav-link active"> Cartelera </a>
+    <a routerLink="/" class="nav-link"> Cartelera </a>
     @if (!email) {
     <a routerLink="/login" class="btn-ingresar"> Ingresar </a>
     <a routerLink="/register" class="nav-link"> Registrarse </a>
@@ -16,14 +15,12 @@
     @if (rol === 'ADMIN') {
     <a routerLink="/usuarios" class="btn-ingresar"> Administrar </a>
     }
-
   </div>
 </header>
-
 <nav class="subnav">
-  <a class="subnav-item active"> En Cartelera </a>
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="subnav-item"> En Cartelera </a>
   <span class="subnav-sep">|</span>
-  <a class="subnav-item"> Próximamente </a>
+  <a routerLink="/proximamente" routerLinkActive="active" class="subnav-item"> Próximamente </a>
   <span class="subnav-sep">|</span>
-  <a class="subnav-item"> Promociones </a>
+  <a routerLink="/promociones" routerLinkActive="active" class="subnav-item"> Promociones </a>
 </nav>

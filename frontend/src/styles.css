@@ -333,3 +333,23 @@ tr:hover td {
 .logo-icon {
   font-size: 2rem;
 }
+
+.error-msg {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+  min-width: 160px;
+  flex: 1;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

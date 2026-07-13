@@ -2,43 +2,55 @@
   <section class="card">
     <h3>Nuevo Boleto</h3>
     <div *ngIf="error" class="error">{{ error }}</div>
-    <form (ngSubmit)="crear()">
-      <input type="text" [(ngModel)]="nuevo.asiento" name="asiento" placeholder="Número de asiento" required />
-      <input type="number" [(ngModel)]="nuevo.precio" name="precio" placeholder="Precio" required />
-      <select [(ngModel)]="nuevo.estado" name="estado">
-        <option value="ACTIVO">ACTIVO</option>
-        <option value="CANCELADO">CANCELADO</option>
-      </select>
-      <select [(ngModel)]="nuevo.funcion.id" name="funcionId" required>
-        <option value="0">Seleccionar función</option>
-        <option *ngFor="let f of funciones" [value]="f.id">
-          {{ f.fecha }} - {{ f.pelicula?.titulo }}
-        </option>
-      </select>
-      <input type="text" [(ngModel)]="nuevo.usuario.id" name="usuarioId" placeholder="ID Usuario" required />
-      <button type="submit">Comprar Boleto</button>
+    <form (ngSubmit)="crear()" #formNuevo="ngForm">
+      <div class="field">
+        <input type="number" [(ngModel)]="nuevo.asiento" name="asiento" placeholder="Número de asiento" required min="1" max="500" #asiento="ngModel">
+        <span class="error-msg" *ngIf="asiento.invalid && asiento.touched">El asiento debe ser entre 1 y 500</span>
+      </div>
+      <div class="field">
+        <input type="number" [(ngModel)]="nuevo.precio" name="precio" placeholder="Precio (S/)" required min="1" max="999" #precio="ngModel">
+        <span class="error-msg" *ngIf="precio.invalid && precio.touched">El precio debe ser entre S/1 y S/999</span>
+      </div>
+      <div class="field">
+        <select [(ngModel)]="nuevo.estado" name="estado" required #estado="ngModel">
+          <option value="">Seleccionar estado</option>
+          <option value="ACTIVO">ACTIVO</option>
+          <option value="CANCELADO">CANCELADO</option>
+        </select>
+        <span class="error-msg" *ngIf="estado.invalid && estado.touched">Selecciona un estado</span>
+      </div>
+      <div class="field">
+        <select [(ngModel)]="nuevo.funcion.id" name="funcionId" required #funcionId="ngModel">
+          <option value="0">Seleccionar función</option>
+          <option *ngFor="let f of funciones" [value]="f.id">{{ f.fecha }} - {{ f.pelicula?.titulo }}</option>
+        </select>
+        <span class="error-msg" *ngIf="funcionId.invalid && funcionId.touched">Selecciona una función</span>
+      </div>
+      <div class="field">
+        <input type="number" [(ngModel)]="nuevo.usuario.id" name="usuarioId" placeholder="ID Usuario" required min="1" #usuarioId="ngModel">
+        <span class="error-msg" *ngIf="usuarioId.invalid && usuarioId.touched">El ID de usuario es obligatorio</span>
+      </div>
+      <button type="submit" [disabled]="formNuevo.invalid">Comprar Boleto</button>
     </form>
   </section>
   <section class="card">
     <h3>Lista de Boletos</h3>
     <table>
       <tr>
-        <th>ID</th>
-        <th>Asiento</th>
-        <th>Precio</th>
-        <th>Estado</th>
-        <th>Función</th>
-        <th>Acciones</th>
+        <th>ID</th><th>Asiento</th><th>Precio</th><th>Estado</th><th>Función</th><th>Acciones</th>
       </tr>
       <tr *ngFor="let b of boletos">
         <td>{{ b.id }}</td>
         <td>{{ b.asiento }}</td>
-        <td>{{ b.precio }}</td>
+        <td>S/ {{ b.precio }}</td>
         <td>{{ b.estado }}</td>
         <td>{{ b.funcion?.id }}</td>
         <td>
           <button class="btn-delete" (click)="confirmarEliminar(b.id)">Eliminar</button>
         </td>
+      </tr>
+      <tr *ngIf="boletos.length === 0">
+        <td colspan="6" style="text-align:center">No hay boletos registrados</td>
       </tr>
     </table>
   </section>
