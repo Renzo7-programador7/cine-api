@@ -28,37 +28,9 @@ export class Register {
     this.cdr.detectChanges();
   }
 
-  validar(): boolean {
-    this.fieldErrors = {};
-    let valido = true;
-
-    if (!this.usuario.nombre || this.usuario.nombre.trim().length < 2) {
-      this.fieldErrors['nombre'] = ['El nombre es obligatorio y debe tener al menos 2 caracteres'];
-      valido = false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!this.usuario.email || !emailRegex.test(this.usuario.email)) {
-      this.fieldErrors['email'] = ['Ingresa un email válido'];
-      valido = false;
-    }
-
-    if (!this.usuario.password || this.usuario.password.length < 6) {
-      this.fieldErrors['password'] = ['La contraseña debe tener al menos 6 caracteres'];
-      valido = false;
-    }
-
-    return valido;
-  }
-
   register() {
     this.error = '';
     this.fieldErrors = {};
-
-    if (!this.validar()) {
-      this.cdr.detectChanges();
-      return;
-    }
 
     this.auth.register(this.usuario).subscribe({
       next: (res) => {
