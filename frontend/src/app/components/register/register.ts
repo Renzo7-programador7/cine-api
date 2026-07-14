@@ -15,6 +15,7 @@ export class Register {
   usuario = { nombre: '', email: '', password: '', rol: 'USER' };
   error = '';
   exito = '';
+
   fieldErrors: Record<string, string[]> = {};
 
   constructor(
@@ -29,6 +30,7 @@ export class Register {
   }
 
   register() {
+
     this.error = '';
     this.fieldErrors = {};
 
@@ -48,7 +50,6 @@ export class Register {
       }
     });
   }
-
   volver() {
     if (window.history.length > 1) {
       this.location.back();
