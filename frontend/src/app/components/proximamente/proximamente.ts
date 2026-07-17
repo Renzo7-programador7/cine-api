@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserLayout } from '../user/user-layout/user-layout';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-proximamente',
@@ -10,4 +11,12 @@ import { UserLayout } from '../user/user-layout/user-layout';
   templateUrl: './proximamente.html',
   styleUrl: './proximamente.css'
 })
-export class Proximamente {}
+export class Proximamente implements OnInit {
+  autenticado = false;
+
+  constructor(private auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.autenticado = this.auth.isLoggedIn();
+  }
+}

@@ -13,6 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cine.api.security.JwtUtil;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,25 +28,11 @@ class UsuarioControllerRestTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     private String obtenerTokenAdmin() throws Exception {
-
-        String email = "admin" + System.currentTimeMillis() + "@test.com";
-
-        String body = mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                            {
-                              "nombre":"Admin",
-                              "email":"%s",
-                              "password":"123456",
-                              "rol":"ADMIN"
-                            }
-                        """.formatted(email)))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        return objectMapper.readTree(body).get("token").asText();
+        return jwtUtil.generateToken("admin@test.com", "ADMIN");
     }
 
     @Test
@@ -61,6 +50,33 @@ class UsuarioControllerRestTest {
 
         mockMvc.perform(get("/api/usuarios"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void endpointsAdministrativos_comoUser_retornan403() throws Exception {
+        String token = jwtUtil.generateToken("cliente@test.com", "USER");
+        String usuario = """
+                {
+                  "nombre":"Cliente",
+                  "email":"cliente.nuevo@test.com",
+                  "password":"123456",
+                  "rol":"USER"
+                }
+                """;
+
+        mockMvc.perform(get("/api/usuarios").header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(post("/api/usuarios").header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON).content(usuario))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(put("/api/usuarios/1").header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON).content(usuario))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(patch("/api/usuarios/1").header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON).content(usuario))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(delete("/api/usuarios/1").header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
     }
 
     @Test

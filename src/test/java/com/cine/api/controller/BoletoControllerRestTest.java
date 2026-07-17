@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cine.api.entity.Boleto;
@@ -19,7 +20,9 @@ import com.cine.api.entity.Usuario;
 import com.cine.api.repository.FuncionRepository;
 import com.cine.api.repository.PeliculaRepository;
 import com.cine.api.repository.UsuarioRepository;
+import com.cine.api.security.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,19 +34,17 @@ class BoletoControllerRestTest {
     @Autowired private FuncionRepository funcionRepository;
     @Autowired private PeliculaRepository peliculaRepository;
     @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     private String obtenerToken() throws Exception {
-        // Registrar y obtener token
-        String body = mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                            {
-                              "nombre":"Test","email":"boleto@test.com",
-                              "password":"123456","rol":"ADMIN"
-                            }
-                        """))
-                .andReturn().getResponse().getContentAsString();
-        return objectMapper.readTree(body).get("token").asText();
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Admin Boletos");
+        usuario.setEmail("boleto@test.com");
+        usuario.setPassword(passwordEncoder.encode("123456"));
+        usuario.setRol("ADMIN");
+        usuarioRepository.save(usuario);
+        return jwtUtil.generateToken(usuario.getEmail(), usuario.getRol());
     }
 
     @Test
@@ -52,6 +53,15 @@ class BoletoControllerRestTest {
         mockMvc.perform(get("/api/boletos")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void listarBoletos_comoUser_retorna403() throws Exception {
+        String token = jwtUtil.generateToken("cliente@test.com", "USER");
+
+        mockMvc.perform(get("/api/boletos")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -78,7 +88,7 @@ class BoletoControllerRestTest {
         funcion.setPelicula(pelicula);
         funcion = funcionRepository.save(funcion);
 
-        Usuario usuario = usuarioRepository.findByEmail("boleto@test.com").orElseThrow();
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase("boleto@test.com").orElseThrow();
 
         Boleto boleto = new Boleto();
         boleto.setPrecio(15.0); boleto.setEstado("ACTIVO");
@@ -90,6 +100,54 @@ class BoletoControllerRestTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(boleto)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void crearBoleto_comoUser_asignaCompradorDesdeToken() throws Exception {
+        Usuario cliente = new Usuario();
+        cliente.setNombre("Cliente");
+        cliente.setEmail("cliente.boleto@test.com");
+        cliente.setPassword(passwordEncoder.encode("123456"));
+        cliente.setRol("USER");
+        cliente = usuarioRepository.save(cliente);
+
+        Usuario otroUsuario = new Usuario();
+        otroUsuario.setNombre("Otro usuario");
+        otroUsuario.setEmail("otro.usuario@test.com");
+        otroUsuario.setPassword(passwordEncoder.encode("123456"));
+        otroUsuario.setRol("USER");
+        otroUsuario = usuarioRepository.save(otroUsuario);
+
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo("Compra Cliente");
+        pelicula.setDuracion(100);
+        pelicula.setClasificacion("PG");
+        pelicula.setGenero("Drama");
+        pelicula = peliculaRepository.save(pelicula);
+
+        Funcion funcion = new Funcion();
+        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setHora(java.time.LocalTime.of(18, 0));
+        funcion.setPrecio(15.0);
+        funcion.setCapacidad(100);
+        funcion.setPelicula(pelicula);
+        funcion = funcionRepository.save(funcion);
+
+        Boleto boleto = new Boleto();
+        boleto.setPrecio(15.0);
+        boleto.setEstado("CANCELADO");
+        boleto.setAsiento(5);
+        boleto.setFuncion(funcion);
+        boleto.setUsuario(otroUsuario);
+
+        String token = jwtUtil.generateToken(cliente.getEmail(), cliente.getRol());
+        mockMvc.perform(post("/api/boletos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(boleto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.usuario.email").value(cliente.getEmail()))
+                .andExpect(jsonPath("$.estado").value("ACTIVO"));
     }
 
     @Test

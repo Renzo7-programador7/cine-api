@@ -5,30 +5,50 @@ import { RouterModule, Router } from '@angular/router';
 import { BoletoService } from '../../services/boleto';
 import { FuncionService } from '../../services/funcion';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
+import { UserLayout } from '../user/user-layout/user-layout';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-boletos',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, UserLayout],
   templateUrl: './boletos.html',
   styleUrl: './boletos.css'
 })
 export class Boletos implements OnInit {
   boletos: any[] = [];
   funciones: any[] = [];
-  nuevo = { precio: "", estado: 'ACTIVO', asiento: "", funcion: { id: 0 }, usuario: { id: "" } };
+  nuevo = {
+    precio: "",
+    estado: 'ACTIVO',
+    asiento: "",
+    funcion: { id: null as number | null },
+    usuario: { id: "" }
+  };
+  esAdmin = false;
   error = '';
+  exito = '';
 
   constructor(
     private boletoService: BoletoService,
     private funcionService: FuncionService,
+    private auth: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.listar();
-    this.funcionService.listar().subscribe(data => {
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.esAdmin = this.auth.getRol() === 'ADMIN';
+    if (this.esAdmin) {
+      this.listar();
+    }
+
+    this.funcionService.listarPublicas().subscribe(data => {
       this.funciones = data;
       this.cdr.detectChanges();
     });
@@ -45,12 +65,28 @@ export class Boletos implements OnInit {
   }
 
   crear() {
+    this.error = '';
+    this.exito = '';
     this.boletoService.crear(this.nuevo).subscribe({
       next: () => {
-        this.listar();
-        this.nuevo = { precio: "", estado: 'ACTIVO', asiento: "", funcion: { id: 0 }, usuario: { id: "" } };
+        if (this.esAdmin) {
+          this.listar();
+        } else {
+          this.exito = 'Tu boleto fue comprado correctamente.';
+        }
+        this.nuevo = {
+          precio: "",
+          estado: 'ACTIVO',
+          asiento: "",
+          funcion: { id: null },
+          usuario: { id: "" }
+        };
+        this.cdr.detectChanges();
       },
-      error: (e) => this.error = e.error?.message || 'Error al crear'
+      error: (e) => {
+        this.error = e.error?.message || 'No se pudo comprar el boleto';
+        this.cdr.detectChanges();
+      }
     });
   }
 

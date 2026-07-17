@@ -1,5 +1,8 @@
+### Maven / Java ###
 HELP.md
 target/
+*.class
+*.log
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -14,10 +17,15 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
+
+### Scala tooling / Metals ###
+.bloop/
+.metals/
+.bsp/
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,3 +39,31 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Angular / Node.js ###
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.angular/
+frontend/.angular/
+coverage/
+frontend/coverage/
+.cache/
+frontend/.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Local environment and secrets ###
+.env
+.env.*
+!.env.example
+application-local.properties
+src/main/resources/application-local.properties
+
+### Operating system ###
+.DS_Store
+Thumbs.db
+Desktop.ini

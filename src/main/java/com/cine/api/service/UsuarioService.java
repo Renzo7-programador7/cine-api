@@ -1,10 +1,14 @@
 package com.cine.api.service;
 
 import com.cine.api.entity.Usuario;
+import com.cine.api.dto.RegisterRequest;
 import com.cine.api.repository.UsuarioRepository;
 import com.cine.api.service.exception.DuplicateResourceException;
 import com.cine.api.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Locale;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,9 +17,11 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    UsuarioService(UsuarioRepository usuarioRepository) {
+    UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Usuario> listarTodos() {
@@ -29,9 +35,26 @@ public class UsuarioService {
 
     public Usuario guardar(Usuario usuario) {
         Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
-        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+        if (usuarioRepository.existsByEmailIgnoreCase(usuario.getEmail())) {
             throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
         }
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario registrarCliente(RegisterRequest request) {
+        Objects.requireNonNull(request, "Los datos de registro son obligatorios");
+
+        String email = normalizarEmail(request.getEmail());
+        if (usuarioRepository.existsByEmailIgnoreCase(email)) {
+            throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + email);
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(request.getNombre().trim());
+        usuario.setEmail(email);
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
+        usuario.setRol("USER");
         return usuarioRepository.save(usuario);
     }
 
@@ -40,7 +63,7 @@ public class UsuarioService {
         Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
-        if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
+        if (!usuarioExistente.getEmail().equalsIgnoreCase(usuario.getEmail()) && usuarioRepository.existsByEmailIgnoreCase(usuario.getEmail())) {
             throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
         }
         usuarioExistente.setNombre(usuario.getNombre());
@@ -59,7 +82,7 @@ public class UsuarioService {
             usuarioExistente.setNombre(usuario.getNombre());
         }
         if (usuario.getEmail() != null) {
-            if (!usuarioExistente.getEmail().equals(usuario.getEmail()) && usuarioRepository.existsByEmail(usuario.getEmail())) {
+            if (!usuarioExistente.getEmail().equalsIgnoreCase(usuario.getEmail()) && usuarioRepository.existsByEmailIgnoreCase(usuario.getEmail())) {
                 throw new DuplicateResourceException("email", "Ya existe un usuario con el email: " + usuario.getEmail());
             }
             usuarioExistente.setEmail(usuario.getEmail());
@@ -83,7 +106,13 @@ public class UsuarioService {
 
     public Usuario findByEmail(String email) {
         Objects.requireNonNull(email, "El email no puede ser nulo");
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + email));
+        String emailNormalizado = normalizarEmail(email);
+        return usuarioRepository.findByEmailIgnoreCase(emailNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + emailNormalizado));
+    }
+
+    public String normalizarEmail(String email) {
+        Objects.requireNonNull(email, "El email no puede ser nulo");
+        return email.trim().toLowerCase(Locale.ROOT);
     }
 }

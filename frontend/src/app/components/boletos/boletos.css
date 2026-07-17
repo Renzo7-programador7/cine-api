@@ -1,0 +1,68 @@
+.card {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #333;
+  border-radius: 16px;
+  background: #1a1a1a;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.client-ticket-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.client-ticket-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #c8001e, #8b0000);
+  font-size: 2rem;
+  box-shadow: 0 12px 28px rgba(200, 0, 30, 0.25);
+}
+
+.client-ticket-eyebrow {
+  margin: 0 0 0.25rem;
+  color: #ffd700;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.client-ticket-header h2 {
+  margin: 0;
+}
+
+.ticket-form-card {
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.ticket-intro {
+  margin: -0.35rem 0 1.25rem;
+  color: #b8b8b8;
+}
+
+.ticket-table-wrapper {
+  overflow-x: auto;
+}
+
+.empty-table {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .client-ticket-header {
+    align-items: flex-start;
+  }
+
+  .client-ticket-icon {
+    width: 52px;
+    height: 52px;
+  }
+}

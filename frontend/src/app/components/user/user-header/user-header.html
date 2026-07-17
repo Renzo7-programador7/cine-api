@@ -4,12 +4,18 @@
     <h1>Cine<span>Gest</span></h1>
   </div>
   <div class="navbar-actions">
-    <a routerLink="/" class="nav-link"> Cartelera </a>
-    @if (!email) {
+    @if (!autenticado) {
     <a routerLink="/login" class="btn-ingresar"> Ingresar </a>
     <a routerLink="/register" class="nav-link"> Registrarse </a>
     }
     @else {
+    <div class="account-summary" aria-label="Usuario autenticado">
+      <span class="account-avatar" aria-hidden="true">{{ inicialUsuario }}</span>
+      <span class="account-details">
+        <strong class="account-name">{{ usuario }}</strong>
+        <span class="account-email" [title]="email">{{ email }}</span>
+      </span>
+    </div>
     <button class="btn-logout" (click)="logout()"> Cerrar sesion </button>
     }
     @if (rol === 'ADMIN') {
