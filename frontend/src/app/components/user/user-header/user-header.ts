@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-header.css',
 })
 export class UserHeader implements OnInit {
+  autenticado = false;
   email = '';
   rol = '';
   usuario = '';
@@ -22,17 +23,27 @@ export class UserHeader implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.email = this.auth.getEmail();
-    this.rol = this.auth.getRol();
-    this.usuario = this.auth.getUsuario();
-    console.log(this.rol);
+    this.autenticado = this.auth.isLoggedIn();
+    if (this.autenticado) {
+      this.email = this.auth.getEmail();
+      this.rol = this.auth.getRol();
+      this.usuario = this.auth.getUsuario();
+    }
     this.cdr.detectChanges();
   }
 
   logout() {
     this.auth.logout();
-    this.router.navigate([this.router.url]);
-    window.location.reload();
+    this.autenticado = false;
+    this.email = '';
+    this.rol = '';
+    this.usuario = '';
+    this.router.navigate(['/']);
+  }
+
+  get inicialUsuario(): string {
+    const identificador = this.usuario.trim() || this.email.trim();
+    return identificador.charAt(0).toUpperCase();
   }
 
 }

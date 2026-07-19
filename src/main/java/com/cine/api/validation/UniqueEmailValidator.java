@@ -23,6 +23,6 @@ public class UniqueEmailValidator
             return true;
         }
 
-        return !usuarioRepository.existsByEmail(email);
+        return !usuarioRepository.existsByEmailIgnoreCase(email.trim());
     }
 }

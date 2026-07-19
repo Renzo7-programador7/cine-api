@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 import { Login } from './login';
 
@@ -8,7 +10,8 @@ describe('Login', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Login]
+      imports: [Login],
+      providers: [provideHttpClient(), provideRouter([])]
     })
     .compileComponents();
 
@@ -19,5 +22,11 @@ describe('Login', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('permite mostrar y ocultar la contraseña', () => {
+    expect(component.mostrarPassword).toBeFalse();
+    component.mostrarPassword = true;
+    expect(component.mostrarPassword).toBeTrue();
   });
 });

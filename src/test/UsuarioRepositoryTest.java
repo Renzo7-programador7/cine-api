@@ -26,7 +26,7 @@ class UsuarioRepositoryTest {
         
         usuarioRepository.save(user);
 
-        Optional<Usuario> encontrado = usuarioRepository.findByEmail("renzo@test.com");
+        Optional<Usuario> encontrado = usuarioRepository.findByEmailIgnoreCase("renzo@test.com");
 
         assertThat(encontrado).isPresent();
         assertThat(encontrado.get().getNombre()).isEqualTo("Renzo Prueba");

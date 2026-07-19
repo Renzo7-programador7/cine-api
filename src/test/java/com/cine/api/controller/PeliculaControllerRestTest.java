@@ -3,6 +3,7 @@ package com.cine.api.controller;
 import com.cine.api.entity.Pelicula;
 import com.cine.api.repository.PeliculaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cine.api.security.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,18 +23,10 @@ class PeliculaControllerRestTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private PeliculaRepository peliculaRepository;
+    @Autowired private JwtUtil jwtUtil;
 
     private String obtenerTokenAdmin() throws Exception {
-        String body = mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                            {
-                              "nombre":"Admin","email":"pelicula@test.com",
-                              "password":"123456","rol":"ADMIN"
-                            }
-                        """))
-                .andReturn().getResponse().getContentAsString();
-        return objectMapper.readTree(body).get("token").asText();
+        return jwtUtil.generateToken("pelicula.admin@test.com", "ADMIN");
     }
 
     @Test

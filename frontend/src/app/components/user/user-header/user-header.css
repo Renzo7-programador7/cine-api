@@ -4,6 +4,55 @@
   gap: 20px;
 }
 
+.account-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.account-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: #ffd700;
+  color: #7f1d1d;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.account-details {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.account-name,
+.account-email {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-name {
+  font-size: 0.88rem;
+}
+
+.account-email {
+  margin-top: 0.15rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.76rem;
+}
+
 .nav-link {
   color: white;
   text-decoration: none;
@@ -81,6 +130,15 @@
   .navbar-actions {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .account-summary {
+    max-width: min(100%, 320px);
+  }
+
+  .account-name,
+  .account-email {
+    max-width: 210px;
   }
 
   .subnav {

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 import { UserHeader } from './user-header';
 
@@ -8,7 +10,8 @@ describe('UserHeader', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserHeader]
+      imports: [UserHeader],
+      providers: [provideHttpClient(), provideRouter([])]
     })
     .compileComponents();
 
@@ -19,5 +22,12 @@ describe('UserHeader', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('obtiene la inicial del nombre del usuario', () => {
+    component.usuario = 'Ana Torres';
+    component.email = 'ana@test.com';
+
+    expect(component.inicialUsuario).toBe('A');
   });
 });

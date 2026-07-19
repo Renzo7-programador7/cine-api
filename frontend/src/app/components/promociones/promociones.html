@@ -23,7 +23,11 @@
         <li>✅ Acceso a previas exclusivas</li>
         <li>✅ Asiento preferencial</li>
       </ul>
-      <a routerLink="/register" class="btn-promo">Obtener membresía</a>
+      @if (!autenticado) {
+      <a routerLink="/register" class="btn-promo">Crear cuenta</a>
+      } @else {
+      <span class="btn-promo btn-disabled">Disponible próximamente</span>
+      }
     </div>
     <div class="promo-card promo-student">
       <div class="promo-icon">🎓</div>
@@ -35,7 +39,11 @@
         <li>✅ Aplica en todas las salas</li>
         <li>✅ Incluye 3D y IMAX</li>
       </ul>
-      <a routerLink="/register" class="btn-promo">Registrarse</a>
+      @if (!autenticado) {
+      <a routerLink="/register" class="btn-promo">Crear cuenta</a>
+      } @else {
+      <span class="btn-promo btn-disabled">Disponible próximamente</span>
+      }
     </div>
     <div class="promo-card promo-family">
       <div class="promo-icon">👨‍👩‍👧‍👦</div>
@@ -47,10 +55,18 @@
         <li>✅ 4 bebidas medianas</li>
         <li>✅ Válido fines de semana</li>
       </ul>
-      <a routerLink="/register" class="btn-promo">Comprar pack</a>
+      @if (!autenticado) {
+      <a routerLink="/register" class="btn-promo">Crear cuenta</a>
+      } @else {
+      <span class="btn-promo btn-disabled">Disponible próximamente</span>
+      }
     </div>
   </div>
   <div class="promo-aviso">
+    @if (!autenticado) {
     <p>💡 Para acceder a las promociones debes estar registrado. <a routerLink="/register">Crear cuenta gratis</a></p>
+    } @else {
+    <p>💡 Tu cuenta está activa. Revisa la <a routerLink="/">cartelera</a> para elegir una función.</p>
+    }
   </div>
 </app-user-layout>

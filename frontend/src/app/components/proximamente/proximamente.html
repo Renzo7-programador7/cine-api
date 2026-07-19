@@ -67,7 +67,12 @@
   </div>
   <div class="prox-aviso">
     <span>🔔</span>
+    @if (!autenticado) {
     <p>¡Regístrate para recibir notificaciones de los próximos estrenos!</p>
     <a routerLink="/register" class="btn-primary">Registrarse</a>
+    } @else {
+    <p>Consulta la cartelera y compra tus boletos cuando las nuevas funciones estén disponibles.</p>
+    <a routerLink="/" class="btn-primary">Ver cartelera</a>
+    }
   </div>
 </app-user-layout>
