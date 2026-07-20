@@ -22,6 +22,7 @@ export class Funciones implements OnInit {
   error = '';
   exito = '';
   enviando = false;
+  eliminandoId: number | null = null;
   hoy = this.fechaLocalActual();
 
   constructor(
@@ -50,6 +51,19 @@ export class Funciones implements OnInit {
   }
 
   programar() {
+    if (this.enviando) {
+      return;
+    }
+
+    const pelicula = this.peliculas.find(item => item.id === this.nueva.peliculaId);
+    const confirmar = confirm(
+      `¿Publicar la función de "${pelicula?.titulo ?? 'la película seleccionada'}" ` +
+      `el ${this.nueva.fecha} a las ${this.nueva.hora}?`
+    );
+    if (!confirmar) {
+      return;
+    }
+
     this.error = '';
     this.exito = '';
     this.enviando = true;
@@ -57,7 +71,7 @@ export class Funciones implements OnInit {
     this.funcionService.programar(this.nueva).subscribe({
       next: () => {
         this.enviando = false;
-        this.exito = 'Funcion programada correctamente.';
+        this.exito = 'Función programada y publicada en cartelera correctamente.';
         this.listar();
         this.nueva = this.formularioVacio();
         this.cdr.detectChanges();
@@ -70,16 +84,35 @@ export class Funciones implements OnInit {
     });
   }
 
-  confirmarEliminar(id: number): void {
-    const confirmar = confirm('¿Está seguro de eliminar esta función?');
+  confirmarEliminar(funcion: Funcion): void {
+    const confirmar = confirm(
+      `¿Está seguro de eliminar la función de "${funcion.pelicula.titulo}" ` +
+      `del ${funcion.fecha} a las ${funcion.hora}?`
+    );
     if (confirmar) {
-      this.eliminar(id);
+      this.eliminar(funcion.id);
     }
   }
 
   eliminar(id: number) {
+    if (this.eliminandoId !== null) {
+      return;
+    }
+    this.error = '';
+    this.exito = '';
+    this.eliminandoId = id;
     this.funcionService.eliminar(id).subscribe({
-      next: () => this.listar()
+      next: () => {
+        this.eliminandoId = null;
+        this.exito = 'Función eliminada correctamente.';
+        this.listar();
+        this.cdr.detectChanges();
+      },
+      error: (e: HttpErrorResponse) => {
+        this.eliminandoId = null;
+        this.error = e.error?.message || 'No se pudo eliminar la función.';
+        this.cdr.detectChanges();
+      }
     });
   }
 

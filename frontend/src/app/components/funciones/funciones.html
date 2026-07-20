@@ -2,8 +2,8 @@
 
   <section class="card">
     <h3>Programar Función</h3>
-    <div *ngIf="error" class="error">{{ error }}</div>
-    <div *ngIf="exito" class="success">{{ exito }}</div>
+    <div *ngIf="error" class="error" role="alert">{{ error }}</div>
+    <div *ngIf="exito" class="success" role="status" aria-live="polite">{{ exito }}</div>
     <form class="form-grid-funcion" (ngSubmit)="programar()" #formProgramacion="ngForm">
       <div class="field">
         <input type="date" [(ngModel)]="nueva.fecha" name="fecha" [min]="hoy" required #fecha="ngModel" />
@@ -61,8 +61,13 @@
         <td>{{ f.capacidad }}</td>
         <td>{{ f.pelicula.titulo }}</td>
         <td>
-          <button class="btn-delete" (click)="confirmarEliminar(f.id)">Eliminar</button>
+          <button class="btn-delete" type="button" [disabled]="eliminandoId !== null" (click)="confirmarEliminar(f)">
+            {{ eliminandoId === f.id ? 'Eliminando...' : 'Eliminar' }}
+          </button>
         </td>
+      </tr>
+      <tr *ngIf="funciones.length === 0">
+        <td colspan="7" class="empty-table">No hay funciones programadas</td>
       </tr>
     </table>
   </section>
