@@ -1,0 +1,22 @@
+@if (visible) {
+  <div class="dialog-backdrop" (click)="cerrarDesdeFondo($event)">
+    <section class="dialog-panel" role="dialog" aria-modal="true" [attr.aria-label]="titulo">
+      <div class="dialog-icon" [class.danger]="peligro" aria-hidden="true">
+        {{ peligro ? '!' : '✓' }}
+      </div>
+      <div class="dialog-copy">
+        <h3>{{ titulo }}</h3>
+        <p>{{ mensaje }}</p>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="dialog-cancel" [disabled]="procesando" (click)="cancelar()">
+          Volver
+        </button>
+        <button type="button" class="dialog-confirm" [class.danger]="peligro"
+          [disabled]="procesando" (click)="confirmar()">
+          {{ procesando ? 'Procesando...' : textoConfirmar }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

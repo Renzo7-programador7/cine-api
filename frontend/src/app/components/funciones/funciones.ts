@@ -7,11 +7,13 @@ import { PeliculaService } from '../../services/pelicula';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
 import { HttpErrorResponse } from '@angular/common/http';
 import { Funcion, PeliculaResumen, ProgramarFuncionRequest } from '../../models/funcion.models';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
+import { ToastNotification } from '../shared/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-funciones',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, ConfirmDialog, ToastNotification],
   templateUrl: './funciones.html',
   styleUrl: './funciones.css'
 })
@@ -23,6 +25,8 @@ export class Funciones implements OnInit {
   exito = '';
   enviando = false;
   eliminandoId: number | null = null;
+  confirmandoPublicacion = false;
+  funcionPendienteEliminar: Funcion | null = null;
   hoy = this.fechaLocalActual();
 
   constructor(
@@ -54,16 +58,11 @@ export class Funciones implements OnInit {
     if (this.enviando) {
       return;
     }
+    this.confirmandoPublicacion = true;
+  }
 
-    const pelicula = this.peliculas.find(item => item.id === this.nueva.peliculaId);
-    const confirmar = confirm(
-      `¿Publicar la función de "${pelicula?.titulo ?? 'la película seleccionada'}" ` +
-      `el ${this.nueva.fecha} a las ${this.nueva.hora}?`
-    );
-    if (!confirmar) {
-      return;
-    }
-
+  ejecutarProgramacion(): void {
+    this.confirmandoPublicacion = false;
     this.error = '';
     this.exito = '';
     this.enviando = true;
@@ -84,14 +83,39 @@ export class Funciones implements OnInit {
     });
   }
 
+  cancelarPublicacion(): void {
+    this.confirmandoPublicacion = false;
+  }
+
+  get resumenPublicacion(): string {
+    const pelicula = this.peliculas.find(item => item.id === this.nueva.peliculaId);
+    return `Se publicará "${pelicula?.titulo ?? 'la película seleccionada'}" ` +
+      `el ${this.nueva.fecha} a las ${this.nueva.hora}, con capacidad para ` +
+      `${this.nueva.capacidad} personas y precio S/ ${this.nueva.precio}.`;
+  }
+
   confirmarEliminar(funcion: Funcion): void {
-    const confirmar = confirm(
-      `¿Está seguro de eliminar la función de "${funcion.pelicula.titulo}" ` +
-      `del ${funcion.fecha} a las ${funcion.hora}?`
-    );
-    if (confirmar) {
-      this.eliminar(funcion.id);
+    this.funcionPendienteEliminar = funcion;
+  }
+
+  cancelarEliminacion(): void {
+    this.funcionPendienteEliminar = null;
+  }
+
+  ejecutarEliminacion(): void {
+    const funcion = this.funcionPendienteEliminar;
+    if (!funcion) {
+      return;
     }
+    this.funcionPendienteEliminar = null;
+    this.eliminar(funcion.id);
+  }
+
+  get resumenEliminacion(): string {
+    const funcion = this.funcionPendienteEliminar;
+    return funcion
+      ? `Se eliminará la función de "${funcion.pelicula.titulo}" del ${funcion.fecha} a las ${funcion.hora}.`
+      : '';
   }
 
   eliminar(id: number) {
@@ -114,6 +138,11 @@ export class Funciones implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  cerrarNotificacion(): void {
+    this.error = '';
+    this.exito = '';
   }
 
   private formularioVacio(): ProgramarFuncionRequest {

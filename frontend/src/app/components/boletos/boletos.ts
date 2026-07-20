@@ -9,11 +9,13 @@ import { UserLayout } from '../user/user-layout/user-layout';
 import { AuthService } from '../../services/auth';
 import { Boleto, ComprarBoletoRequest } from '../../models/boleto.models';
 import { Funcion } from '../../models/funcion.models';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
+import { ToastNotification } from '../shared/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-boletos',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, UserLayout],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, UserLayout, ConfirmDialog, ToastNotification],
   templateUrl: './boletos.html',
   styleUrl: './boletos.css'
 })
@@ -27,6 +29,9 @@ export class Boletos implements OnInit {
   esAdmin = false;
   enviando = false;
   cancelandoId: number | null = null;
+  confirmandoCompra = false;
+  boletoPendienteCancelar: Boleto | null = null;
+  boletoPendienteEliminar: Boleto | null = null;
   error = '';
   exito = '';
 
@@ -69,10 +74,22 @@ export class Boletos implements OnInit {
     });
   }
 
+  solicitarCompra(): void {
+    if (this.enviando || this.compra.funcionId === null || this.compra.asiento === null) {
+      return;
+    }
+    this.confirmandoCompra = true;
+  }
+
+  cancelarConfirmacionCompra(): void {
+    this.confirmandoCompra = false;
+  }
+
   comprar() {
     if (this.enviando || this.compra.funcionId === null || this.compra.asiento === null) {
       return;
     }
+    this.confirmandoCompra = false;
 
     this.error = '';
     this.exito = '';
@@ -122,6 +139,14 @@ export class Boletos implements OnInit {
     return this.funcionSeleccionada?.capacidad ?? 1000;
   }
 
+  get resumenCompra(): string {
+    const funcion = this.funcionSeleccionada;
+    return funcion
+      ? `Comprarás el asiento ${this.compra.asiento} para "${funcion.pelicula.titulo}" ` +
+        `el ${funcion.fecha} a las ${funcion.hora}, por S/ ${funcion.precio.toFixed(2)}.`
+      : '';
+  }
+
   puedeCancelar(boleto: Boleto): boolean {
     if (boleto.estado !== 'ACTIVO') {
       return false;
@@ -131,10 +156,20 @@ export class Boletos implements OnInit {
   }
 
   confirmarCancelar(boleto: Boleto): void {
-    const confirmar = confirm(`¿Deseas cancelar el boleto del asiento ${boleto.asiento}?`);
-    if (confirmar) {
-      this.cancelar(boleto.id);
+    this.boletoPendienteCancelar = boleto;
+  }
+
+  cerrarConfirmacionCancelacion(): void {
+    this.boletoPendienteCancelar = null;
+  }
+
+  ejecutarCancelacion(): void {
+    const boleto = this.boletoPendienteCancelar;
+    if (!boleto) {
+      return;
     }
+    this.boletoPendienteCancelar = null;
+    this.cancelar(boleto.id);
   }
 
   cancelar(id: number): void {
@@ -158,17 +193,31 @@ export class Boletos implements OnInit {
     });
   }
 
-  confirmarEliminar(id: number): void {
-    const confirmar = confirm('¿Está seguro de eliminar este boleto?');
+  confirmarEliminar(boleto: Boleto): void {
+    this.boletoPendienteEliminar = boleto;
+  }
 
-    if (confirmar) {
-      this.eliminar(id);
+  cerrarConfirmacionEliminacion(): void {
+    this.boletoPendienteEliminar = null;
+  }
+
+  ejecutarEliminacion(): void {
+    const boleto = this.boletoPendienteEliminar;
+    if (!boleto) {
+      return;
     }
+    this.boletoPendienteEliminar = null;
+    this.eliminar(boleto.id);
   }
 
   eliminar(id: number) {
     this.boletoService.eliminar(id).subscribe({
       next: () => this.cargarBoletos()
     });
+  }
+
+  cerrarNotificacion(): void {
+    this.error = '';
+    this.exito = '';
   }
 }

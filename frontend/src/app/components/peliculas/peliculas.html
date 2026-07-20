@@ -1,8 +1,14 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="!!peliculaPendienteEliminar" titulo="Eliminar película"
+  [mensaje]="'Se eliminará &quot;' + (peliculaPendienteEliminar?.titulo || '') + '&quot;. Esta acción no se puede deshacer.'"
+  textoConfirmar="Eliminar" [peligro]="true" [procesando]="eliminandoId !== null"
+  (confirmado)="ejecutarEliminacion()" (cancelado)="cancelarEliminacion()"></app-confirm-dialog>
+
 <app-admin-layout titulo="Películas">
   <section class="card">
     <h3>Nueva Película</h3>
-    <div *ngIf="error" class="error" role="alert">{{ error }}</div>
-    <div *ngIf="exito" class="success" role="status" aria-live="polite">{{ exito }}</div>
     <form class="form-grid" (ngSubmit)="crear()" #formNueva="ngForm">
       <div class="field">
         <input type="text" [(ngModel)]="nueva.titulo" name="titulo" placeholder="Título" required minlength="2" #titulo="ngModel">

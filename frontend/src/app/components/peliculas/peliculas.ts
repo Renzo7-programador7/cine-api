@@ -5,11 +5,13 @@ import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
+import { ToastNotification } from '../shared/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-peliculas',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, ConfirmDialog, ToastNotification],
   templateUrl: './peliculas.html',
   styleUrl: './peliculas.css'
 })
@@ -22,6 +24,7 @@ export class Peliculas implements OnInit {
   enviando = false;
   actualizando = false;
   eliminandoId: number | null = null;
+  peliculaPendienteEliminar: any = null;
 
   constructor(
     private peliculaService: PeliculaService,
@@ -94,11 +97,20 @@ export class Peliculas implements OnInit {
   }
 
   confirmarEliminar(pelicula: any): void {
-    const confirmar = confirm(`¿Está seguro de eliminar "${pelicula.titulo}"?`);
+    this.peliculaPendienteEliminar = pelicula;
+  }
 
-    if (confirmar) {
-      this.eliminar(pelicula.id, pelicula.titulo);
+  cancelarEliminacion(): void {
+    this.peliculaPendienteEliminar = null;
+  }
+
+  ejecutarEliminacion(): void {
+    const pelicula = this.peliculaPendienteEliminar;
+    if (!pelicula) {
+      return;
     }
+    this.peliculaPendienteEliminar = null;
+    this.eliminar(pelicula.id, pelicula.titulo);
   }
 
   eliminar(id: number, titulo: string) {
@@ -126,6 +138,10 @@ export class Peliculas implements OnInit {
     if (!this.actualizando) {
       this.editando = null;
     }
+  }
+
+  cerrarNotificacion(): void {
+    this.limpiarMensajes();
   }
 
   private limpiarMensajes(): void {

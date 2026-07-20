@@ -3,7 +3,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { vi } from 'vitest';
 
 import { Funciones } from './funciones';
 import { FuncionService } from '../../services/funcion';
@@ -72,8 +71,7 @@ describe('Funciones', () => {
     });
   });
 
-  it('no publica la funcion cuando el administrador cancela la confirmacion', () => {
-    const confirmacion = vi.spyOn(window, 'confirm').mockReturnValue(false);
+  it('abre el modal y no publica si el administrador cancela', () => {
     component.nueva = {
       fecha: '2026-07-25',
       hora: '20:00',
@@ -84,8 +82,12 @@ describe('Funciones', () => {
 
     component.programar();
 
+    expect(component.confirmandoPublicacion).toBe(true);
     expect(programacionesEnviadas).toBe(0);
+
+    component.cancelarPublicacion();
+
+    expect(component.confirmandoPublicacion).toBe(false);
     expect(component.enviando).toBe(false);
-    confirmacion.mockRestore();
   });
 });

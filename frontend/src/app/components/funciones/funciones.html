@@ -1,9 +1,18 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="confirmandoPublicacion" titulo="Publicar función"
+  [mensaje]="resumenPublicacion" textoConfirmar="Publicar"
+  (confirmado)="ejecutarProgramacion()" (cancelado)="cancelarPublicacion()"></app-confirm-dialog>
+
+<app-confirm-dialog [visible]="!!funcionPendienteEliminar" titulo="Eliminar función"
+  [mensaje]="resumenEliminacion" textoConfirmar="Eliminar" [peligro]="true"
+  (confirmado)="ejecutarEliminacion()" (cancelado)="cancelarEliminacion()"></app-confirm-dialog>
+
 <app-admin-layout titulo="Funciones">
 
   <section class="card">
     <h3>Programar Función</h3>
-    <div *ngIf="error" class="error" role="alert">{{ error }}</div>
-    <div *ngIf="exito" class="success" role="status" aria-live="polite">{{ exito }}</div>
     <form class="form-grid-funcion" (ngSubmit)="programar()" #formProgramacion="ngForm">
       <div class="field">
         <input type="date" [(ngModel)]="nueva.fecha" name="fecha" [min]="hoy" required #fecha="ngModel" />

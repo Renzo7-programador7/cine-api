@@ -95,6 +95,16 @@ describe('Boletos', () => {
     expect(component.compra).toEqual({ funcionId: null, asiento: null });
   });
 
+  it('solicita confirmacion visual antes de comprar', () => {
+    component.compra = { funcionId: 7, asiento: 25 };
+
+    component.solicitarCompra();
+
+    expect(component.confirmandoCompra).toBe(true);
+    expect(solicitudEnviada).toBeUndefined();
+    expect(component.resumenCompra).toContain('asiento 25');
+  });
+
   it('permite cancelar un boleto propio activo y futuro', () => {
     const boleto = {
       id: 9,

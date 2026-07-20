@@ -1,0 +1,89 @@
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.dialog-panel {
+  width: min(440px, 100%);
+  padding: 1.5rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 16px;
+  background: #171717;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.dialog-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.14);
+  color: #ffd700;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.dialog-icon.danger {
+  background: rgba(200, 0, 30, 0.16);
+  color: #ff6b7e;
+}
+
+.dialog-copy h3 {
+  margin: 0 0 0.65rem;
+}
+
+.dialog-copy p {
+  margin: 0;
+  color: #c8c8c8;
+  line-height: 1.55;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.dialog-actions button {
+  min-width: 112px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.dialog-cancel {
+  border: 1px solid #4a4a4a;
+  background: #252525;
+  color: #ddd;
+}
+
+.dialog-confirm {
+  border: 0;
+  background: #ffd700;
+  color: #111;
+}
+
+.dialog-confirm.danger {
+  background: #c8001e;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .dialog-actions button {
+    width: 100%;
+  }
+}
