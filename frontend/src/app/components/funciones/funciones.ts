@@ -5,6 +5,8 @@ import { RouterModule, Router } from '@angular/router';
 import { FuncionService } from '../../services/funcion';
 import { PeliculaService } from '../../services/pelicula';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
+import { HttpErrorResponse } from '@angular/common/http';
+import { Funcion, PeliculaResumen, ProgramarFuncionRequest } from '../../models/funcion.models';
 
 @Component({
   selector: 'app-funciones',
@@ -14,11 +16,13 @@ import { AdminLayout } from "../admin/admin-layout/admin-layout";
   styleUrl: './funciones.css'
 })
 export class Funciones implements OnInit {
-  funciones: any[] = [];
-  peliculas: any[] = [];
-  nueva = { fecha: '', hora: '', precio: 0, capacidad: 0, pelicula: { id: 0 } };
+  funciones: Funcion[] = [];
+  peliculas: PeliculaResumen[] = [];
+  nueva: ProgramarFuncionRequest = this.formularioVacio();
   error = '';
-  hoy = new Date().toISOString().split('T')[0];
+  exito = '';
+  enviando = false;
+  hoy = this.fechaLocalActual();
 
   constructor(
     private funcionService: FuncionService,
@@ -45,16 +49,22 @@ export class Funciones implements OnInit {
     });
   }
 
-  crear() {
+  programar() {
     this.error = '';
-    this.funcionService.crear(this.nueva).subscribe({
+    this.exito = '';
+    this.enviando = true;
+
+    this.funcionService.programar(this.nueva).subscribe({
       next: () => {
+        this.enviando = false;
+        this.exito = 'Funcion programada correctamente.';
         this.listar();
-        this.nueva = { fecha: '', hora: '', precio: 0, capacidad: 0, pelicula: { id: 0 } };
+        this.nueva = this.formularioVacio();
         this.cdr.detectChanges();
       },
-      error: (e) => {
-        this.error = e.error?.message || 'Error al crear función';
+      error: (e: HttpErrorResponse) => {
+        this.enviando = false;
+        this.error = e.error?.message || 'No se pudo programar la funcion';
         this.cdr.detectChanges();
       }
     });
@@ -71,5 +81,21 @@ export class Funciones implements OnInit {
     this.funcionService.eliminar(id).subscribe({
       next: () => this.listar()
     });
+  }
+
+  private formularioVacio(): ProgramarFuncionRequest {
+    return {
+      fecha: '',
+      hora: '',
+      precio: null,
+      capacidad: null,
+      peliculaId: null
+    };
+  }
+
+  private fechaLocalActual(): string {
+    const ahora = new Date();
+    const zonaLocal = new Date(ahora.getTime() - ahora.getTimezoneOffset() * 60_000);
+    return zonaLocal.toISOString().split('T')[0];
   }
 }

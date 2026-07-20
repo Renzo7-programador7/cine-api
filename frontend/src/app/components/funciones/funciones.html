@@ -1,18 +1,43 @@
 <app-admin-layout titulo="Funciones">
 
   <section class="card">
-    <h3>Nueva Función</h3>
+    <h3>Programar Función</h3>
     <div *ngIf="error" class="error">{{ error }}</div>
-    <form (ngSubmit)="crear()">
-      <input type="date" [(ngModel)]="nueva.fecha" name="fecha" required />
-      <input type="time" [(ngModel)]="nueva.hora" name="hora" required />
-      <input type="number" [(ngModel)]="nueva.precio" name="precio" placeholder="Precio" required />
-      <input type="number" [(ngModel)]="nueva.capacidad" name="capacidad" placeholder="Capacidad" required />
-      <select [(ngModel)]="nueva.pelicula.id" name="peliculaId" required>
-        <option value="0">Seleccionar película</option>
-        <option *ngFor="let p of peliculas" [value]="p.id">{{ p.titulo }}</option>
-      </select>
-      <button type="submit">Agregar</button>
+    <div *ngIf="exito" class="success">{{ exito }}</div>
+    <form class="form-grid-funcion" (ngSubmit)="programar()" #formProgramacion="ngForm">
+      <div class="field">
+        <input type="date" [(ngModel)]="nueva.fecha" name="fecha" [min]="hoy" required #fecha="ngModel" />
+        <span class="error-msg" *ngIf="fecha.invalid && fecha.touched">Selecciona una fecha valida</span>
+      </div>
+
+      <div class="field">
+        <input type="time" [(ngModel)]="nueva.hora" name="hora" required #hora="ngModel" />
+        <span class="error-msg" *ngIf="hora.invalid && hora.touched">Selecciona una hora</span>
+      </div>
+
+      <div class="field">
+        <input type="number" [(ngModel)]="nueva.precio" name="precio" placeholder="Precio"
+          required min="0.01" max="100" step="0.01" #precio="ngModel" />
+        <span class="error-msg" *ngIf="precio.invalid && precio.touched">El precio debe estar entre S/0.01 y S/100</span>
+      </div>
+
+      <div class="field">
+        <input type="number" [(ngModel)]="nueva.capacidad" name="capacidad" placeholder="Capacidad"
+          required min="1" max="1000" step="1" #capacidad="ngModel" />
+        <span class="error-msg" *ngIf="capacidad.invalid && capacidad.touched">La capacidad debe estar entre 1 y 1000</span>
+      </div>
+
+      <div class="field">
+        <select [(ngModel)]="nueva.peliculaId" name="peliculaId" required #peliculaId="ngModel">
+          <option [ngValue]="null">Seleccionar película</option>
+          <option *ngFor="let p of peliculas" [ngValue]="p.id">{{ p.titulo }}</option>
+        </select>
+        <span class="error-msg" *ngIf="peliculaId.invalid && peliculaId.touched">Selecciona una pelicula</span>
+      </div>
+
+      <button type="submit" [disabled]="formProgramacion.invalid || enviando">
+        {{ enviando ? 'Programando...' : 'Programar funcion' }}
+      </button>
     </form>
   </section>
 
@@ -34,7 +59,7 @@
         <td>{{ f.hora }}</td>
         <td>{{ f.precio }}</td>
         <td>{{ f.capacidad }}</td>
-        <td>{{ f.pelicula?.titulo }}</td>
+        <td>{{ f.pelicula.titulo }}</td>
         <td>
           <button class="btn-delete" (click)="confirmarEliminar(f.id)">Eliminar</button>
         </td>

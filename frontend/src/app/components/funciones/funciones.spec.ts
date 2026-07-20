@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 
 import { Funciones } from './funciones';
 
@@ -8,7 +11,8 @@ describe('Funciones', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Funciones]
+      imports: [Funciones],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     })
     .compileComponents();
 
@@ -19,5 +23,15 @@ describe('Funciones', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('inicia el formulario sin pelicula ni valores numericos', () => {
+    expect(component.nueva).toEqual({
+      fecha: '',
+      hora: '',
+      precio: null,
+      capacidad: null,
+      peliculaId: null
+    });
   });
 });

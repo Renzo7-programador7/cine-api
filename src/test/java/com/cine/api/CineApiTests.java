@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Boleto;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
@@ -192,50 +193,50 @@ public class CineApiTests {
     }
 
     // ===== FUNCION TESTS =====
-    private Funcion nuevaFuncionValida(String titulo, double precio, int capacidad) {
+    private ProgramarFuncionRequest nuevaFuncionValida(String titulo, double precio, int capacidad) {
         Pelicula pelicula = new Pelicula();
         pelicula.setTitulo(titulo); pelicula.setDuracion(120);
         pelicula.setClasificacion("PG"); pelicula.setGenero("Drama");
         pelicula = peliculaService.guardar(pelicula);
 
-        Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
-        funcion.setHora(java.time.LocalTime.of(20, 0));
-        funcion.setPrecio(precio); funcion.setCapacidad(capacidad);
-        funcion.setPelicula(pelicula);
-        return funcion;
+        ProgramarFuncionRequest request = new ProgramarFuncionRequest();
+        request.setFecha(java.time.LocalDate.now().plusDays(1));
+        request.setHora(java.time.LocalTime.of(20, 0));
+        request.setPrecio(precio); request.setCapacidad(capacidad);
+        request.setPeliculaId(pelicula.getId());
+        return request;
     }
 
     @Test @Order(19)
     void crearFuncion() {
-        Funcion f = nuevaFuncionValida("Funcion crear", 12.0, 100);
-        assertNotNull(funcionService.guardar(f).getId());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion crear", 12.0, 100);
+        assertNotNull(funcionService.programar(request).getId());
     }
 
     @Test @Order(20)
     void listarFunciones() {
-        Funcion f = nuevaFuncionValida("Funcion listar", 12.0, 100);
-        funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion listar", 12.0, 100);
+        funcionService.programar(request);
         assertFalse(funcionService.listarTodas().isEmpty());
     }
 
     @Test @Order(21)
     void obtenerFuncionPorId() {
-        Funcion f = nuevaFuncionValida("Funcion obtener", 18.0, 80);
-        Funcion guardada = funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion obtener", 18.0, 80);
+        Funcion guardada = funcionService.programar(request);
         assertTrue(funcionService.obtenerPorId(guardada.getId()).isPresent());
     }
 
     @Test @Order(22)
     void capacidadFuncionCorrecta() {
-        Funcion f = nuevaFuncionValida("Funcion capacidad", 10.0, 50);
-        assertEquals(50, funcionService.guardar(f).getCapacidad());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion capacidad", 10.0, 50);
+        assertEquals(50, funcionService.programar(request).getCapacidad());
     }
 
     @Test @Order(23)
     void eliminarFuncion() {
-        Funcion f = nuevaFuncionValida("Funcion eliminar", 8.0, 30);
-        Funcion guardada = funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion eliminar", 8.0, 30);
+        Funcion guardada = funcionService.programar(request);
         Long id = guardada.getId();
         funcionService.eliminar(id);
         assertThrows(ResourceNotFoundException.class, () -> funcionService.eliminar(id));
@@ -243,8 +244,8 @@ public class CineApiTests {
 
     @Test @Order(24)
     void precioFuncionCorrecto() {
-        Funcion f = nuevaFuncionValida("Funcion precio", 22.5, 60);
-        assertEquals(22.5, funcionService.guardar(f).getPrecio());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion precio", 22.5, 60);
+        assertEquals(22.5, funcionService.programar(request).getPrecio());
     }
 }
 

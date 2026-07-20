@@ -1,5 +1,6 @@
 package com.cine.api.controller;
 
+import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Funcion;
 import com.cine.api.service.FuncionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,8 +38,8 @@ public class FuncionController {
 
     @PostMapping
     @Operation(summary = "Programar función", description = "Valida película, fecha, hora, precio, capacidad y duplicidad. Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
-    public Funcion crear(@Valid @RequestBody Funcion funcion) {
-        return funcionService.guardar(funcion);
+    public Funcion crear(@Valid @RequestBody ProgramarFuncionRequest request) {
+        return funcionService.programar(request);
     }
 
     @DeleteMapping("/{id}")
