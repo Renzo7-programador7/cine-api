@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cine.api.entity.Boleto;
+import com.cine.api.dto.ComprarBoletoRequest;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
 import com.cine.api.entity.Usuario;
@@ -82,24 +82,24 @@ class BoletoControllerRestTest {
         pelicula = peliculaRepository.save(pelicula);
 
         Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
         funcion.setHora(java.time.LocalTime.of(18, 0));
         funcion.setPrecio(15.0); funcion.setCapacidad(100);
         funcion.setPelicula(pelicula);
         funcion = funcionRepository.save(funcion);
 
-        Usuario usuario = usuarioRepository.findByEmailIgnoreCase("boleto@test.com").orElseThrow();
-
-        Boleto boleto = new Boleto();
-        boleto.setPrecio(15.0); boleto.setEstado("ACTIVO");
-        boleto.setAsiento(5); boleto.setFuncion(funcion);
-        boleto.setUsuario(usuario);
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(funcion.getId());
+        request.setAsiento(5);
 
         mockMvc.perform(post("/api/boletos")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boleto)))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.precio").value(15.0))
+                .andExpect(jsonPath("$.estado").value("ACTIVO"))
+                .andExpect(jsonPath("$.usuario.email").value("boleto@test.com"));
     }
 
     @Test
@@ -126,28 +126,45 @@ class BoletoControllerRestTest {
         pelicula = peliculaRepository.save(pelicula);
 
         Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
         funcion.setHora(java.time.LocalTime.of(18, 0));
         funcion.setPrecio(15.0);
         funcion.setCapacidad(100);
         funcion.setPelicula(pelicula);
         funcion = funcionRepository.save(funcion);
 
-        Boleto boleto = new Boleto();
-        boleto.setPrecio(15.0);
-        boleto.setEstado("CANCELADO");
-        boleto.setAsiento(5);
-        boleto.setFuncion(funcion);
-        boleto.setUsuario(otroUsuario);
+        String compraManipulada = """
+                {
+                  "funcionId": %d,
+                  "asiento": 5,
+                  "precio": 0.01,
+                  "estado": "CANCELADO",
+                  "usuario": { "id": %d }
+                }
+                """.formatted(funcion.getId(), otroUsuario.getId());
 
         String token = jwtUtil.generateToken(cliente.getEmail(), cliente.getRol());
         mockMvc.perform(post("/api/boletos")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boleto)))
-                .andExpect(status().isOk())
+                        .content(compraManipulada))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.usuario.email").value(cliente.getEmail()))
+                .andExpect(jsonPath("$.precio").value(15.0))
                 .andExpect(jsonPath("$.estado").value("ACTIVO"));
+    }
+
+    @Test
+    void crearBoleto_sinAsiento_retorna400() throws Exception {
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(1L);
+
+        mockMvc.perform(post("/api/boletos")
+                        .header("Authorization", "Bearer " + obtenerToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.asiento").exists());
     }
 
     @Test

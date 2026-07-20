@@ -1,0 +1,111 @@
+package com.cine.api.service;
+
+import com.cine.api.dto.ComprarBoletoRequest;
+import com.cine.api.entity.Boleto;
+import com.cine.api.entity.Funcion;
+import com.cine.api.entity.Pelicula;
+import com.cine.api.entity.Usuario;
+import com.cine.api.repository.FuncionRepository;
+import com.cine.api.repository.PeliculaRepository;
+import com.cine.api.repository.UsuarioRepository;
+import com.cine.api.service.exception.BusinessValidationException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@SpringBootTest
+@Transactional
+class BoletoServiceValidationTest {
+
+    @Autowired private BoletoService boletoService;
+    @Autowired private FuncionRepository funcionRepository;
+    @Autowired private PeliculaRepository peliculaRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
+
+    @Test
+    void comprar_datosValidos_derivaPrecioEstadoYComprador() {
+        Usuario comprador = guardarUsuario("compra.valida@test.com");
+        Funcion funcion = guardarFuncion(LocalDate.now().plusDays(1), 32.5, 50);
+
+        Boleto boleto = boletoService.comprar(nuevaCompra(funcion.getId(), 12), comprador.getEmail());
+
+        assertThat(boleto.getId()).isNotNull();
+        assertThat(boleto.getPrecio()).isEqualTo(32.5);
+        assertThat(boleto.getEstado()).isEqualTo("ACTIVO");
+        assertThat(boleto.getUsuario().getId()).isEqualTo(comprador.getId());
+    }
+
+    @Test
+    void comprar_asientoActivoDuplicado_rechazaSegundaCompra() {
+        Usuario comprador = guardarUsuario("asiento.duplicado@test.com");
+        Funcion funcion = guardarFuncion(LocalDate.now().plusDays(1), 20.0, 30);
+        ComprarBoletoRequest request = nuevaCompra(funcion.getId(), 8);
+        boletoService.comprar(request, comprador.getEmail());
+
+        assertThatThrownBy(() -> boletoService.comprar(request, comprador.getEmail()))
+                .isInstanceOf(BusinessValidationException.class)
+                .hasMessageContaining("ya esta ocupado");
+    }
+
+    @Test
+    void comprar_asientoFueraDeCapacidad_rechazaCompra() {
+        Usuario comprador = guardarUsuario("asiento.invalido@test.com");
+        Funcion funcion = guardarFuncion(LocalDate.now().plusDays(1), 20.0, 10);
+
+        assertThatThrownBy(() -> boletoService.comprar(
+                nuevaCompra(funcion.getId(), 11), comprador.getEmail()))
+                .isInstanceOf(BusinessValidationException.class)
+                .hasMessageContaining("entre 1 y 10");
+    }
+
+    @Test
+    void comprar_funcionVencida_rechazaCompra() {
+        Usuario comprador = guardarUsuario("funcion.vencida@test.com");
+        Funcion funcion = guardarFuncion(LocalDate.now().minusDays(1), 20.0, 30);
+
+        assertThatThrownBy(() -> boletoService.comprar(
+                nuevaCompra(funcion.getId(), 5), comprador.getEmail()))
+                .isInstanceOf(BusinessValidationException.class)
+                .hasMessageContaining("funcion finalizada");
+    }
+
+    private ComprarBoletoRequest nuevaCompra(Long funcionId, int asiento) {
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(funcionId);
+        request.setAsiento(asiento);
+        return request;
+    }
+
+    private Usuario guardarUsuario(String email) {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Comprador de prueba");
+        usuario.setEmail(email);
+        usuario.setPassword("password-de-prueba");
+        usuario.setRol("USER");
+        return usuarioRepository.save(usuario);
+    }
+
+    private Funcion guardarFuncion(LocalDate fecha, double precio, int capacidad) {
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo("Pelicula para compra " + fecha);
+        pelicula.setDuracion(120);
+        pelicula.setClasificacion("PG");
+        pelicula.setGenero("Drama");
+        pelicula = peliculaRepository.save(pelicula);
+
+        Funcion funcion = new Funcion();
+        funcion.setFecha(fecha);
+        funcion.setHora(LocalTime.of(20, 0));
+        funcion.setPrecio(precio);
+        funcion.setCapacidad(capacidad);
+        funcion.setPelicula(pelicula);
+        return funcionRepository.save(funcion);
+    }
+}

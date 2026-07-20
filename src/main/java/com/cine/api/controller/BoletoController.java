@@ -1,14 +1,16 @@
 package com.cine.api.controller;
 
+import com.cine.api.dto.ComprarBoletoRequest;
 import com.cine.api.entity.Boleto;
 import com.cine.api.service.BoletoService;
-import com.cine.api.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,11 +20,9 @@ import java.util.List;
 public class BoletoController {
 
     private final BoletoService boletoService;
-    private final UsuarioService usuarioService;
 
-    BoletoController(BoletoService boletoService, UsuarioService usuarioService) {
+    BoletoController(BoletoService boletoService) {
         this.boletoService = boletoService;
-        this.usuarioService = usuarioService;
     }
 
     @GetMapping
@@ -40,17 +40,12 @@ public class BoletoController {
     }
 
     @PostMapping
-    @Operation(summary = "Comprar o crear un boleto", description = "Requiere USER o ADMIN. Para USER, el propietario se obtiene del JWT y el estado se establece como ACTIVO.")
-    public Boleto crear(@RequestBody Boleto boleto, Authentication authentication) {
-        boolean esAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!esAdmin) {
-            boleto.setUsuario(usuarioService.findByEmail(authentication.getName()));
-            boleto.setEstado("ACTIVO");
-        }
-
-        return boletoService.guardar(boleto);
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Comprar un boleto", description = "Obtiene el comprador del JWT y calcula precio y estado desde los datos del servidor.")
+    public Boleto crear(
+            @Valid @RequestBody ComprarBoletoRequest request,
+            Authentication authentication) {
+        return boletoService.comprar(request, authentication.getName());
     }
 
     @PutMapping("/{id}")
