@@ -3,7 +3,6 @@ package com.cine.api.controller;
 import com.cine.api.dto.ComprarBoletoRequest;
 import com.cine.api.dto.BoletoResponse;
 import com.cine.api.dto.DisponibilidadAsientosResponse;
-import com.cine.api.entity.Boleto;
 import com.cine.api.service.BoletoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/boletos")
-@Tag(name = "Boletos", description = "Compra de boletos y operaciones administrativas")
+@Tag(name = "Boletos", description = "Compra, consulta y cancelacion de boletos")
 @SecurityRequirement(name = "bearerAuth")
 public class BoletoController {
 
@@ -77,16 +76,4 @@ public class BoletoController {
                 boletoService.cancelar(id, authentication.getName(), esAdmin));
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Actualizar boleto", description = "Requiere un usuario autenticado.")
-    public Boleto actualizar(@PathVariable Long id, @RequestBody Boleto boleto) {
-        return boletoService.actualizar(id, boleto);
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar boleto", description = "Requiere rol ADMIN.")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        boletoService.eliminar(id);
-        return ResponseEntity.noContent().build();
-    }
 }

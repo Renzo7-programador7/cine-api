@@ -66,8 +66,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/boletos/funciones/*/asientos").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/boletos/*/cancelar").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/boletos/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/boletos/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/boletos/**").denyAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").denyAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

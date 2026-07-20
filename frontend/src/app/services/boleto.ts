@@ -42,7 +42,4 @@ export class BoletoService {
     );
   }
 
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`, { headers: this.headers() });
-  }
 }

@@ -132,21 +132,4 @@ public class BoletoService {
         return boletoRepository.save(boleto);
     }
 
-    public void eliminar(Long id) {
-        Objects.requireNonNull(id, "El id del boleto no puede ser nulo");
-        if (!boletoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Boleto no encontrado con id: " + id);
-        }
-        boletoRepository.deleteById(id);
-    }
-
-    public Boleto actualizar(Long id, Boleto nuevo) {
-        Objects.requireNonNull(nuevo, "No puedes omitir el boleto");
-        Objects.requireNonNull(id, "El id del boleto no puede ser nulo");
-        if (!boletoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Boleto no encontrado con id: " + id);
-        }
-        nuevo.setId(id);
-        return boletoRepository.save(nuevo);
-    }
 }

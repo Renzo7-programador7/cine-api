@@ -166,25 +166,6 @@ public class CineApiTests {
         assertTrue(boletoService.obtenerPorId(guardado.getId()).isPresent());
     }
 
-    @Test @Order(16)
-    void actualizarBoleto() {
-        Boleto b = new Boleto();
-        b.setPrecio(10.0); b.setEstado("PENDIENTE"); b.setAsiento(1);
-        Boleto guardado = boletoService.guardar(b);
-        guardado.setEstado("USADO");
-        assertEquals("USADO", boletoService.actualizar(guardado.getId(), guardado).getEstado());
-    }
-
-    @Test @Order(17)
-    void eliminarBoleto() {
-        Boleto b = new Boleto();
-        b.setPrecio(5.0); b.setEstado("CANCELADO"); b.setAsiento(99);
-        Boleto guardado = boletoService.guardar(b);
-        Long id = guardado.getId();
-        boletoService.eliminar(id);
-        assertThrows(ResourceNotFoundException.class, () -> boletoService.eliminar(id));
-    }
-
     @Test @Order(18)
     void precioBoletoCorrecto() {
         Boleto b = new Boleto();
