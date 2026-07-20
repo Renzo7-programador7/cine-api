@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,8 +36,8 @@ public class FuncionController {
     }
 
     @PostMapping
-    @Operation(summary = "Crear función", description = "Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
-    public Funcion crear(@RequestBody Funcion funcion) {
+    @Operation(summary = "Programar función", description = "Valida película, fecha, hora, precio, capacidad y duplicidad. Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
+    public Funcion crear(@Valid @RequestBody Funcion funcion) {
         return funcionService.guardar(funcion);
     }
 

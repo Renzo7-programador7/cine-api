@@ -192,40 +192,49 @@ public class CineApiTests {
     }
 
     // ===== FUNCION TESTS =====
+    private Funcion nuevaFuncionValida(String titulo, double precio, int capacidad) {
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo(titulo); pelicula.setDuracion(120);
+        pelicula.setClasificacion("PG"); pelicula.setGenero("Drama");
+        pelicula = peliculaService.guardar(pelicula);
+
+        Funcion funcion = new Funcion();
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
+        funcion.setHora(java.time.LocalTime.of(20, 0));
+        funcion.setPrecio(precio); funcion.setCapacidad(capacidad);
+        funcion.setPelicula(pelicula);
+        return funcion;
+    }
+
     @Test @Order(19)
     void crearFuncion() {
-        Funcion f = new Funcion();
-        f.setPrecio(12.0); f.setCapacidad(100);
+        Funcion f = nuevaFuncionValida("Funcion crear", 12.0, 100);
         assertNotNull(funcionService.guardar(f).getId());
     }
 
     @Test @Order(20)
     void listarFunciones() {
-        Funcion f = new Funcion();
-        f.setPrecio(12.0); f.setCapacidad(100);
+        Funcion f = nuevaFuncionValida("Funcion listar", 12.0, 100);
         funcionService.guardar(f);
         assertFalse(funcionService.listarTodas().isEmpty());
     }
 
     @Test @Order(21)
     void obtenerFuncionPorId() {
-        Funcion f = new Funcion();
-        f.setPrecio(18.0); f.setCapacidad(80);
+        Funcion f = nuevaFuncionValida("Funcion obtener", 18.0, 80);
         Funcion guardada = funcionService.guardar(f);
         assertTrue(funcionService.obtenerPorId(guardada.getId()).isPresent());
     }
 
     @Test @Order(22)
     void capacidadFuncionCorrecta() {
-        Funcion f = new Funcion();
-        f.setPrecio(10.0); f.setCapacidad(50);
+        Funcion f = nuevaFuncionValida("Funcion capacidad", 10.0, 50);
         assertEquals(50, funcionService.guardar(f).getCapacidad());
     }
 
     @Test @Order(23)
     void eliminarFuncion() {
-        Funcion f = new Funcion();
-        f.setPrecio(8.0); f.setCapacidad(30);
+        Funcion f = nuevaFuncionValida("Funcion eliminar", 8.0, 30);
         Funcion guardada = funcionService.guardar(f);
         Long id = guardada.getId();
         funcionService.eliminar(id);
@@ -234,8 +243,7 @@ public class CineApiTests {
 
     @Test @Order(24)
     void precioFuncionCorrecto() {
-        Funcion f = new Funcion();
-        f.setPrecio(22.5); f.setCapacidad(60);
+        Funcion f = nuevaFuncionValida("Funcion precio", 22.5, 60);
         assertEquals(22.5, funcionService.guardar(f).getPrecio());
     }
 }

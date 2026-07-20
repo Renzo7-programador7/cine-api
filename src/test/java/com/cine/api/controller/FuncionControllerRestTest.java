@@ -56,7 +56,7 @@ class FuncionControllerRestTest {
         pelicula = peliculaRepository.save(pelicula);
 
         Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
         funcion.setHora(java.time.LocalTime.of(20, 0));
         funcion.setPrecio(20.0); funcion.setCapacidad(50);
         funcion.setPelicula(pelicula);
