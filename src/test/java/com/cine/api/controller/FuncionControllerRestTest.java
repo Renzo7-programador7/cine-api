@@ -69,6 +69,18 @@ class FuncionControllerRestTest {
     }
 
     @Test
+    void listarFunciones_sinAutenticacion_retorna401() throws Exception {
+        mockMvc.perform(get("/api/funciones"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void listarFuncionesPublicas_sinAutenticacion_retorna200() throws Exception {
+        mockMvc.perform(get("/api/funciones/publicas"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void crearFuncion_sinPeliculaId_retorna400() throws Exception {
         ProgramarFuncionRequest request = new ProgramarFuncionRequest();
         request.setFecha(java.time.LocalDate.now().plusDays(1));

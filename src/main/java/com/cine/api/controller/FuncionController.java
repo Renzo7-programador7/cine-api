@@ -23,13 +23,19 @@ public class FuncionController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar funciones", description = "Endpoint público.")
+    @Operation(summary = "Listar todas las funciones", description = "Incluye funciones pasadas para la gestión administrativa. Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
     public List<Funcion> listar() {
         return funcionService.listarTodas();
     }
 
+    @GetMapping("/publicas")
+    @Operation(summary = "Listar cartelera pública", description = "Devuelve únicamente funciones futuras, ordenadas por fecha y hora.")
+    public List<Funcion> listarPublicas() {
+        return funcionService.listarPublicas();
+    }
+
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener función por ID", description = "Endpoint público.")
+    @Operation(summary = "Obtener función por ID", description = "Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Funcion> obtener(@PathVariable Long id) {
         return funcionService.obtenerPorId(id)
                 .map(ResponseEntity::ok)

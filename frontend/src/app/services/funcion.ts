@@ -15,13 +15,8 @@ export class FuncionService {
     return new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken()}` });
   }
 
-  private opciones() {
-    const token = this.auth.getToken();
-    return token ? { headers: this.headers() } : {};
-  }
-
   listarPublicas(): Observable<Funcion[]> {
-    return this.http.get<Funcion[]>(this.url, this.opciones());
+    return this.http.get<Funcion[]>(`${this.url}/publicas`);
   }
 
   listar(): Observable<Funcion[]> {

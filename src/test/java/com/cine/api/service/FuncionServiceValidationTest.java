@@ -3,6 +3,7 @@ package com.cine.api.service;
 import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
+import com.cine.api.repository.FuncionRepository;
 import com.cine.api.repository.PeliculaRepository;
 import com.cine.api.service.exception.BusinessValidationException;
 import com.cine.api.service.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,7 +24,27 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class FuncionServiceValidationTest {
 
     @Autowired private FuncionService funcionService;
+    @Autowired private FuncionRepository funcionRepository;
     @Autowired private PeliculaRepository peliculaRepository;
+
+    @Test
+    void listarPublicas_excluyePasadasYOrdenaLasFuturas() {
+        Pelicula pelicula = guardarPelicula("Cartelera ordenada");
+        guardarFuncionDirecta(pelicula, LocalDate.now().plusDays(2), LocalTime.of(20, 0));
+        Funcion primera = guardarFuncionDirecta(
+                pelicula, LocalDate.now().plusDays(1), LocalTime.of(18, 0));
+        guardarFuncionDirecta(pelicula, LocalDate.now().minusDays(1), LocalTime.of(19, 0));
+
+        List<Funcion> cartelera = funcionService.listarPublicas();
+
+        assertThat(cartelera)
+                .extracting(Funcion::getId)
+                .contains(primera.getId());
+        assertThat(cartelera)
+                .filteredOn(funcion -> funcion.getPelicula().getId().equals(pelicula.getId()))
+                .extracting(Funcion::getFecha)
+                .containsExactly(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
+    }
 
     @Test
     void guardar_datosValidos_programaFuncionConPeliculaPersistida() {
@@ -115,5 +137,15 @@ class FuncionServiceValidationTest {
         request.setCapacidad(100);
         request.setPeliculaId(peliculaId);
         return request;
+    }
+
+    private Funcion guardarFuncionDirecta(Pelicula pelicula, LocalDate fecha, LocalTime hora) {
+        Funcion funcion = new Funcion();
+        funcion.setFecha(fecha);
+        funcion.setHora(hora);
+        funcion.setPrecio(20.0);
+        funcion.setCapacidad(100);
+        funcion.setPelicula(pelicula);
+        return funcionRepository.save(funcion);
     }
 }

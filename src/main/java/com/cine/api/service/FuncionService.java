@@ -32,6 +32,14 @@ public class FuncionService {
         return funcionRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Funcion> listarPublicas() {
+        LocalDateTime ahora = LocalDateTime.now();
+        return funcionRepository.findFuncionesFuturasOrdenadas(
+                ahora.toLocalDate(),
+                ahora.toLocalTime());
+    }
+
     public Optional<Funcion> obtenerPorId(Long id) {
         Objects.requireNonNull(id, "El id de la funcion no puede ser nulo");
         return funcionRepository.findById(id);

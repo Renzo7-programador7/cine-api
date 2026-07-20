@@ -48,4 +48,13 @@ describe('FuncionService', () => {
       pelicula: { id: 7, titulo: 'Pelicula de prueba' }
     });
   });
+
+  it('consulta la cartelera publica sin enviar credenciales', () => {
+    service.listarPublicas().subscribe();
+
+    const httpRequest = httpTesting.expectOne('http://localhost:8080/api/funciones/publicas');
+    expect(httpRequest.request.method).toBe('GET');
+    expect(httpRequest.request.headers.has('Authorization')).toBe(false);
+    httpRequest.flush([]);
+  });
 });
