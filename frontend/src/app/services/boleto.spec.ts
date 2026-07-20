@@ -65,6 +65,17 @@ describe('BoletoService', () => {
     httpRequest.flush([]);
   });
 
+  it('consulta la disponibilidad de asientos de una funcion', () => {
+    service.consultarAsientos(7).subscribe();
+
+    const httpRequest = httpTesting.expectOne(
+      'http://localhost:8080/api/boletos/funciones/7/asientos'
+    );
+    expect(httpRequest.request.method).toBe('GET');
+    expect(httpRequest.request.headers.get('Authorization')).toBe('Bearer token-de-prueba');
+    httpRequest.flush({ funcionId: 7, capacidad: 10, asientosOcupados: [2, 5] });
+  });
+
   it('solicita la cancelacion del boleto seleccionado', () => {
     service.cancelar(9).subscribe();
 

@@ -2,6 +2,7 @@ package com.cine.api.controller;
 
 import com.cine.api.dto.ComprarBoletoRequest;
 import com.cine.api.dto.BoletoResponse;
+import com.cine.api.dto.DisponibilidadAsientosResponse;
 import com.cine.api.entity.Boleto;
 import com.cine.api.service.BoletoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +41,12 @@ public class BoletoController {
         return boletoService.listarDelUsuario(authentication.getName()).stream()
                 .map(BoletoResponse::from)
                 .toList();
+    }
+
+    @GetMapping("/funciones/{funcionId}/asientos")
+    @Operation(summary = "Consultar asientos", description = "Devuelve la capacidad y los asientos activos ocupados de una funcion.")
+    public DisponibilidadAsientosResponse consultarAsientos(@PathVariable Long funcionId) {
+        return boletoService.consultarDisponibilidad(funcionId);
     }
 
     @GetMapping("/{id}")

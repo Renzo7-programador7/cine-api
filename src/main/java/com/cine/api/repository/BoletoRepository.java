@@ -11,6 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoletoRepository extends JpaRepository<Boleto, Long> {
+    @Query("""
+            SELECT b.asiento
+            FROM Boleto b
+            WHERE b.funcion.id = :funcionId
+              AND UPPER(b.estado) = 'ACTIVO'
+            ORDER BY b.asiento ASC
+            """)
+    List<Integer> findAsientosOcupados(@Param("funcionId") Long funcionId);
+
     List<Boleto> findByUsuario_EmailIgnoreCaseOrderByIdDesc(String email);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

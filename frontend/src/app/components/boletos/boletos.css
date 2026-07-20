@@ -76,6 +76,115 @@
   color: #b8b8b8;
 }
 
+.seat-selector {
+  margin: 0.5rem 0 1rem;
+  padding: 1rem;
+  border: 1px solid #333;
+  border-radius: 14px;
+  background: #121212;
+}
+
+.screen {
+  width: min(520px, 85%);
+  margin: 0 auto 1.25rem;
+  padding: 0.45rem;
+  border-radius: 50% 50% 8px 8px;
+  background: linear-gradient(180deg, #f0f0f0, #777);
+  color: #171717;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 22px rgba(255, 255, 255, 0.12);
+}
+
+.seat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  color: #c5c5c5;
+  font-size: 0.82rem;
+}
+
+.seat-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-seat {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px 5px 3px 3px;
+}
+
+.legend-seat.available,
+.seat {
+  border: 1px solid #3d8f5a;
+  background: #163d24;
+  color: #a7f3c0;
+}
+
+.legend-seat.selected,
+.seat.selected {
+  border-color: #ffd700;
+  background: #ffd700;
+  color: #171717;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.16);
+}
+
+.legend-seat.occupied,
+.seat.occupied {
+  border-color: #6b313a;
+  background: #51202a;
+  color: #ff9aaa;
+}
+
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 0.55rem;
+  max-height: 340px;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+.seat {
+  min-width: 0;
+  padding: 0.65rem 0.25rem;
+  border-radius: 7px 7px 4px 4px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.seat:not(:disabled):hover {
+  transform: translateY(-2px);
+  background: #205832;
+}
+
+.seat.occupied {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.seat-selection,
+.seat-loading {
+  margin: 1rem 0 0;
+  color: #ddd;
+  text-align: center;
+}
+
+.seat-loading {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: #151515;
+}
+
 .empty-table {
   text-align: center;
 }

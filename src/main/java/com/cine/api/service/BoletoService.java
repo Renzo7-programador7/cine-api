@@ -1,6 +1,7 @@
 package com.cine.api.service;
 
 import com.cine.api.dto.ComprarBoletoRequest;
+import com.cine.api.dto.DisponibilidadAsientosResponse;
 import com.cine.api.entity.Boleto;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Usuario;
@@ -51,6 +52,18 @@ public class BoletoService {
     public Boleto guardar(Boleto boleto) {
         Objects.requireNonNull(boleto, "El boleto no puede estar vacio");
         return boletoRepository.save(boleto);
+    }
+
+    @Transactional(readOnly = true)
+    public DisponibilidadAsientosResponse consultarDisponibilidad(Long funcionId) {
+        Objects.requireNonNull(funcionId, "El id de la funcion no puede ser nulo");
+        Funcion funcion = funcionRepository.findById(funcionId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Funcion no encontrada con id: " + funcionId));
+        return new DisponibilidadAsientosResponse(
+                funcion.getId(),
+                funcion.getCapacidad(),
+                boletoRepository.findAsientosOcupados(funcion.getId()));
     }
 
     @Transactional

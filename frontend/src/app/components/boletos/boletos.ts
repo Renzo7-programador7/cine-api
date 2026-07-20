@@ -29,6 +29,9 @@ export class Boletos implements OnInit {
   esAdmin = false;
   enviando = false;
   cancelandoId: number | null = null;
+  asientos: number[] = [];
+  asientosOcupados = new Set<number>();
+  cargandoAsientos = false;
   confirmandoCompra = false;
   boletoPendienteCancelar: Boleto | null = null;
   boletoPendienteEliminar: Boleto | null = null;
@@ -102,6 +105,9 @@ export class Boletos implements OnInit {
           funcionId: null,
           asiento: null
         };
+        this.asientos = [];
+        this.asientosOcupados.clear();
+        this.cargandoAsientos = false;
         this.enviando = false;
         this.cdr.detectChanges();
       },
@@ -129,6 +135,52 @@ export class Boletos implements OnInit {
     } else {
       this.listarMios();
     }
+  }
+
+  seleccionarFuncion(funcionId: number | null): void {
+    this.compra.asiento = null;
+    this.asientos = [];
+    this.asientosOcupados.clear();
+    this.cargandoAsientos = false;
+    this.error = '';
+
+    if (funcionId === null) {
+      return;
+    }
+
+    this.cargandoAsientos = true;
+    this.boletoService.consultarAsientos(funcionId).subscribe({
+      next: (disponibilidad) => {
+        if (this.compra.funcionId !== funcionId) {
+          return;
+        }
+        this.asientos = Array.from(
+          { length: disponibilidad.capacidad },
+          (_, indice) => indice + 1
+        );
+        this.asientosOcupados = new Set(disponibilidad.asientosOcupados);
+        this.cargandoAsientos = false;
+        this.cdr.detectChanges();
+      },
+      error: (e) => {
+        if (this.compra.funcionId !== funcionId) {
+          return;
+        }
+        this.cargandoAsientos = false;
+        this.error = e.error?.message || 'No se pudo consultar la disponibilidad de asientos.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  seleccionarAsiento(asiento: number): void {
+    if (!this.asientosOcupados.has(asiento)) {
+      this.compra.asiento = asiento;
+    }
+  }
+
+  asientoOcupado(asiento: number): boolean {
+    return this.asientosOcupados.has(asiento);
   }
 
   get funcionSeleccionada(): Funcion | undefined {
@@ -169,10 +221,10 @@ export class Boletos implements OnInit {
       return;
     }
     this.boletoPendienteCancelar = null;
-    this.cancelar(boleto.id);
+    this.cancelar(boleto.id, boleto.funcion.id);
   }
 
-  cancelar(id: number): void {
+  cancelar(id: number, funcionId?: number): void {
     if (this.cancelandoId !== null) {
       return;
     }
@@ -184,6 +236,9 @@ export class Boletos implements OnInit {
         this.exito = 'El boleto fue cancelado correctamente.';
         this.cancelandoId = null;
         this.cargarBoletos();
+        if (funcionId === this.compra.funcionId) {
+          this.seleccionarFuncion(funcionId);
+        }
       },
       error: (e) => {
         this.error = e.error?.message || 'No se pudo cancelar el boleto';

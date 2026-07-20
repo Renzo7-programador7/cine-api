@@ -19,3 +19,9 @@ export interface ComprarBoletoRequest {
   funcionId: number | null;
   asiento: number | null;
 }
+
+export interface DisponibilidadAsientos {
+  funcionId: number;
+  capacidad: number;
+  asientosOcupados: number[];
+}

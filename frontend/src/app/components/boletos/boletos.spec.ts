@@ -50,6 +50,11 @@ describe('Boletos', () => {
           useValue: {
             listar: () => of([]),
             listarMios: () => of([]),
+            consultarAsientos: () => of({
+              funcionId: 7,
+              capacidad: 100,
+              asientosOcupados: [2, 5]
+            }),
             comprar: (request: ComprarBoletoRequest) => {
               solicitudEnviada = request;
               return of({
@@ -108,6 +113,19 @@ describe('Boletos', () => {
     expect(component.confirmandoCompra).toBe(true);
     expect(solicitudEnviada).toBeUndefined();
     expect(component.resumenCompra).toContain('asiento 25');
+  });
+
+  it('genera el mapa y no permite seleccionar un asiento ocupado', () => {
+    component.compra.funcionId = 7;
+
+    component.seleccionarFuncion(7);
+
+    expect(component.asientos).toHaveLength(100);
+    expect(component.asientoOcupado(2)).toBe(true);
+    component.seleccionarAsiento(2);
+    expect(component.compra.asiento).toBeNull();
+    component.seleccionarAsiento(3);
+    expect(component.compra.asiento).toBe(3);
   });
 
   it('permite cancelar un boleto propio activo y futuro', () => {

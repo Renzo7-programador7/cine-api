@@ -93,6 +93,21 @@ class BoletoServiceValidationTest {
     }
 
     @Test
+    void consultarDisponibilidad_incluyeSoloAsientosActivos() {
+        Usuario comprador = guardarUsuario("disponibilidad@test.com");
+        Funcion funcion = guardarFuncion(LocalDate.now().plusDays(1), 20.0, 20);
+        boletoService.comprar(nuevaCompra(funcion.getId(), 3), comprador.getEmail());
+        Boleto cancelado = boletoService.comprar(
+                nuevaCompra(funcion.getId(), 4), comprador.getEmail());
+        boletoService.cancelar(cancelado.getId(), comprador.getEmail(), false);
+
+        var disponibilidad = boletoService.consultarDisponibilidad(funcion.getId());
+
+        assertThat(disponibilidad.capacidad()).isEqualTo(20);
+        assertThat(disponibilidad.asientosOcupados()).containsExactly(3);
+    }
+
+    @Test
     void cancelar_boletoPropioActivo_liberaElAsiento() {
         Usuario comprador = guardarUsuario("cancelacion.valida@test.com");
         Funcion funcion = guardarFuncion(LocalDate.now().plusDays(1), 20.0, 30);

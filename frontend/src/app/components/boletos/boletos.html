@@ -23,7 +23,8 @@
     </p>
     <form (ngSubmit)="solicitarCompra()" #formCompra="ngForm">
       <div class="field">
-        <select [(ngModel)]="compra.funcionId" name="funcionId" required #funcionId="ngModel">
+        <select [(ngModel)]="compra.funcionId" (ngModelChange)="seleccionarFuncion($event)"
+          name="funcionId" required #funcionId="ngModel">
           <option [ngValue]="null">Seleccionar función</option>
           <option *ngFor="let f of funciones" [ngValue]="f.id">
             {{ f.fecha }} - {{ f.hora }} - {{ f.pelicula.titulo }} - S/ {{ f.precio | number:'1.2-2' }}
@@ -32,13 +33,34 @@
         <span class="error-msg" *ngIf="funcionId.invalid && funcionId.touched">Selecciona una función</span>
       </div>
 
-      <div class="field">
-        <input type="number" [(ngModel)]="compra.asiento" name="asiento" placeholder="Número de asiento"
-          required min="1" [max]="capacidadMaxima" #asiento="ngModel">
-        <span class="error-msg" *ngIf="asiento.invalid && asiento.touched">
-          El asiento debe estar entre 1 y {{ capacidadMaxima }}
-        </span>
-      </div>
+      @if (cargandoAsientos) {
+        <div class="seat-loading" role="status">Cargando disponibilidad...</div>
+      } @else if (funcionSeleccionada) {
+        <section class="seat-selector" aria-label="Selector de asientos">
+          <div class="screen" aria-hidden="true">Pantalla</div>
+          <div class="seat-legend" aria-label="Leyenda de asientos">
+            <span><i class="legend-seat available"></i> Disponible</span>
+            <span><i class="legend-seat selected"></i> Seleccionado</span>
+            <span><i class="legend-seat occupied"></i> Ocupado</span>
+          </div>
+          <div class="seat-grid">
+            @for (asiento of asientos; track asiento) {
+              <button type="button" class="seat"
+                [class.selected]="compra.asiento === asiento"
+                [class.occupied]="asientoOcupado(asiento)"
+                [disabled]="asientoOcupado(asiento)"
+                [attr.aria-pressed]="compra.asiento === asiento"
+                [attr.aria-label]="asientoOcupado(asiento) ? 'Asiento ' + asiento + ' ocupado' : 'Seleccionar asiento ' + asiento"
+                (click)="seleccionarAsiento(asiento)">
+                {{ asiento }}
+              </button>
+            }
+          </div>
+          <p class="seat-selection" aria-live="polite">
+            {{ compra.asiento ? 'Asiento seleccionado: ' + compra.asiento : 'Selecciona un asiento disponible' }}
+          </p>
+        </section>
+      }
 
       <div *ngIf="funcionSeleccionada as funcion" class="purchase-summary">
         <span>{{ funcion.pelicula.titulo }}</span>
@@ -46,7 +68,7 @@
         <small>Capacidad: {{ funcion.capacidad }} asientos</small>
       </div>
 
-      <button type="submit" [disabled]="formCompra.invalid || enviando">
+      <button type="submit" [disabled]="formCompra.invalid || compra.asiento === null || enviando || cargandoAsientos">
         {{ enviando ? 'Procesando compra...' : 'Comprar boleto' }}
       </button>
     </form>

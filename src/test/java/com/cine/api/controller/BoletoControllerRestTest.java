@@ -208,6 +208,12 @@ class BoletoControllerRestTest {
                 .get("id")
                 .asLong();
 
+        mockMvc.perform(get("/api/boletos/funciones/{id}/asientos", funcion.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.capacidad").value(100))
+                .andExpect(jsonPath("$.asientosOcupados[0]").value(9));
+
         mockMvc.perform(get("/api/boletos/mios")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
@@ -218,6 +224,11 @@ class BoletoControllerRestTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("CANCELADO"));
+
+        mockMvc.perform(get("/api/boletos/funciones/{id}/asientos", funcion.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.asientosOcupados").isEmpty());
     }
 
     @Test

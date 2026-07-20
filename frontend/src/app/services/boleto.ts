@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth';
 import { API_BASE_URL } from '../config/api.config';
-import { Boleto, ComprarBoletoRequest } from '../models/boleto.models';
+import { Boleto, ComprarBoletoRequest, DisponibilidadAsientos } from '../models/boleto.models';
 
 @Injectable({ providedIn: 'root' })
 export class BoletoService {
@@ -21,6 +21,13 @@ export class BoletoService {
 
   listarMios(): Observable<Boleto[]> {
     return this.http.get<Boleto[]>(`${this.url}/mios`, { headers: this.headers() });
+  }
+
+  consultarAsientos(funcionId: number): Observable<DisponibilidadAsientos> {
+    return this.http.get<DisponibilidadAsientos>(
+      `${this.url}/funciones/${funcionId}/asientos`,
+      { headers: this.headers() }
+    );
   }
 
   comprar(request: ComprarBoletoRequest): Observable<Boleto> {
