@@ -120,6 +120,23 @@
   border-bottom-color: #c8001e;
 }
 
+.ticket-link {
+  color: #9f0018;
+  font-weight: 800;
+}
+
+.my-tickets-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #7f1d1d;
+}
+
+.my-tickets-link::before {
+  content: '🎟️';
+  font-size: 0.95rem;
+}
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -144,5 +161,7 @@
   .subnav {
     overflow-x: auto;
     padding: 0 15px;
+    white-space: nowrap;
+    scrollbar-width: thin;
   }
 }

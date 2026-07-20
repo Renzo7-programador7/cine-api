@@ -29,4 +29,17 @@
   <a routerLink="/proximamente" routerLinkActive="active" class="subnav-item"> Próximamente </a>
   <span class="subnav-sep">|</span>
   <a routerLink="/promociones" routerLinkActive="active" class="subnav-item"> Promociones </a>
+  <span class="subnav-sep">|</span>
+  <a [routerLink]="autenticado ? '/boletos' : '/login'"
+    [fragment]="autenticado ? 'comprar-entradas' : undefined"
+    [queryParams]="autenticado ? null : { returnUrl: '/boletos#comprar-entradas' }"
+    class="subnav-item ticket-link">
+    Comprar entradas
+  </a>
+  @if (autenticado && rol !== 'ADMIN') {
+  <span class="subnav-sep">|</span>
+  <a routerLink="/boletos" fragment="mis-boletos" class="subnav-item my-tickets-link">
+    Mis boletos
+  </a>
+  }
 </nav>

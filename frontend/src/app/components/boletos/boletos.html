@@ -16,7 +16,7 @@
   (confirmado)="ejecutarEliminacion()" (cancelado)="cerrarConfirmacionEliminacion()"></app-confirm-dialog>
 
 <ng-template #formularioBoleto>
-  <section class="card ticket-form-card">
+  <section id="comprar-entradas" class="card ticket-form-card section-anchor">
     <h3>Compra tu boleto</h3>
     <p class="ticket-intro">
       Selecciona una función y un asiento. El precio se calcula automáticamente.
@@ -90,7 +90,7 @@
     </div>
     <ng-container *ngTemplateOutlet="formularioBoleto"></ng-container>
 
-    <section class="card my-tickets-card">
+    <section id="mis-boletos" class="card my-tickets-card section-anchor">
       <h3>Mis boletos</h3>
       <div class="ticket-table-wrapper">
         <table>

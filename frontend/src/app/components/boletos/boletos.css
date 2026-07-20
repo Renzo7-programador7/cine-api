@@ -43,6 +43,10 @@
   margin-inline: auto;
 }
 
+.section-anchor {
+  scroll-margin-top: 1.25rem;
+}
+
 .ticket-intro {
   margin: -0.35rem 0 1.25rem;
   color: #b8b8b8;

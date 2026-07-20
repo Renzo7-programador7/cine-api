@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { CommonModule, Location } from '@angular/common';
 import { ApiError } from '../../models/auth.models';
@@ -24,12 +24,13 @@ export class Login {
   constructor(
     private auth: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private location: Location,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    const navigationState = window.history.state as {
+    const navigationState = (window.history.state ?? {}) as {
       registroExitoso?: string;
       emailRegistrado?: string;
     };
@@ -75,7 +76,12 @@ export class Login {
         if (this.auth.getRol() === 'ADMIN') {
           this.router.navigate(['/usuarios']);
         } else {
-          this.router.navigate(['/']);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          if (returnUrl?.startsWith('/') && !returnUrl.startsWith('//')) {
+            this.router.navigateByUrl(returnUrl);
+          } else {
+            this.router.navigate(['/']);
+          }
         }
         this.cdr.detectChanges();
       },

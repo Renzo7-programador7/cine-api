@@ -82,6 +82,11 @@ describe('Boletos', () => {
     expect(component).toBeTruthy();
   });
 
+  it('expone destinos para compra e historial desde la navegacion', () => {
+    expect(fixture.nativeElement.querySelector('#comprar-entradas')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('#mis-boletos')).toBeTruthy();
+  });
+
   it('calcula el resumen y envia el contrato plano de compra', () => {
     component.compra = { funcionId: 7, asiento: 25 };
 

@@ -68,7 +68,7 @@
         @if (!auth.isLoggedIn()) {
         <p class="comprar-hint"> <a routerLink="/login"> Inicia sesión </a> para comprar boletos </p>
         }
-        @else { <a routerLink="/boletos" class="btn-primary btn-comprar"> Comprar boleto </a> }
+        @else { <a routerLink="/boletos" fragment="comprar-entradas" class="btn-primary btn-comprar"> Comprar boleto </a> }
         }
 
         }
