@@ -72,6 +72,19 @@ export class Home implements OnInit {
     this.peliculaSeleccionada = this.peliculaSeleccionada?.id === p.id ? null : p;
   }
 
+  comprarFuncion(funcionId: number): void {
+    const destino = `/boletos/comprar?funcionId=${funcionId}`;
+
+    if (this.auth.isLoggedIn()) {
+      this.router.navigateByUrl(destino);
+      return;
+    }
+
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl: destino }
+    });
+  }
+
   posterClass(genero: string): string {
     const g = (genero || '').toLowerCase();
     if (g.includes('acción') || g.includes('accion')) return 'poster-accion';

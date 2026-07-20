@@ -64,6 +64,7 @@
 
       <div *ngIf="funcionSeleccionada as funcion" class="purchase-summary">
         <span>{{ funcion.pelicula.titulo }}</span>
+        <small>{{ funcion.fecha }} a las {{ funcion.hora }}</small>
         <strong>S/ {{ funcion.precio | number:'1.2-2' }}</strong>
         <small>Capacidad: {{ funcion.capacidad }} asientos</small>
       </div>

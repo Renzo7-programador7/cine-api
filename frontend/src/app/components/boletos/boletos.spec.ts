@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { vi } from 'vitest';
 
 import { Boletos } from './boletos';
 import { BoletoService } from '../../services/boleto';
@@ -34,7 +35,7 @@ describe('Boletos', () => {
           provide: AuthService,
           useValue: {
             isLoggedIn: () => true,
-            getRol: () => 'USER',
+            getRol: () => 'ADMIN',
             getToken: () => 'token-de-prueba',
             getEmail: () => 'cliente@test.com',
             getUsuario: () => 'Cliente',
@@ -87,9 +88,9 @@ describe('Boletos', () => {
     expect(component).toBeTruthy();
   });
 
-  it('expone destinos para compra e historial desde la navegacion', () => {
+  it('mantiene la compra dentro de la gestion administrativa', () => {
     expect(fixture.nativeElement.querySelector('#comprar-entradas')).toBeTruthy();
-    expect(fixture.nativeElement.querySelector('#mis-boletos')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('#mis-boletos')).toBeFalsy();
   });
 
   it('calcula el resumen y envia el contrato plano de compra', () => {
@@ -126,6 +127,18 @@ describe('Boletos', () => {
     expect(component.compra.asiento).toBeNull();
     component.seleccionarAsiento(3);
     expect(component.compra.asiento).toBe(3);
+  });
+
+  it('preselecciona la funcion recibida desde la cartelera', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    vi.spyOn(route.snapshot.queryParamMap, 'get').mockReturnValue('7');
+
+    (component as any).preseleccionarFuncionSolicitada();
+
+    expect(component.compra.funcionId).toBe(7);
+    expect(component.funcionSeleccionada?.pelicula.titulo).toBe('Pelicula de prueba');
+    expect(component.asientos).toHaveLength(100);
+    expect(component.asientoOcupado(2)).toBe(true);
   });
 
   it('permite cancelar un boleto propio activo y futuro', () => {

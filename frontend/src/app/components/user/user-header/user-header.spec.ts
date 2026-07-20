@@ -51,7 +51,7 @@ describe('UserHeader', () => {
 
     expect(textos).toContain('Comprar entradas');
     expect(textos).toContain('Mis boletos');
-    expect(enlaces.some(enlace => enlace.getAttribute('href')?.includes('#comprar-entradas'))).toBe(true);
-    expect(enlaces.some(enlace => enlace.getAttribute('href')?.includes('#mis-boletos'))).toBe(true);
+    expect(enlaces.some(enlace => enlace.getAttribute('href') === '/boletos/comprar')).toBe(true);
+    expect(enlaces.some(enlace => enlace.getAttribute('href') === '/boletos/mios')).toBe(true);
   });
 });

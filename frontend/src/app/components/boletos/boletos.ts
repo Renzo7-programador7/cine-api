@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { BoletoService } from '../../services/boleto';
 import { FuncionService } from '../../services/funcion';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
@@ -43,21 +43,29 @@ export class Boletos implements OnInit {
     private funcionService: FuncionService,
     private auth: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: this.router.url }
+      });
       return;
     }
 
     this.esAdmin = this.auth.getRol() === 'ADMIN';
+    if (!this.esAdmin) {
+      this.router.navigate(['/boletos/comprar']);
+      return;
+    }
     this.cargarBoletos();
 
     this.funcionService.listarPublicas().subscribe({
       next: (data) => {
         this.funciones = data;
+        this.preseleccionarFuncionSolicitada();
         this.cdr.detectChanges();
       },
       error: () => {
@@ -82,6 +90,25 @@ export class Boletos implements OnInit {
       return;
     }
     this.confirmandoCompra = true;
+  }
+
+  private preseleccionarFuncionSolicitada(): void {
+    const parametro = this.route.snapshot.queryParamMap.get('funcionId');
+    if (parametro === null) {
+      return;
+    }
+
+    const funcionId = Number(parametro);
+    const funcionDisponible = Number.isInteger(funcionId) && funcionId > 0 &&
+      this.funciones.some(funcion => funcion.id === funcionId);
+
+    if (!funcionDisponible) {
+      this.error = 'La función seleccionada ya no está disponible.';
+      return;
+    }
+
+    this.compra.funcionId = funcionId;
+    this.seleccionarFuncion(funcionId);
   }
 
   cancelarConfirmacionCompra(): void {

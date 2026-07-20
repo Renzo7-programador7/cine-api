@@ -1,0 +1,116 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="confirmandoCompra" titulo="Confirmar compra"
+  [mensaje]="resumenCompra" textoConfirmar="Comprar"
+  (confirmado)="comprar()" (cancelado)="cancelarConfirmacion()"></app-confirm-dialog>
+
+<app-user-layout [banner]="false">
+  <header class="purchase-header">
+    <span class="purchase-icon" aria-hidden="true">🎟️</span>
+    <div>
+      <p>Compra segura</p>
+      <h2>Elige tu función y asiento</h2>
+    </div>
+  </header>
+
+  <section id="comprar-entradas" class="purchase-card">
+    @if (cargandoFunciones) {
+      <div class="state-panel" role="status">Cargando funciones disponibles...</div>
+    } @else if (funciones.length === 0) {
+      <div class="state-panel">No hay funciones disponibles para comprar.</div>
+    } @else {
+      <form (ngSubmit)="solicitarCompra()" #formCompra="ngForm">
+        <label class="field-label" for="funcionId">Función</label>
+        <select id="funcionId" [(ngModel)]="compra.funcionId"
+          (ngModelChange)="cambiarFuncion($event)" name="funcionId" required>
+          <option [ngValue]="null">Seleccionar función</option>
+          <option *ngFor="let funcion of funciones" [ngValue]="funcion.id">
+            {{ funcion.pelicula.titulo }} — {{ funcion.fecha }} — {{ funcion.hora }} —
+            S/ {{ funcion.precio | number:'1.2-2' }}
+          </option>
+        </select>
+
+        @if (compra.funcionId === null) {
+          <div class="state-panel seat-empty">
+            <strong>Selecciona una función</strong>
+            <span>Después podrás consultar la sala y elegir un asiento disponible.</span>
+          </div>
+        } @else if (cargandoAsientos) {
+          <div class="state-panel" role="status">
+            <span class="spinner" aria-hidden="true"></span>
+            Consultando disponibilidad de la sala...
+          </div>
+        } @else if (errorAsientos) {
+          <div class="state-panel error-panel" role="alert">
+            <strong>No se pudo cargar la sala</strong>
+            <span>{{ errorAsientos }}</span>
+            <button type="button" class="btn-secondary" (click)="reintentarAsientos()">Reintentar</button>
+          </div>
+        } @else if (funcionSeleccionada) {
+          <section class="seat-selector" aria-label="Selector de asientos">
+            <div class="screen" aria-hidden="true">Pantalla</div>
+
+            <div class="seat-summary">
+              <span><strong>{{ asientosDisponibles }}</strong> disponibles</span>
+              <span><strong>{{ asientosOcupados.size }}</strong> ocupados</span>
+              <span><strong>{{ totalAsientos }}</strong> capacidad</span>
+            </div>
+
+            <div class="seat-legend" aria-label="Leyenda de asientos">
+              <span><i class="legend-seat available"></i>Disponible</span>
+              <span><i class="legend-seat selected"></i>Seleccionado</span>
+              <span><i class="legend-seat occupied"></i>Ocupado</span>
+            </div>
+
+            <div class="room-wrapper">
+              <div class="room" role="group" aria-label="Asientos de la sala">
+                @for (fila of filas; track fila.etiqueta) {
+                  <div class="seat-row">
+                    <span class="row-label">{{ fila.etiqueta }}</span>
+                    <div class="row-seats">
+                      @for (asiento of fila.asientos; track asiento; let posicion = $index) {
+                        <button type="button" class="seat" [class.after-aisle]="posicion === 5"
+                          [class.selected]="compra.asiento === asiento"
+                          [class.occupied]="asientoOcupado(asiento)"
+                          [disabled]="asientoOcupado(asiento)"
+                          [attr.aria-pressed]="compra.asiento === asiento"
+                          [attr.aria-label]="asientoOcupado(asiento) ? 'Asiento ' + asiento + ' ocupado' : 'Seleccionar asiento ' + asiento"
+                          (click)="seleccionarAsiento(asiento)">{{ asiento }}</button>
+                      }
+                    </div>
+                    <span class="row-label">{{ fila.etiqueta }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <p class="seat-selection" aria-live="polite">
+              {{ compra.asiento ? 'Asiento seleccionado: ' + compra.asiento : 'Selecciona un asiento disponible' }}
+            </p>
+          </section>
+        }
+
+        @if (funcionSeleccionada; as funcion) {
+          <div class="purchase-summary">
+            <span>{{ funcion.pelicula.titulo }}</span>
+            <strong>S/ {{ funcion.precio | number:'1.2-2' }}</strong>
+            <small>{{ funcion.fecha }} a las {{ funcion.hora }}</small>
+          </div>
+        }
+
+        <button class="btn-primary" type="submit"
+          [disabled]="formCompra.invalid || compra.asiento === null || enviando || cargandoAsientos">
+          {{ enviando ? 'Procesando compra...' : 'Comprar boleto' }}
+        </button>
+
+        @if (compraExitosa) {
+          <div class="success-actions">
+            <span>Tu boleto ya aparece en tu historial.</span>
+            <a routerLink="/boletos/mios" class="btn-secondary">Ver mis boletos</a>
+          </div>
+        }
+      </form>
+    }
+  </section>
+</app-user-layout>
