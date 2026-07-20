@@ -1,53 +1,39 @@
 <ng-template #formularioBoleto>
   <section class="card ticket-form-card">
-    <h3>{{ esAdmin ? 'Nuevo boleto' : 'Compra tu boleto' }}</h3>
-    <p *ngIf="!esAdmin" class="ticket-intro">
-      Selecciona la función, el asiento y el precio para completar tu compra.
+    <h3>Compra tu boleto</h3>
+    <p class="ticket-intro">
+      Selecciona una función y un asiento. El precio se calcula automáticamente.
     </p>
     <div *ngIf="error" class="error">{{ error }}</div>
     <div *ngIf="exito" class="success">{{ exito }}</div>
 
-    <form (ngSubmit)="crear()" #formNuevo="ngForm">
+    <form (ngSubmit)="comprar()" #formCompra="ngForm">
       <div class="field">
-        <input type="number" [(ngModel)]="nuevo.asiento" name="asiento" placeholder="Número de asiento"
-          required min="1" max="500" #asiento="ngModel">
-        <span class="error-msg" *ngIf="asiento.invalid && asiento.touched">El asiento debe ser entre 1 y 500</span>
-      </div>
-
-      <div class="field">
-        <input type="number" [(ngModel)]="nuevo.precio" name="precio" placeholder="Precio (S/)"
-          required min="1" max="999" #precio="ngModel">
-        <span class="error-msg" *ngIf="precio.invalid && precio.touched">El precio debe ser entre S/1 y S/999</span>
-      </div>
-
-      <div class="field">
-        <select [(ngModel)]="nuevo.funcion.id" name="funcionId" required #funcionId="ngModel">
+        <select [(ngModel)]="compra.funcionId" name="funcionId" required #funcionId="ngModel">
           <option [ngValue]="null">Seleccionar función</option>
           <option *ngFor="let f of funciones" [ngValue]="f.id">
-            {{ f.fecha }} - {{ f.hora }} - {{ f.pelicula?.titulo }}
+            {{ f.fecha }} - {{ f.hora }} - {{ f.pelicula.titulo }} - S/ {{ f.precio | number:'1.2-2' }}
           </option>
         </select>
         <span class="error-msg" *ngIf="funcionId.invalid && funcionId.touched">Selecciona una función</span>
       </div>
 
-      <ng-container *ngIf="esAdmin">
-        <div class="field">
-          <select [(ngModel)]="nuevo.estado" name="estado" required #estado="ngModel">
-            <option value="ACTIVO">ACTIVO</option>
-            <option value="CANCELADO">CANCELADO</option>
-          </select>
-          <span class="error-msg" *ngIf="estado.invalid && estado.touched">Selecciona un estado</span>
-        </div>
+      <div class="field">
+        <input type="number" [(ngModel)]="compra.asiento" name="asiento" placeholder="Número de asiento"
+          required min="1" [max]="capacidadMaxima" #asiento="ngModel">
+        <span class="error-msg" *ngIf="asiento.invalid && asiento.touched">
+          El asiento debe estar entre 1 y {{ capacidadMaxima }}
+        </span>
+      </div>
 
-        <div class="field">
-          <input type="number" [(ngModel)]="nuevo.usuario.id" name="usuarioId" placeholder="ID Usuario"
-            required min="1" #usuarioId="ngModel">
-          <span class="error-msg" *ngIf="usuarioId.invalid && usuarioId.touched">El ID de usuario es obligatorio</span>
-        </div>
-      </ng-container>
+      <div *ngIf="funcionSeleccionada as funcion" class="purchase-summary">
+        <span>{{ funcion.pelicula.titulo }}</span>
+        <strong>S/ {{ funcion.precio | number:'1.2-2' }}</strong>
+        <small>Capacidad: {{ funcion.capacidad }} asientos</small>
+      </div>
 
-      <button type="submit" [disabled]="formNuevo.invalid">
-        {{ esAdmin ? 'Registrar boleto' : 'Comprar boleto' }}
+      <button type="submit" [disabled]="formCompra.invalid || enviando">
+        {{ enviando ? 'Procesando compra...' : 'Comprar boleto' }}
       </button>
     </form>
   </section>
@@ -69,7 +55,7 @@
             <td>{{ b.asiento }}</td>
             <td>S/ {{ b.precio }}</td>
             <td>{{ b.estado }}</td>
-            <td>{{ b.funcion?.id }}</td>
+            <td>{{ b.funcion.id }} - {{ b.funcion.pelicula.titulo }}</td>
             <td><button class="btn-delete" (click)="confirmarEliminar(b.id)">Eliminar</button></td>
           </tr>
           <tr *ngIf="boletos.length === 0">

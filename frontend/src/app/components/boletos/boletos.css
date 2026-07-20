@@ -52,6 +52,26 @@
   overflow-x: auto;
 }
 
+.purchase-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  margin: 0.5rem 0 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 215, 0, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 215, 0, 0.06);
+}
+
+.purchase-summary strong {
+  color: #ffd700;
+}
+
+.purchase-summary small {
+  grid-column: 1 / -1;
+  color: #b8b8b8;
+}
+
 .empty-table {
   text-align: center;
 }
