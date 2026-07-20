@@ -55,4 +55,22 @@ describe('BoletoService', () => {
       }
     });
   });
+
+  it('consulta los boletos del usuario autenticado', () => {
+    service.listarMios().subscribe();
+
+    const httpRequest = httpTesting.expectOne('http://localhost:8080/api/boletos/mios');
+    expect(httpRequest.request.method).toBe('GET');
+    expect(httpRequest.request.headers.get('Authorization')).toBe('Bearer token-de-prueba');
+    httpRequest.flush([]);
+  });
+
+  it('solicita la cancelacion del boleto seleccionado', () => {
+    service.cancelar(9).subscribe();
+
+    const httpRequest = httpTesting.expectOne('http://localhost:8080/api/boletos/9/cancelar');
+    expect(httpRequest.request.method).toBe('PATCH');
+    expect(httpRequest.request.body).toEqual({});
+    httpRequest.flush({});
+  });
 });

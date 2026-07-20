@@ -75,5 +75,33 @@
       </div>
     </div>
     <ng-container *ngTemplateOutlet="formularioBoleto"></ng-container>
+
+    <section class="card my-tickets-card">
+      <h3>Mis boletos</h3>
+      <div class="ticket-table-wrapper">
+        <table>
+          <tr>
+            <th>Película</th><th>Fecha</th><th>Asiento</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+          </tr>
+          <tr *ngFor="let b of boletos">
+            <td>{{ b.funcion.pelicula.titulo }}</td>
+            <td>{{ b.funcion.fecha }} - {{ b.funcion.hora }}</td>
+            <td>{{ b.asiento }}</td>
+            <td>S/ {{ b.precio | number:'1.2-2' }}</td>
+            <td><span class="ticket-status" [class.cancelled]="b.estado === 'CANCELADO'">{{ b.estado }}</span></td>
+            <td>
+              <button *ngIf="puedeCancelar(b)" type="button" class="btn-cancel"
+                [disabled]="cancelandoId !== null" (click)="confirmarCancelar(b)">
+                {{ cancelandoId === b.id ? 'Cancelando...' : 'Cancelar' }}
+              </button>
+              <span *ngIf="!puedeCancelar(b)" class="no-action">No disponible</span>
+            </td>
+          </tr>
+          <tr *ngIf="boletos.length === 0">
+            <td colspan="6" class="empty-table">Todavía no tienes boletos</td>
+          </tr>
+        </table>
+      </div>
+    </section>
   </app-user-layout>
 }

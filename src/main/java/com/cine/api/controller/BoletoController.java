@@ -1,6 +1,7 @@
 package com.cine.api.controller;
 
 import com.cine.api.dto.ComprarBoletoRequest;
+import com.cine.api.dto.BoletoResponse;
 import com.cine.api.entity.Boleto;
 import com.cine.api.service.BoletoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,14 +28,25 @@ public class BoletoController {
 
     @GetMapping
     @Operation(summary = "Listar todos los boletos", description = "Requiere rol ADMIN.")
-    public List<Boleto> listar() {
-        return boletoService.listarTodos();
+    public List<BoletoResponse> listar() {
+        return boletoService.listarTodos().stream()
+                .map(BoletoResponse::from)
+                .toList();
+    }
+
+    @GetMapping("/mios")
+    @Operation(summary = "Listar mis boletos", description = "Devuelve exclusivamente los boletos del usuario autenticado.")
+    public List<BoletoResponse> listarMios(Authentication authentication) {
+        return boletoService.listarDelUsuario(authentication.getName()).stream()
+                .map(BoletoResponse::from)
+                .toList();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener boleto por ID", description = "Requiere rol ADMIN.")
-    public ResponseEntity<Boleto> obtener(@PathVariable Long id) {
+    public ResponseEntity<BoletoResponse> obtener(@PathVariable Long id) {
         return boletoService.obtenerPorId(id)
+                .map(BoletoResponse::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -42,10 +54,20 @@ public class BoletoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Comprar un boleto", description = "Obtiene el comprador del JWT y calcula precio y estado desde los datos del servidor.")
-    public Boleto crear(
+    public BoletoResponse crear(
             @Valid @RequestBody ComprarBoletoRequest request,
             Authentication authentication) {
-        return boletoService.comprar(request, authentication.getName());
+        return BoletoResponse.from(
+                boletoService.comprar(request, authentication.getName()));
+    }
+
+    @PatchMapping("/{id}/cancelar")
+    @Operation(summary = "Cancelar boleto", description = "El cliente solo puede cancelar sus propios boletos activos antes de la funcion.")
+    public BoletoResponse cancelar(@PathVariable Long id, Authentication authentication) {
+        boolean esAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+        return BoletoResponse.from(
+                boletoService.cancelar(id, authentication.getName(), esAdmin));
     }
 
     @PutMapping("/{id}")

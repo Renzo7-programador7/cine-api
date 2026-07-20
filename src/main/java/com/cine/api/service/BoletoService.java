@@ -9,6 +9,7 @@ import com.cine.api.repository.FuncionRepository;
 import com.cine.api.service.exception.BusinessValidationException;
 import com.cine.api.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,12 @@ public class BoletoService {
 
     public List<Boleto> listarTodos() {
         return boletoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Boleto> listarDelUsuario(String email) {
+        Usuario usuario = usuarioService.findByEmail(email);
+        return boletoRepository.findByUsuario_EmailIgnoreCaseOrderByIdDesc(usuario.getEmail());
     }
 
     public Optional<Boleto> obtenerPorId(Long id) {
@@ -82,6 +89,33 @@ public class BoletoService {
         boleto.setAsiento(request.getAsiento());
         boleto.setPrecio(funcion.getPrecio());
         boleto.setEstado("ACTIVO");
+        return boletoRepository.save(boleto);
+    }
+
+    @Transactional
+    public Boleto cancelar(Long id, String emailSolicitante, boolean esAdmin) {
+        Objects.requireNonNull(id, "El id del boleto no puede ser nulo");
+        Boleto boleto = boletoRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Boleto no encontrado con id: " + id));
+
+        boolean esPropietario = boleto.getUsuario().getEmail()
+                .equalsIgnoreCase(emailSolicitante);
+        if (!esAdmin && !esPropietario) {
+            throw new AccessDeniedException("No puedes cancelar un boleto que pertenece a otro usuario");
+        }
+        if (!"ACTIVO".equalsIgnoreCase(boleto.getEstado())) {
+            throw new BusinessValidationException("Solo se pueden cancelar boletos activos");
+        }
+
+        Funcion funcion = boleto.getFuncion();
+        LocalDateTime inicioFuncion = LocalDateTime.of(funcion.getFecha(), funcion.getHora());
+        if (!inicioFuncion.isAfter(LocalDateTime.now())) {
+            throw new BusinessValidationException(
+                    "No se puede cancelar un boleto despues de iniciar la funcion");
+        }
+
+        boleto.setEstado("CANCELADO");
         return boletoRepository.save(boleto);
     }
 

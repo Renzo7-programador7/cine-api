@@ -26,6 +26,7 @@ export class Boletos implements OnInit {
   };
   esAdmin = false;
   enviando = false;
+  cancelandoId: number | null = null;
   error = '';
   exito = '';
 
@@ -44,9 +45,7 @@ export class Boletos implements OnInit {
     }
 
     this.esAdmin = this.auth.getRol() === 'ADMIN';
-    if (this.esAdmin) {
-      this.listar();
-    }
+    this.cargarBoletos();
 
     this.funcionService.listarPublicas().subscribe({
       next: (data) => {
@@ -80,9 +79,7 @@ export class Boletos implements OnInit {
     this.enviando = true;
     this.boletoService.comprar(this.compra).subscribe({
       next: (boleto) => {
-        if (this.esAdmin) {
-          this.listar();
-        }
+        this.cargarBoletos();
         this.exito = `Boleto comprado correctamente. Asiento ${boleto.asiento}.`;
         this.compra = {
           funcionId: null,
@@ -99,12 +96,66 @@ export class Boletos implements OnInit {
     });
   }
 
+  listarMios() {
+    this.boletoService.listarMios().subscribe({
+      next: (data) => {
+        this.boletos = data;
+        this.cdr.detectChanges();
+      },
+      error: () => this.router.navigate(['/login'])
+    });
+  }
+
+  cargarBoletos() {
+    if (this.esAdmin) {
+      this.listar();
+    } else {
+      this.listarMios();
+    }
+  }
+
   get funcionSeleccionada(): Funcion | undefined {
     return this.funciones.find(funcion => funcion.id === this.compra.funcionId);
   }
 
   get capacidadMaxima(): number {
     return this.funcionSeleccionada?.capacidad ?? 1000;
+  }
+
+  puedeCancelar(boleto: Boleto): boolean {
+    if (boleto.estado !== 'ACTIVO') {
+      return false;
+    }
+    const inicio = new Date(`${boleto.funcion.fecha}T${boleto.funcion.hora}`);
+    return inicio.getTime() > Date.now();
+  }
+
+  confirmarCancelar(boleto: Boleto): void {
+    const confirmar = confirm(`¿Deseas cancelar el boleto del asiento ${boleto.asiento}?`);
+    if (confirmar) {
+      this.cancelar(boleto.id);
+    }
+  }
+
+  cancelar(id: number): void {
+    if (this.cancelandoId !== null) {
+      return;
+    }
+    this.error = '';
+    this.exito = '';
+    this.cancelandoId = id;
+    this.boletoService.cancelar(id).subscribe({
+      next: () => {
+        this.exito = 'El boleto fue cancelado correctamente.';
+        this.cancelandoId = null;
+        this.cargarBoletos();
+      },
+      error: (e) => {
+        this.error = e.error?.message || 'No se pudo cancelar el boleto';
+        this.cancelandoId = null;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   confirmarEliminar(id: number): void {
@@ -117,7 +168,7 @@ export class Boletos implements OnInit {
 
   eliminar(id: number) {
     this.boletoService.eliminar(id).subscribe({
-      next: () => this.listar()
+      next: () => this.cargarBoletos()
     });
   }
 }

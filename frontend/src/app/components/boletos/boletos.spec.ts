@@ -12,6 +12,7 @@ describe('Boletos', () => {
   let component: Boletos;
   let fixture: ComponentFixture<Boletos>;
   let solicitudEnviada: ComprarBoletoRequest | undefined;
+  let cancelacionId: number | undefined;
 
   const funcion = {
     id: 7,
@@ -24,6 +25,7 @@ describe('Boletos', () => {
 
   beforeEach(async () => {
     solicitudEnviada = undefined;
+    cancelacionId = undefined;
     await TestBed.configureTestingModule({
       imports: [Boletos],
       providers: [
@@ -47,6 +49,7 @@ describe('Boletos', () => {
           provide: BoletoService,
           useValue: {
             listar: () => of([]),
+            listarMios: () => of([]),
             comprar: (request: ComprarBoletoRequest) => {
               solicitudEnviada = request;
               return of({
@@ -57,6 +60,10 @@ describe('Boletos', () => {
                 usuario: { id: 2, nombre: 'Cliente', email: 'cliente@test.com' },
                 funcion
               });
+            },
+            cancelar: (id: number) => {
+              cancelacionId = id;
+              return of({});
             },
             eliminar: () => of(undefined)
           }
@@ -86,5 +93,24 @@ describe('Boletos', () => {
     expect(solicitudEnviada).toEqual({ funcionId: 7, asiento: 25 });
     expect(component.exito).toContain('Asiento 25');
     expect(component.compra).toEqual({ funcionId: null, asiento: null });
+  });
+
+  it('permite cancelar un boleto propio activo y futuro', () => {
+    const boleto = {
+      id: 9,
+      precio: 20,
+      estado: 'ACTIVO',
+      asiento: 25,
+      usuario: { id: 2, nombre: 'Cliente', email: 'cliente@test.com' },
+      funcion
+    };
+
+    expect(component.puedeCancelar(boleto)).toBe(true);
+
+    component.cancelar(boleto.id);
+
+    expect(cancelacionId).toBe(9);
+    expect(component.exito).toContain('cancelado correctamente');
+    expect(component.cancelandoId).toBeNull();
   });
 });

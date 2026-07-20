@@ -19,8 +19,20 @@ export class BoletoService {
     return this.http.get<Boleto[]>(this.url, { headers: this.headers() });
   }
 
+  listarMios(): Observable<Boleto[]> {
+    return this.http.get<Boleto[]>(`${this.url}/mios`, { headers: this.headers() });
+  }
+
   comprar(request: ComprarBoletoRequest): Observable<Boleto> {
     return this.http.post<Boleto>(this.url, request, { headers: this.headers() });
+  }
+
+  cancelar(id: number): Observable<Boleto> {
+    return this.http.patch<Boleto>(
+      `${this.url}/${id}/cancelar`,
+      {},
+      { headers: this.headers() }
+    );
   }
 
   eliminar(id: number): Observable<void> {

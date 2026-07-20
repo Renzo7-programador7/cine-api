@@ -6,8 +6,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -165,6 +167,57 @@ class BoletoControllerRestTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors.asiento").exists());
+    }
+
+    @Test
+    void listarYCancelarMisBoletos_comoUser_noExponePassword() throws Exception {
+        Usuario cliente = new Usuario();
+        cliente.setNombre("Cliente historial");
+        cliente.setEmail("historial.boleto@test.com");
+        cliente.setPassword(passwordEncoder.encode("123456"));
+        cliente.setRol("USER");
+        cliente = usuarioRepository.save(cliente);
+
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo("Historial seguro");
+        pelicula.setDuracion(100);
+        pelicula.setClasificacion("PG");
+        pelicula.setGenero("Drama");
+        pelicula = peliculaRepository.save(pelicula);
+
+        Funcion funcion = new Funcion();
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
+        funcion.setHora(java.time.LocalTime.of(18, 0));
+        funcion.setPrecio(15.0);
+        funcion.setCapacidad(100);
+        funcion.setPelicula(pelicula);
+        funcion = funcionRepository.save(funcion);
+
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(funcion.getId());
+        request.setAsiento(9);
+        String token = jwtUtil.generateToken(cliente.getEmail(), cliente.getRol());
+
+        MvcResult compra = mockMvc.perform(post("/api/boletos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        long boletoId = objectMapper.readTree(compra.getResponse().getContentAsString())
+                .get("id")
+                .asLong();
+
+        mockMvc.perform(get("/api/boletos/mios")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].usuario.email").value(cliente.getEmail()))
+                .andExpect(jsonPath("$[0].usuario.password").doesNotExist());
+
+        mockMvc.perform(patch("/api/boletos/{id}/cancelar", boletoId)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.estado").value("CANCELADO"));
     }
 
     @Test
