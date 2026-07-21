@@ -64,6 +64,11 @@ export class Home implements OnInit {
             this.funcionesPorPelicula[peliculaId].push(funcion);
           }
         });
+
+        this.peliculas = this.peliculas.filter(
+          pelicula => this.funcionesPorPelicula[pelicula.id]
+        );
+        this.cdr.detectChanges();
       }
     });
   }
