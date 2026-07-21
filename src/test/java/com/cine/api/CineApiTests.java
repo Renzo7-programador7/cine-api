@@ -94,7 +94,7 @@ public class CineApiTests {
     void crearUsuario() {
         Usuario u = new Usuario();
         u.setNombre("Juan"); u.setEmail("juan@mail.com");
-        u.setPassword("1234"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         assertNotNull(usuarioService.guardar(u).getId());
     }
 
@@ -102,7 +102,7 @@ public class CineApiTests {
     void listarUsuarios() {
         Usuario u = new Usuario();
         u.setNombre("Juan"); u.setEmail("juan@mail.com");
-        u.setPassword("1234"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         usuarioService.guardar(u);
         assertFalse(usuarioService.listarTodos().isEmpty());
     }
@@ -111,7 +111,7 @@ public class CineApiTests {
     void obtenerUsuarioPorId() {
         Usuario u = new Usuario();
         u.setNombre("Ana"); u.setEmail("ana@mail.com");
-        u.setPassword("abc"); u.setRol("ADMIN");
+        u.setPassword("123456"); u.setRol("ADMIN");
         Usuario guardado = usuarioService.guardar(u);
         assertTrue(usuarioService.obtenerPorId(guardado.getId()).isPresent());
     }
@@ -120,7 +120,7 @@ public class CineApiTests {
     void emailUsuarioNoNulo() {
         Usuario u = new Usuario();
         u.setNombre("Luis"); u.setEmail("luis@mail.com");
-        u.setPassword("pass"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         assertEquals("luis@mail.com", usuarioService.guardar(u).getEmail());
     }
 
@@ -128,7 +128,7 @@ public class CineApiTests {
     void rolUsuarioCorrecto() {
         Usuario u = new Usuario();
         u.setNombre("Maria"); u.setEmail("maria@mail.com");
-        u.setPassword("pass"); u.setRol("ADMIN");
+        u.setPassword("123456"); u.setRol("ADMIN");
         assertEquals("ADMIN", usuarioService.guardar(u).getRol());
     }
 
@@ -136,7 +136,7 @@ public class CineApiTests {
     void eliminarUsuario() {
         Usuario u = new Usuario();
         u.setNombre("Temp"); u.setEmail("temp@mail.com");
-        u.setPassword("x"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         Usuario guardado = usuarioService.guardar(u);
         usuarioService.eliminar(guardado.getId());
         assertFalse(usuarioService.obtenerPorId(guardado.getId()).isPresent());
