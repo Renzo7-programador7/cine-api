@@ -59,10 +59,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/funciones/**").hasRole("ADMIN")
                         .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/peliculas/**").permitAll() 
-                        .requestMatchers(HttpMethod.GET, "/api/funciones/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/funciones/publicas").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/funciones", "/api/funciones/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/boletos").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/boletos/mios").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/boletos/funciones/*/asientos").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/boletos/*/cancelar").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/boletos/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/boletos/**").denyAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/boletos/**").denyAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

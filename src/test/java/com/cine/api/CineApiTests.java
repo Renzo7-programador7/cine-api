@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Boleto;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
@@ -93,7 +94,7 @@ public class CineApiTests {
     void crearUsuario() {
         Usuario u = new Usuario();
         u.setNombre("Juan"); u.setEmail("juan@mail.com");
-        u.setPassword("1234"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         assertNotNull(usuarioService.guardar(u).getId());
     }
 
@@ -101,7 +102,7 @@ public class CineApiTests {
     void listarUsuarios() {
         Usuario u = new Usuario();
         u.setNombre("Juan"); u.setEmail("juan@mail.com");
-        u.setPassword("1234"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         usuarioService.guardar(u);
         assertFalse(usuarioService.listarTodos().isEmpty());
     }
@@ -110,7 +111,7 @@ public class CineApiTests {
     void obtenerUsuarioPorId() {
         Usuario u = new Usuario();
         u.setNombre("Ana"); u.setEmail("ana@mail.com");
-        u.setPassword("abc"); u.setRol("ADMIN");
+        u.setPassword("123456"); u.setRol("ADMIN");
         Usuario guardado = usuarioService.guardar(u);
         assertTrue(usuarioService.obtenerPorId(guardado.getId()).isPresent());
     }
@@ -119,7 +120,7 @@ public class CineApiTests {
     void emailUsuarioNoNulo() {
         Usuario u = new Usuario();
         u.setNombre("Luis"); u.setEmail("luis@mail.com");
-        u.setPassword("pass"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         assertEquals("luis@mail.com", usuarioService.guardar(u).getEmail());
     }
 
@@ -127,7 +128,7 @@ public class CineApiTests {
     void rolUsuarioCorrecto() {
         Usuario u = new Usuario();
         u.setNombre("Maria"); u.setEmail("maria@mail.com");
-        u.setPassword("pass"); u.setRol("ADMIN");
+        u.setPassword("123456"); u.setRol("ADMIN");
         assertEquals("ADMIN", usuarioService.guardar(u).getRol());
     }
 
@@ -135,7 +136,7 @@ public class CineApiTests {
     void eliminarUsuario() {
         Usuario u = new Usuario();
         u.setNombre("Temp"); u.setEmail("temp@mail.com");
-        u.setPassword("x"); u.setRol("USER");
+        u.setPassword("123456"); u.setRol("USER");
         Usuario guardado = usuarioService.guardar(u);
         usuarioService.eliminar(guardado.getId());
         assertFalse(usuarioService.obtenerPorId(guardado.getId()).isPresent());
@@ -165,25 +166,6 @@ public class CineApiTests {
         assertTrue(boletoService.obtenerPorId(guardado.getId()).isPresent());
     }
 
-    @Test @Order(16)
-    void actualizarBoleto() {
-        Boleto b = new Boleto();
-        b.setPrecio(10.0); b.setEstado("PENDIENTE"); b.setAsiento(1);
-        Boleto guardado = boletoService.guardar(b);
-        guardado.setEstado("USADO");
-        assertEquals("USADO", boletoService.actualizar(guardado.getId(), guardado).getEstado());
-    }
-
-    @Test @Order(17)
-    void eliminarBoleto() {
-        Boleto b = new Boleto();
-        b.setPrecio(5.0); b.setEstado("CANCELADO"); b.setAsiento(99);
-        Boleto guardado = boletoService.guardar(b);
-        Long id = guardado.getId();
-        boletoService.eliminar(id);
-        assertThrows(ResourceNotFoundException.class, () -> boletoService.eliminar(id));
-    }
-
     @Test @Order(18)
     void precioBoletoCorrecto() {
         Boleto b = new Boleto();
@@ -192,41 +174,50 @@ public class CineApiTests {
     }
 
     // ===== FUNCION TESTS =====
+    private ProgramarFuncionRequest nuevaFuncionValida(String titulo, double precio, int capacidad) {
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo(titulo); pelicula.setDuracion(120);
+        pelicula.setClasificacion("PG"); pelicula.setGenero("Drama");
+        pelicula = peliculaService.guardar(pelicula);
+
+        ProgramarFuncionRequest request = new ProgramarFuncionRequest();
+        request.setFecha(java.time.LocalDate.now().plusDays(1));
+        request.setHora(java.time.LocalTime.of(20, 0));
+        request.setPrecio(precio); request.setCapacidad(capacidad);
+        request.setPeliculaId(pelicula.getId());
+        return request;
+    }
+
     @Test @Order(19)
     void crearFuncion() {
-        Funcion f = new Funcion();
-        f.setPrecio(12.0); f.setCapacidad(100);
-        assertNotNull(funcionService.guardar(f).getId());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion crear", 12.0, 100);
+        assertNotNull(funcionService.programar(request).getId());
     }
 
     @Test @Order(20)
     void listarFunciones() {
-        Funcion f = new Funcion();
-        f.setPrecio(12.0); f.setCapacidad(100);
-        funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion listar", 12.0, 100);
+        funcionService.programar(request);
         assertFalse(funcionService.listarTodas().isEmpty());
     }
 
     @Test @Order(21)
     void obtenerFuncionPorId() {
-        Funcion f = new Funcion();
-        f.setPrecio(18.0); f.setCapacidad(80);
-        Funcion guardada = funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion obtener", 18.0, 80);
+        Funcion guardada = funcionService.programar(request);
         assertTrue(funcionService.obtenerPorId(guardada.getId()).isPresent());
     }
 
     @Test @Order(22)
     void capacidadFuncionCorrecta() {
-        Funcion f = new Funcion();
-        f.setPrecio(10.0); f.setCapacidad(50);
-        assertEquals(50, funcionService.guardar(f).getCapacidad());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion capacidad", 10.0, 50);
+        assertEquals(50, funcionService.programar(request).getCapacidad());
     }
 
     @Test @Order(23)
     void eliminarFuncion() {
-        Funcion f = new Funcion();
-        f.setPrecio(8.0); f.setCapacidad(30);
-        Funcion guardada = funcionService.guardar(f);
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion eliminar", 8.0, 30);
+        Funcion guardada = funcionService.programar(request);
         Long id = guardada.getId();
         funcionService.eliminar(id);
         assertThrows(ResourceNotFoundException.class, () -> funcionService.eliminar(id));
@@ -234,9 +225,8 @@ public class CineApiTests {
 
     @Test @Order(24)
     void precioFuncionCorrecto() {
-        Funcion f = new Funcion();
-        f.setPrecio(22.5); f.setCapacidad(60);
-        assertEquals(22.5, funcionService.guardar(f).getPrecio());
+        ProgramarFuncionRequest request = nuevaFuncionValida("Funcion precio", 22.5, 60);
+        assertEquals(22.5, funcionService.programar(request).getPrecio());
     }
 }
 

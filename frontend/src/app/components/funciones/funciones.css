@@ -1,23 +1,48 @@
 .form-grid-funcion {
     display: grid;
-    grid-template-columns:
-        180px
-        150px
-        150px
-        150px
-        1fr
-        auto;
-
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
     gap: 12px;
+    align-items: start;
+}
+
+.form-grid-funcion .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .form-grid-funcion input,
 .form-grid-funcion select {
+    width: 100%;
+    box-sizing: border-box;
     padding: 12px;
     border-radius: 6px;
     border: 1px solid #333;
     background: #222;
     color: white;
+}
+
+.form-grid-funcion button {
+    grid-column: 1 / -1;
+}
+
+.error-msg {
+    color: #ff6b6b;
+    font-size: .82rem;
+}
+
+.success {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #b9f6ca;
+    background: rgba(46, 125, 50, .25);
+}
+
+@media (max-width: 700px) {
+    .form-grid-funcion {
+        grid-template-columns: 1fr;
+    }
 }
 
 .btn-delete {

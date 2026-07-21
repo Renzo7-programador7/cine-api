@@ -1,68 +1,96 @@
-.card {
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  border: 1px solid #333;
-  border-radius: 16px;
-  background: #1a1a1a;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+.admin-ticket-header {
+  margin-bottom: 1.25rem;
 }
 
-.client-ticket-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+.admin-ticket-header h2 {
+  margin: 0.2rem 0 0.35rem;
 }
 
-.client-ticket-icon {
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #c8001e, #8b0000);
-  font-size: 2rem;
-  box-shadow: 0 12px 28px rgba(200, 0, 30, 0.25);
+.admin-ticket-header > div > span {
+  color: #aaa;
 }
 
-.client-ticket-eyebrow {
-  margin: 0 0 0.25rem;
+.eyebrow {
+  margin: 0;
   color: #ffd700;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.client-ticket-header h2 {
-  margin: 0;
+.ticket-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.ticket-form-card {
-  max-width: 980px;
-  margin-inline: auto;
+.ticket-stats article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #1a1a1a;
+  color: #aaa;
 }
 
-.ticket-intro {
-  margin: -0.35rem 0 1.25rem;
-  color: #b8b8b8;
+.ticket-stats strong {
+  color: #fff;
+  font-size: 1.5rem;
 }
 
-.ticket-table-wrapper {
-  overflow-x: auto;
+.ticket-stats .active-count { color: #73e69d; }
+.ticket-stats .cancelled-count { color: #ff8295; }
+
+.card {
+  padding: 1.25rem;
+  border: 1px solid #333;
+  border-radius: 14px;
+  background: #1a1a1a;
 }
 
-.empty-table {
-  text-align: center;
+.ticket-table-wrapper { overflow-x: auto; }
+
+td small {
+  display: block;
+  margin-top: 0.2rem;
+  color: #888;
 }
 
-@media (max-width: 640px) {
-  .client-ticket-header {
-    align-items: flex-start;
-  }
+.ticket-status {
+  display: inline-block;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(35, 170, 90, 0.16);
+  color: #73e69d;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
 
-  .client-ticket-icon {
-    width: 52px;
-    height: 52px;
-  }
+.ticket-status.cancelled {
+  background: rgba(200, 0, 30, 0.16);
+  color: #ff8295;
+}
+
+.btn-cancel { padding: 0.5rem 0.8rem; }
+.no-action { color: #888; font-size: 0.8rem; }
+.empty-table { padding: 2rem; text-align: center; color: #888; }
+
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: #aaa;
+}
+
+.error-panel { color: #ff9aaa; }
+
+@media (max-width: 700px) {
+  .ticket-stats { grid-template-columns: 1fr; }
+  .card { padding: 0.8rem; }
 }

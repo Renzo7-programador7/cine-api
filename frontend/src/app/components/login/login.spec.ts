@@ -25,8 +25,8 @@ describe('Login', () => {
   });
 
   it('permite mostrar y ocultar la contraseña', () => {
-    expect(component.mostrarPassword).toBeFalse();
+    expect(component.mostrarPassword).toBe(false);
     component.mostrarPassword = true;
-    expect(component.mostrarPassword).toBeTrue();
+    expect(component.mostrarPassword).toBe(true);
   });
 });

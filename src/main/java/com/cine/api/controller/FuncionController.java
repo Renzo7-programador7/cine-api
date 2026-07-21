@@ -1,5 +1,6 @@
 package com.cine.api.controller;
 
+import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Funcion;
 import com.cine.api.service.FuncionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,13 +23,19 @@ public class FuncionController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar funciones", description = "Endpoint público.")
+    @Operation(summary = "Listar todas las funciones", description = "Incluye funciones pasadas para la gestión administrativa. Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
     public List<Funcion> listar() {
         return funcionService.listarTodas();
     }
 
+    @GetMapping("/publicas")
+    @Operation(summary = "Listar cartelera pública", description = "Devuelve únicamente funciones futuras, ordenadas por fecha y hora.")
+    public List<Funcion> listarPublicas() {
+        return funcionService.listarPublicas();
+    }
+
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener función por ID", description = "Endpoint público.")
+    @Operation(summary = "Obtener función por ID", description = "Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Funcion> obtener(@PathVariable Long id) {
         return funcionService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
@@ -35,9 +43,9 @@ public class FuncionController {
     }
 
     @PostMapping
-    @Operation(summary = "Crear función", description = "Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
-    public Funcion crear(@RequestBody Funcion funcion) {
-        return funcionService.guardar(funcion);
+    @Operation(summary = "Programar función", description = "Valida película, fecha, hora, precio, capacidad y duplicidad. Requiere rol ADMIN.", security = @SecurityRequirement(name = "bearerAuth"))
+    public Funcion crear(@Valid @RequestBody ProgramarFuncionRequest request) {
+        return funcionService.programar(request);
     }
 
     @DeleteMapping("/{id}")

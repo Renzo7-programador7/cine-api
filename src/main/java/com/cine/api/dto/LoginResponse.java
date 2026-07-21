@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "Sesión creada después del login o registro")
+@Schema(description = "Sesión creada después de un inicio de sesión correcto")
 public class LoginResponse {
     @Schema(description = "Token JWT que debe enviarse como Bearer token en endpoints protegidos")
     private String token;

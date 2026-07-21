@@ -1,0 +1,68 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="!!boletoPendiente" titulo="Cancelar boleto"
+  [mensaje]="'Se cancelará el boleto del asiento ' + (boletoPendiente?.asiento || '') + '. El asiento volverá a estar disponible.'"
+  textoConfirmar="Cancelar boleto" [peligro]="true"
+  (confirmado)="cancelar()" (cancelado)="cerrarConfirmacion()"></app-confirm-dialog>
+
+<app-user-layout [banner]="false">
+  <header class="tickets-header">
+    <div>
+      <p>Historial personal</p>
+      <h2>Mis boletos</h2>
+    </div>
+    <a routerLink="/boletos/comprar" class="btn-buy">Comprar otra entrada</a>
+  </header>
+
+  <section class="tickets-card">
+    @if (cargando) {
+      <div class="state-panel" role="status">Cargando tus boletos...</div>
+    } @else if (error) {
+      <div class="state-panel error-panel" role="alert">
+        <span>{{ error }}</span>
+        <button type="button" (click)="cargarBoletos()">Reintentar</button>
+      </div>
+    } @else if (boletos.length === 0) {
+      <div class="state-panel empty-panel">
+        <span class="empty-icon" aria-hidden="true">🎫</span>
+        <strong>Todavía no tienes boletos</strong>
+        <span>Selecciona una función y compra tu primera entrada.</span>
+        <a routerLink="/boletos/comprar" class="btn-buy">Comprar entrada</a>
+      </div>
+    } @else {
+      <div class="ticket-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Película</th><th>Fecha y hora</th><th>Asiento</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let boleto of boletos">
+              <td><strong>{{ boleto.funcion.pelicula.titulo }}</strong></td>
+              <td>{{ boleto.funcion.fecha }} — {{ boleto.funcion.hora }}</td>
+              <td>{{ boleto.asiento }}</td>
+              <td>S/ {{ boleto.precio | number:'1.2-2' }}</td>
+              <td>
+                <span class="ticket-status" [class.cancelled]="boleto.estado === 'CANCELADO'">
+                  {{ boleto.estado }}
+                </span>
+              </td>
+              <td>
+                @if (puedeCancelar(boleto)) {
+                  <button type="button" class="btn-cancel" [disabled]="cancelandoId !== null"
+                    (click)="solicitarCancelacion(boleto)">
+                    {{ cancelandoId === boleto.id ? 'Cancelando...' : 'Cancelar' }}
+                  </button>
+                } @else {
+                  <span class="no-action">No disponible</span>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</app-user-layout>

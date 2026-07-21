@@ -1,3 +1,11 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="!!usuarioPendienteEliminar" titulo="Eliminar usuario"
+  [mensaje]="'Se eliminará el usuario &quot;' + (usuarioPendienteEliminar?.nombre || '') + '&quot;. Esta acción no se puede deshacer.'"
+  textoConfirmar="Eliminar" [peligro]="true" [procesando]="eliminandoId !== null"
+  (confirmado)="ejecutarEliminacion()" (cancelado)="cancelarEliminacion()"></app-confirm-dialog>
+
 <app-admin-layout titulo="🎬 Usuarios">
 
   <h3>Lista de Usuarios</h3>
@@ -15,7 +23,9 @@
       <td>{{ u.email }}</td>
       <td>{{ u.rol }}</td>
       <td>
-        <button class="btn-delete" (click)="confirmarEliminar(u.id)">Eliminar</button>
+        <button class="btn-delete" type="button" [disabled]="eliminandoId !== null" (click)="confirmarEliminar(u)">
+          {{ eliminandoId === u.id ? 'Eliminando...' : 'Eliminar' }}
+        </button>
       </td>
     </tr>
   </table>

@@ -1,7 +1,5 @@
 package com.cine.api.entity;
 
-import com.cine.api.validation.UniqueEmail;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +27,6 @@ public class Usuario {
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "Email inválido")
-    @UniqueEmail
     @Size(max = 254, message = "El email no puede superar los 254 caracteres")
     @Column(nullable = false, unique = true, length = 254)
     private String email;

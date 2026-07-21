@@ -1,93 +1,86 @@
-<ng-template #formularioBoleto>
-  <section class="card ticket-form-card">
-    <h3>{{ esAdmin ? 'Nuevo boleto' : 'Compra tu boleto' }}</h3>
-    <p *ngIf="!esAdmin" class="ticket-intro">
-      Selecciona la función, el asiento y el precio para completar tu compra.
-    </p>
-    <div *ngIf="error" class="error">{{ error }}</div>
-    <div *ngIf="exito" class="success">{{ exito }}</div>
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
 
-    <form (ngSubmit)="crear()" #formNuevo="ngForm">
-      <div class="field">
-        <input type="number" [(ngModel)]="nuevo.asiento" name="asiento" placeholder="Número de asiento"
-          required min="1" max="500" #asiento="ngModel">
-        <span class="error-msg" *ngIf="asiento.invalid && asiento.touched">El asiento debe ser entre 1 y 500</span>
-      </div>
+<app-confirm-dialog [visible]="!!boletoPendiente" titulo="Cancelar boleto"
+  [mensaje]="'Se cancelará el boleto de ' + (boletoPendiente?.usuario?.nombre || '') +
+    ' para el asiento ' + (boletoPendiente?.asiento || '') + '. El asiento volverá a estar disponible.'"
+  textoConfirmar="Cancelar boleto" [peligro]="true"
+  (confirmado)="cancelar()" (cancelado)="cerrarConfirmacion()"></app-confirm-dialog>
 
-      <div class="field">
-        <input type="number" [(ngModel)]="nuevo.precio" name="precio" placeholder="Precio (S/)"
-          required min="1" max="999" #precio="ngModel">
-        <span class="error-msg" *ngIf="precio.invalid && precio.touched">El precio debe ser entre S/1 y S/999</span>
-      </div>
+<app-admin-layout titulo="Boletos">
+  <header class="admin-ticket-header">
+    <div>
+      <p class="eyebrow">Supervisión de ventas</p>
+      <h2>Gestión de boletos</h2>
+      <span>Consulta las ventas y cancela boletos cuando corresponda.</span>
+    </div>
+  </header>
 
-      <div class="field">
-        <select [(ngModel)]="nuevo.funcion.id" name="funcionId" required #funcionId="ngModel">
-          <option [ngValue]="null">Seleccionar función</option>
-          <option *ngFor="let f of funciones" [ngValue]="f.id">
-            {{ f.fecha }} - {{ f.hora }} - {{ f.pelicula?.titulo }}
-          </option>
-        </select>
-        <span class="error-msg" *ngIf="funcionId.invalid && funcionId.touched">Selecciona una función</span>
-      </div>
-
-      <ng-container *ngIf="esAdmin">
-        <div class="field">
-          <select [(ngModel)]="nuevo.estado" name="estado" required #estado="ngModel">
-            <option value="ACTIVO">ACTIVO</option>
-            <option value="CANCELADO">CANCELADO</option>
-          </select>
-          <span class="error-msg" *ngIf="estado.invalid && estado.touched">Selecciona un estado</span>
-        </div>
-
-        <div class="field">
-          <input type="number" [(ngModel)]="nuevo.usuario.id" name="usuarioId" placeholder="ID Usuario"
-            required min="1" #usuarioId="ngModel">
-          <span class="error-msg" *ngIf="usuarioId.invalid && usuarioId.touched">El ID de usuario es obligatorio</span>
-        </div>
-      </ng-container>
-
-      <button type="submit" [disabled]="formNuevo.invalid">
-        {{ esAdmin ? 'Registrar boleto' : 'Comprar boleto' }}
-      </button>
-    </form>
+  <section class="ticket-stats" aria-label="Resumen de boletos">
+    <article>
+      <span>Total</span>
+      <strong>{{ boletos.length }}</strong>
+    </article>
+    <article>
+      <span>Activos</span>
+      <strong class="active-count">{{ boletosActivos }}</strong>
+    </article>
+    <article>
+      <span>Cancelados</span>
+      <strong class="cancelled-count">{{ boletosCancelados }}</strong>
+    </article>
   </section>
-</ng-template>
 
-@if (esAdmin) {
-  <app-admin-layout titulo="Boletos">
-    <ng-container *ngTemplateOutlet="formularioBoleto"></ng-container>
-
-    <section class="card">
-      <h3>Lista de boletos</h3>
+  <section class="card">
+    @if (cargando) {
+      <div class="state-panel" role="status">Cargando boletos...</div>
+    } @else if (error) {
+      <div class="state-panel error-panel" role="alert">
+        <span>{{ error }}</span>
+        <button type="button" (click)="cargarBoletos()">Reintentar</button>
+      </div>
+    } @else {
       <div class="ticket-table-wrapper">
         <table>
-          <tr>
-            <th>ID</th><th>Asiento</th><th>Precio</th><th>Estado</th><th>Función</th><th>Acciones</th>
-          </tr>
-          <tr *ngFor="let b of boletos">
-            <td>{{ b.id }}</td>
-            <td>{{ b.asiento }}</td>
-            <td>S/ {{ b.precio }}</td>
-            <td>{{ b.estado }}</td>
-            <td>{{ b.funcion?.id }}</td>
-            <td><button class="btn-delete" (click)="confirmarEliminar(b.id)">Eliminar</button></td>
-          </tr>
-          <tr *ngIf="boletos.length === 0">
-            <td colspan="6" class="empty-table">No hay boletos registrados</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>ID</th><th>Cliente</th><th>Película</th><th>Función</th>
+              <th>Asiento</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let boleto of boletos">
+              <td>#{{ boleto.id }}</td>
+              <td>
+                <strong>{{ boleto.usuario.nombre }}</strong>
+                <small>{{ boleto.usuario.email }}</small>
+              </td>
+              <td>{{ boleto.funcion.pelicula.titulo }}</td>
+              <td>{{ boleto.funcion.fecha }} — {{ boleto.funcion.hora }}</td>
+              <td>{{ boleto.asiento }}</td>
+              <td>S/ {{ boleto.precio | number:'1.2-2' }}</td>
+              <td>
+                <span class="ticket-status" [class.cancelled]="boleto.estado === 'CANCELADO'">
+                  {{ boleto.estado }}
+                </span>
+              </td>
+              <td>
+                @if (puedeCancelar(boleto)) {
+                  <button type="button" class="btn-cancel" [disabled]="cancelandoId !== null"
+                    (click)="solicitarCancelacion(boleto)">
+                    {{ cancelandoId === boleto.id ? 'Cancelando...' : 'Cancelar' }}
+                  </button>
+                } @else {
+                  <span class="no-action">No disponible</span>
+                }
+              </td>
+            </tr>
+            <tr *ngIf="boletos.length === 0">
+              <td colspan="8" class="empty-table">No hay boletos registrados</td>
+            </tr>
+          </tbody>
         </table>
       </div>
-    </section>
-  </app-admin-layout>
-} @else {
-  <app-user-layout [banner]="false">
-    <div class="client-ticket-header">
-      <span class="client-ticket-icon">🎟️</span>
-      <div>
-        <p class="client-ticket-eyebrow">Compra segura</p>
-        <h2>Reserva tu entrada</h2>
-      </div>
-    </div>
-    <ng-container *ngTemplateOutlet="formularioBoleto"></ng-container>
-  </app-user-layout>
-}
+    }
+  </section>
+</app-admin-layout>

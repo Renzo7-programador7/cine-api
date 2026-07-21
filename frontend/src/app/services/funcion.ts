@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth';
+import { API_BASE_URL } from '../config/api.config';
+import { Funcion, ProgramarFuncionRequest } from '../models/funcion.models';
 
 @Injectable({ providedIn: 'root' })
 export class FuncionService {
-  private url = 'http://localhost:8080/api/funciones';
+  private readonly url = `${API_BASE_URL}/funciones`;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -13,24 +15,19 @@ export class FuncionService {
     return new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken()}` });
   }
 
-  private opciones() {
-    const token = this.auth.getToken();
-    return token ? { headers: this.headers() } : {};
+  listarPublicas(): Observable<Funcion[]> {
+    return this.http.get<Funcion[]>(`${this.url}/publicas`);
   }
 
-  listarPublicas(): Observable<any[]> {
-    return this.http.get<any[]>(this.url, this.opciones());
+  listar(): Observable<Funcion[]> {
+    return this.http.get<Funcion[]>(this.url, { headers: this.headers() });
   }
 
-  listar(): Observable<any[]> {
-    return this.http.get<any[]>(this.url, { headers: this.headers() });
+  programar(request: ProgramarFuncionRequest): Observable<Funcion> {
+    return this.http.post<Funcion>(this.url, request, { headers: this.headers() });
   }
 
-  crear(funcion: any): Observable<any> {
-    return this.http.post(this.url, funcion, { headers: this.headers() });
-  }
-
-  eliminar(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`, { headers: this.headers() });
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`, { headers: this.headers() });
   }
 }

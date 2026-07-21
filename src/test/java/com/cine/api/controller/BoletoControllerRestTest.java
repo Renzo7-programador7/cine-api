@@ -6,14 +6,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cine.api.entity.Boleto;
+import com.cine.api.dto.ComprarBoletoRequest;
 import com.cine.api.entity.Funcion;
 import com.cine.api.entity.Pelicula;
 import com.cine.api.entity.Usuario;
@@ -82,24 +85,24 @@ class BoletoControllerRestTest {
         pelicula = peliculaRepository.save(pelicula);
 
         Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
         funcion.setHora(java.time.LocalTime.of(18, 0));
         funcion.setPrecio(15.0); funcion.setCapacidad(100);
         funcion.setPelicula(pelicula);
         funcion = funcionRepository.save(funcion);
 
-        Usuario usuario = usuarioRepository.findByEmailIgnoreCase("boleto@test.com").orElseThrow();
-
-        Boleto boleto = new Boleto();
-        boleto.setPrecio(15.0); boleto.setEstado("ACTIVO");
-        boleto.setAsiento(5); boleto.setFuncion(funcion);
-        boleto.setUsuario(usuario);
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(funcion.getId());
+        request.setAsiento(5);
 
         mockMvc.perform(post("/api/boletos")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boleto)))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.precio").value(15.0))
+                .andExpect(jsonPath("$.estado").value("ACTIVO"))
+                .andExpect(jsonPath("$.usuario.email").value("boleto@test.com"));
     }
 
     @Test
@@ -126,35 +129,120 @@ class BoletoControllerRestTest {
         pelicula = peliculaRepository.save(pelicula);
 
         Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
         funcion.setHora(java.time.LocalTime.of(18, 0));
         funcion.setPrecio(15.0);
         funcion.setCapacidad(100);
         funcion.setPelicula(pelicula);
         funcion = funcionRepository.save(funcion);
 
-        Boleto boleto = new Boleto();
-        boleto.setPrecio(15.0);
-        boleto.setEstado("CANCELADO");
-        boleto.setAsiento(5);
-        boleto.setFuncion(funcion);
-        boleto.setUsuario(otroUsuario);
+        String compraManipulada = """
+                {
+                  "funcionId": %d,
+                  "asiento": 5,
+                  "precio": 0.01,
+                  "estado": "CANCELADO",
+                  "usuario": { "id": %d }
+                }
+                """.formatted(funcion.getId(), otroUsuario.getId());
 
         String token = jwtUtil.generateToken(cliente.getEmail(), cliente.getRol());
         mockMvc.perform(post("/api/boletos")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boleto)))
-                .andExpect(status().isOk())
+                        .content(compraManipulada))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.usuario.email").value(cliente.getEmail()))
+                .andExpect(jsonPath("$.precio").value(15.0))
                 .andExpect(jsonPath("$.estado").value("ACTIVO"));
     }
 
     @Test
-    void eliminarBoleto_inexistente_retorna404() throws Exception {
+    void crearBoleto_sinAsiento_retorna400() throws Exception {
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(1L);
+
+        mockMvc.perform(post("/api/boletos")
+                        .header("Authorization", "Bearer " + obtenerToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.asiento").exists());
+    }
+
+    @Test
+    void listarYCancelarMisBoletos_comoUser_noExponePassword() throws Exception {
+        Usuario cliente = new Usuario();
+        cliente.setNombre("Cliente historial");
+        cliente.setEmail("historial.boleto@test.com");
+        cliente.setPassword(passwordEncoder.encode("123456"));
+        cliente.setRol("USER");
+        cliente = usuarioRepository.save(cliente);
+
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo("Historial seguro");
+        pelicula.setDuracion(100);
+        pelicula.setClasificacion("PG");
+        pelicula.setGenero("Drama");
+        pelicula = peliculaRepository.save(pelicula);
+
+        Funcion funcion = new Funcion();
+        funcion.setFecha(java.time.LocalDate.now().plusDays(1));
+        funcion.setHora(java.time.LocalTime.of(18, 0));
+        funcion.setPrecio(15.0);
+        funcion.setCapacidad(100);
+        funcion.setPelicula(pelicula);
+        funcion = funcionRepository.save(funcion);
+
+        ComprarBoletoRequest request = new ComprarBoletoRequest();
+        request.setFuncionId(funcion.getId());
+        request.setAsiento(9);
+        String token = jwtUtil.generateToken(cliente.getEmail(), cliente.getRol());
+
+        MvcResult compra = mockMvc.perform(post("/api/boletos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        long boletoId = objectMapper.readTree(compra.getResponse().getContentAsString())
+                .get("id")
+                .asLong();
+
+        mockMvc.perform(get("/api/boletos/funciones/{id}/asientos", funcion.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.capacidad").value(100))
+                .andExpect(jsonPath("$.asientosOcupados[0]").value(9));
+
+        mockMvc.perform(get("/api/boletos/mios")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].usuario.email").value(cliente.getEmail()))
+                .andExpect(jsonPath("$[0].usuario.password").doesNotExist());
+
+        mockMvc.perform(patch("/api/boletos/{id}/cancelar", boletoId)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.estado").value("CANCELADO"));
+
+        mockMvc.perform(get("/api/boletos/funciones/{id}/asientos", funcion.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.asientosOcupados").isEmpty());
+    }
+
+    @Test
+    void actualizarYEliminarBoleto_noEstanExpuestos() throws Exception {
         String token = obtenerToken();
         mockMvc.perform(delete("/api/boletos/999999")
                         .header("Authorization", "Bearer " + token))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
+
+        mockMvc.perform(put("/api/boletos/999999")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isForbidden());
     }
 }

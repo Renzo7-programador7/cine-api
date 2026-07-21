@@ -28,7 +28,7 @@ describe('Register', () => {
     component.usuario = { nombre: 'Ana', email: 'ana@test.com', password: '123456' };
     component.confirmarPassword = '654321';
 
-    expect(component.validar()).toBeFalse();
+    expect(component.validar()).toBe(false);
     expect(component.fieldErrors['confirmarPassword']).toBeTruthy();
   });
 });

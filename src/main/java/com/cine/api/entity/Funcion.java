@@ -9,8 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +23,10 @@ public class Funcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Future(message = "La fecha debe posterior a la fecha actual")
+    @NotNull(message = "La fecha es obligatoria")
     private LocalDate fecha;
 
-    @FutureOrPresent(message = "La hora debe ser igual o posterior a la hora actual")
+    @NotNull(message = "La hora es obligatoria")
     private LocalTime hora;
 
     @DecimalMax(value = "100.0", message = "El precio no puede ser mayor a 100")
@@ -39,5 +38,6 @@ public class Funcion {
     private int capacidad;
 
     @ManyToOne
+    @NotNull(message = "La pelicula es obligatoria")
     private Pelicula pelicula;
 }

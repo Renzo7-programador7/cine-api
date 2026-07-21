@@ -4,19 +4,27 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula';
 import { AdminLayout } from "../admin/admin-layout/admin-layout";
+import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
+import { ToastNotification } from '../shared/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-peliculas',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout],
+  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, ConfirmDialog, ToastNotification],
   templateUrl: './peliculas.html',
   styleUrl: './peliculas.css'
 })
 export class Peliculas implements OnInit {
   peliculas: any[] = [];
-  nueva = { titulo: '', duracion: 0, clasificacion: '', genero: '' };
+  nueva = { titulo: '', duracion: null as number | null, clasificacion: '', genero: '' };
   editando: any = null;
   error = '';
+  exito = '';
+  enviando = false;
+  actualizando = false;
+  eliminandoId: number | null = null;
+  peliculaPendienteEliminar: any = null;
 
   constructor(
     private peliculaService: PeliculaService,
@@ -40,39 +48,104 @@ export class Peliculas implements OnInit {
   }
 
   crear() {
+    if (this.enviando) {
+      return;
+    }
+    this.limpiarMensajes();
+    this.enviando = true;
     this.peliculaService.crear(this.nueva).subscribe({
-      next: () => {
+      next: (pelicula) => {
+        this.enviando = false;
+        this.exito = `Película "${pelicula.titulo}" creada correctamente.`;
         this.listar();
-        this.nueva = { titulo: '', duracion: 0, clasificacion: '', genero: '' };
+        this.nueva = { titulo: '', duracion: null, clasificacion: '', genero: '' };
+        this.cdr.detectChanges();
       },
-      error: (e) => this.error = e.error?.message || 'Error al crear'
-    });
-  }
-
-  editar(p: any) {
-    this.editando = { ...p };
-  }
-
-  actualizar() {
-    this.peliculaService.actualizar(this.editando.id, this.editando).subscribe({
-      next: () => {
-        this.listar();
-        this.editando = null;
+      error: (e: HttpErrorResponse) => {
+        this.enviando = false;
+        this.error = e.error?.message || 'No se pudo crear la película.';
+        this.cdr.detectChanges();
       }
     });
   }
 
-  confirmarEliminar(id: number): void {
-    const confirmar = confirm('¿Está seguro de eliminar esta película?');
+  editar(p: any) {
+    this.limpiarMensajes();
+    this.editando = { ...p };
+  }
 
-    if (confirmar) {
-      this.eliminar(id);
+  actualizar() {
+    if (!this.editando || this.actualizando) {
+      return;
+    }
+    this.limpiarMensajes();
+    this.actualizando = true;
+    this.peliculaService.actualizar(this.editando.id, this.editando).subscribe({
+      next: (pelicula) => {
+        this.actualizando = false;
+        this.exito = `Película "${pelicula.titulo}" actualizada correctamente.`;
+        this.listar();
+        this.editando = null;
+        this.cdr.detectChanges();
+      },
+      error: (e: HttpErrorResponse) => {
+        this.actualizando = false;
+        this.error = e.error?.message || 'No se pudo actualizar la película.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  confirmarEliminar(pelicula: any): void {
+    this.peliculaPendienteEliminar = pelicula;
+  }
+
+  cancelarEliminacion(): void {
+    this.peliculaPendienteEliminar = null;
+  }
+
+  ejecutarEliminacion(): void {
+    const pelicula = this.peliculaPendienteEliminar;
+    if (!pelicula) {
+      return;
+    }
+    this.peliculaPendienteEliminar = null;
+    this.eliminar(pelicula.id, pelicula.titulo);
+  }
+
+  eliminar(id: number, titulo: string) {
+    if (this.eliminandoId !== null) {
+      return;
+    }
+    this.limpiarMensajes();
+    this.eliminandoId = id;
+    this.peliculaService.eliminar(id).subscribe({
+      next: () => {
+        this.eliminandoId = null;
+        this.exito = `Película "${titulo}" eliminada correctamente.`;
+        this.listar();
+        this.cdr.detectChanges();
+      },
+      error: (e: HttpErrorResponse) => {
+        this.eliminandoId = null;
+        this.error = e.error?.message || 'No se pudo eliminar la película.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  cancelarEdicion(): void {
+    if (!this.actualizando) {
+      this.editando = null;
     }
   }
 
-  eliminar(id: number) {
-    this.peliculaService.eliminar(id).subscribe({
-      next: () => this.listar()
-    });
+  cerrarNotificacion(): void {
+    this.limpiarMensajes();
+  }
+
+  private limpiarMensajes(): void {
+    this.error = '';
+    this.exito = '';
   }
 }

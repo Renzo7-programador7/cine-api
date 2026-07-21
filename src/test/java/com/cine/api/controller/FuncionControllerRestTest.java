@@ -1,6 +1,6 @@
 package com.cine.api.controller;
 
-import com.cine.api.entity.Funcion;
+import com.cine.api.dto.ProgramarFuncionRequest;
 import com.cine.api.entity.Pelicula;
 import com.cine.api.repository.PeliculaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,17 +55,45 @@ class FuncionControllerRestTest {
         pelicula.setClasificacion("PG-13"); pelicula.setGenero("Accion");
         pelicula = peliculaRepository.save(pelicula);
 
-        Funcion funcion = new Funcion();
-        funcion.setFecha(java.time.LocalDate.now());
-        funcion.setHora(java.time.LocalTime.of(20, 0));
-        funcion.setPrecio(20.0); funcion.setCapacidad(50);
-        funcion.setPelicula(pelicula);
+        ProgramarFuncionRequest request = new ProgramarFuncionRequest();
+        request.setFecha(java.time.LocalDate.now().plusDays(1));
+        request.setHora(java.time.LocalTime.of(20, 0));
+        request.setPrecio(20.0); request.setCapacidad(50);
+        request.setPeliculaId(pelicula.getId());
 
         mockMvc.perform(post("/api/funciones")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(funcion)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void listarFunciones_sinAutenticacion_retorna401() throws Exception {
+        mockMvc.perform(get("/api/funciones"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void listarFuncionesPublicas_sinAutenticacion_retorna200() throws Exception {
+        mockMvc.perform(get("/api/funciones/publicas"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void crearFuncion_sinPeliculaId_retorna400() throws Exception {
+        ProgramarFuncionRequest request = new ProgramarFuncionRequest();
+        request.setFecha(java.time.LocalDate.now().plusDays(1));
+        request.setHora(java.time.LocalTime.of(20, 0));
+        request.setPrecio(20.0);
+        request.setCapacidad(50);
+
+        mockMvc.perform(post("/api/funciones")
+                        .header("Authorization", "Bearer " + obtenerToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.peliculaId").exists());
     }
 
     @Test

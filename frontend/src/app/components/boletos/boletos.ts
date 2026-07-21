@@ -1,106 +1,121 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { BoletoService } from '../../services/boleto';
-import { FuncionService } from '../../services/funcion';
-import { AdminLayout } from "../admin/admin-layout/admin-layout";
-import { UserLayout } from '../user/user-layout/user-layout';
+import { Router } from '@angular/router';
+
+import { AdminLayout } from '../admin/admin-layout/admin-layout';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
+import { ToastNotification } from '../shared/toast-notification/toast-notification';
+import { Boleto } from '../../models/boleto.models';
 import { AuthService } from '../../services/auth';
+import { BoletoService } from '../../services/boleto';
 
 @Component({
   selector: 'app-boletos',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, AdminLayout, UserLayout],
+  imports: [CommonModule, AdminLayout, ConfirmDialog, ToastNotification],
   templateUrl: './boletos.html',
   styleUrl: './boletos.css'
 })
 export class Boletos implements OnInit {
-  boletos: any[] = [];
-  funciones: any[] = [];
-  nuevo = {
-    precio: "",
-    estado: 'ACTIVO',
-    asiento: "",
-    funcion: { id: null as number | null },
-    usuario: { id: "" }
-  };
-  esAdmin = false;
+  boletos: Boleto[] = [];
+  cargando = true;
+  cancelandoId: number | null = null;
+  boletoPendiente: Boleto | null = null;
   error = '';
   exito = '';
 
   constructor(
     private boletoService: BoletoService,
-    private funcionService: FuncionService,
     private auth: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/admin/boletos' }
+      });
       return;
     }
 
-    this.esAdmin = this.auth.getRol() === 'ADMIN';
-    if (this.esAdmin) {
-      this.listar();
+    if (this.auth.getRol() !== 'ADMIN') {
+      this.router.navigate(['/boletos/comprar']);
+      return;
     }
 
-    this.funcionService.listarPublicas().subscribe(data => {
-      this.funciones = data;
-      this.cdr.detectChanges();
-    });
+    this.cargarBoletos();
   }
 
-  listar() {
-    this.boletoService.listar().subscribe({
-      next: (data) => {
-        this.boletos = data;
-        this.cdr.detectChanges();
-      },
-      error: () => this.router.navigate(['/login'])
-    });
-  }
-
-  crear() {
+  cargarBoletos(): void {
+    this.cargando = true;
     this.error = '';
-    this.exito = '';
-    this.boletoService.crear(this.nuevo).subscribe({
-      next: () => {
-        if (this.esAdmin) {
-          this.listar();
-        } else {
-          this.exito = 'Tu boleto fue comprado correctamente.';
-        }
-        this.nuevo = {
-          precio: "",
-          estado: 'ACTIVO',
-          asiento: "",
-          funcion: { id: null },
-          usuario: { id: "" }
-        };
+    this.boletoService.listar().subscribe({
+      next: (boletos) => {
+        this.boletos = boletos;
+        this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (e) => {
-        this.error = e.error?.message || 'No se pudo comprar el boleto';
+        this.cargando = false;
+        this.error = e.status === 403
+          ? 'No tienes permisos para consultar todos los boletos.'
+          : 'No se pudo cargar la lista de boletos.';
         this.cdr.detectChanges();
       }
     });
   }
 
-  confirmarEliminar(id: number): void {
-    const confirmar = confirm('¿Está seguro de eliminar este boleto?');
-
-    if (confirmar) {
-      this.eliminar(id);
+  puedeCancelar(boleto: Boleto): boolean {
+    if (boleto.estado !== 'ACTIVO') {
+      return false;
     }
+    const inicio = new Date(`${boleto.funcion.fecha}T${boleto.funcion.hora}`);
+    return inicio.getTime() > Date.now();
   }
 
-  eliminar(id: number) {
-    this.boletoService.eliminar(id).subscribe({
-      next: () => this.listar()
+  solicitarCancelacion(boleto: Boleto): void {
+    this.boletoPendiente = boleto;
+  }
+
+  cerrarConfirmacion(): void {
+    this.boletoPendiente = null;
+  }
+
+  cancelar(): void {
+    const boleto = this.boletoPendiente;
+    if (!boleto || this.cancelandoId !== null) {
+      return;
+    }
+
+    this.boletoPendiente = null;
+    this.cancelandoId = boleto.id;
+    this.error = '';
+    this.exito = '';
+    this.boletoService.cancelar(boleto.id).subscribe({
+      next: () => {
+        this.cancelandoId = null;
+        this.exito = 'El boleto fue cancelado correctamente.';
+        this.cargarBoletos();
+      },
+      error: (e) => {
+        this.cancelandoId = null;
+        this.error = e.error?.message || 'No se pudo cancelar el boleto.';
+        this.cdr.detectChanges();
+      }
     });
+  }
+
+  cerrarNotificacion(): void {
+    this.error = '';
+    this.exito = '';
+  }
+
+  get boletosActivos(): number {
+    return this.boletos.filter(boleto => boleto.estado === 'ACTIVO').length;
+  }
+
+  get boletosCancelados(): number {
+    return this.boletos.filter(boleto => boleto.estado === 'CANCELADO').length;
   }
 }

@@ -1,15 +1,22 @@
+<app-toast-notification [mensaje]="error || exito" [tipo]="error ? 'error' : 'success'"
+  (cerrado)="cerrarNotificacion()"></app-toast-notification>
+
+<app-confirm-dialog [visible]="!!peliculaPendienteEliminar" titulo="Eliminar película"
+  [mensaje]="'Se eliminará &quot;' + (peliculaPendienteEliminar?.titulo || '') + '&quot;. Esta acción no se puede deshacer.'"
+  textoConfirmar="Eliminar" [peligro]="true" [procesando]="eliminandoId !== null"
+  (confirmado)="ejecutarEliminacion()" (cancelado)="cancelarEliminacion()"></app-confirm-dialog>
+
 <app-admin-layout titulo="Películas">
   <section class="card">
     <h3>Nueva Película</h3>
-    <div *ngIf="error" class="error">{{ error }}</div>
     <form class="form-grid" (ngSubmit)="crear()" #formNueva="ngForm">
       <div class="field">
         <input type="text" [(ngModel)]="nueva.titulo" name="titulo" placeholder="Título" required minlength="2" #titulo="ngModel">
         <span class="error-msg" *ngIf="titulo.invalid && titulo.touched">El título es obligatorio (mínimo 2 caracteres)</span>
       </div>
       <div class="field">
-        <input type="number" [(ngModel)]="nueva.duracion" name="duracion" placeholder="Duración (min)" required min="1" max="600" #duracion="ngModel">
-        <span class="error-msg" *ngIf="duracion.invalid && duracion.touched">La duración debe ser entre 1 y 600 minutos</span>
+        <input type="number" [(ngModel)]="nueva.duracion" name="duracion" placeholder="Duración (min)" required min="30" max="600" #duracion="ngModel">
+        <span class="error-msg" *ngIf="duracion.invalid && duracion.touched">La duración debe ser entre 30 y 600 minutos</span>
       </div>
       <div class="field">
         <select [(ngModel)]="nueva.clasificacion" name="clasificacion" required #clasificacion="ngModel">
@@ -36,7 +43,9 @@
         </select>
         <span class="error-msg" *ngIf="genero.invalid && genero.touched">Selecciona un género</span>
       </div>
-      <button type="submit" [disabled]="formNueva.invalid">Agregar</button>
+      <button type="submit" [disabled]="formNueva.invalid || enviando">
+        {{ enviando ? 'Guardando...' : 'Agregar película' }}
+      </button>
     </form>
   </section>
   <section class="card">
@@ -52,8 +61,10 @@
         <td>{{ p.clasificacion }}</td>
         <td>{{ p.genero }}</td>
         <td>
-          <button class="btn-edit" (click)="editar(p)">Editar</button>
-          <button class="btn-delete" (click)="confirmarEliminar(p.id)">Eliminar</button>
+          <button class="btn-edit" type="button" [disabled]="eliminandoId !== null" (click)="editar(p)">Editar</button>
+          <button class="btn-delete" type="button" [disabled]="eliminandoId !== null" (click)="confirmarEliminar(p)">
+            {{ eliminandoId === p.id ? 'Eliminando...' : 'Eliminar' }}
+          </button>
         </td>
       </tr>
       <tr *ngIf="peliculas.length === 0">
@@ -65,7 +76,7 @@
     <div class="modal">
       <div class="modal-header">
         <h3>Editar Película</h3>
-        <button class="close" (click)="editando = null">✕</button>
+        <button class="close" type="button" [disabled]="actualizando" (click)="cancelarEdicion()">✕</button>
       </div>
       <form (ngSubmit)="actualizar()" #formEditar="ngForm">
         <div class="field">
@@ -73,8 +84,8 @@
           <span class="error-msg" *ngIf="etitulo.invalid && etitulo.touched">El título es obligatorio</span>
         </div>
         <div class="field">
-          <input type="number" [(ngModel)]="editando.duracion" name="eduracion" placeholder="Duración (min)" required min="1" max="600" #eduracion="ngModel">
-          <span class="error-msg" *ngIf="eduracion.invalid && eduracion.touched">La duración debe ser entre 1 y 600 minutos</span>
+          <input type="number" [(ngModel)]="editando.duracion" name="eduracion" placeholder="Duración (min)" required min="30" max="600" #eduracion="ngModel">
+          <span class="error-msg" *ngIf="eduracion.invalid && eduracion.touched">La duración debe ser entre 30 y 600 minutos</span>
         </div>
         <div class="field">
           <select [(ngModel)]="editando.clasificacion" name="eclasificacion" required #eclasificacion="ngModel">
@@ -102,8 +113,10 @@
           <span class="error-msg" *ngIf="egenero.invalid && egenero.touched">Selecciona un género</span>
         </div>
         <div class="modal-actions">
-          <button type="submit" [disabled]="formEditar.invalid">Actualizar</button>
-          <button type="button" (click)="editando = null">Cancelar</button>
+          <button type="submit" [disabled]="formEditar.invalid || actualizando">
+            {{ actualizando ? 'Actualizando...' : 'Actualizar' }}
+          </button>
+          <button type="button" [disabled]="actualizando" (click)="cancelarEdicion()">Cancelar</button>
         </div>
       </form>
     </div>

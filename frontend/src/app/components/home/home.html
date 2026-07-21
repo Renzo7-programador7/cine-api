@@ -55,20 +55,21 @@
         @if (funciones.length) {
         <div class="horarios-grid">
           @for (f of funciones; track f.id) {
-          <div class="horario-pill">
+          <button type="button" class="horario-pill" (click)="comprarFuncion(f.id)"
+            [attr.aria-label]="'Comprar entrada para ' + p.titulo + ' el ' + f.fecha + ' a las ' + f.hora">
             <span class="fecha"> {{ f.fecha }} </span>
             <span class="hora"> {{ f.hora }} </span>
             <span class="precio"> S/ {{ f.precio }} </span>
-          </div>
+            <span class="accion-horario">Comprar</span>
+          </button>
           }
         </div>
         } @else { <p class="sin-horarios"> Sin funciones programadas para esta película </p> }
 
         @if (funciones.length) {
-        @if (!auth.isLoggedIn()) {
-        <p class="comprar-hint"> <a routerLink="/login"> Inicia sesión </a> para comprar boletos </p>
-        }
-        @else { <a routerLink="/boletos" class="btn-primary btn-comprar"> Comprar boleto </a> }
+        <p class="comprar-hint">
+          Selecciona un horario para elegir tu asiento@if (!auth.isLoggedIn()) { e iniciar sesión }.
+        </p>
         }
 
         }
